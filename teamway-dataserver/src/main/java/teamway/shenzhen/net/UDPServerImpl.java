@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 
 public class UDPServerImpl implements UDPServer{
 
@@ -42,7 +44,8 @@ public class UDPServerImpl implements UDPServer{
 				socket.receive(packet);// 此方法在接收到数据报之前会一直阻塞
 				System.out.println(formateDate(new Date())+"：     "+"收到IP：" + packet.getAddress().getHostAddress()+"端口:"+packet.getPort()+"发来的消息");
 				System.out.println("服务器端被连接过的次数：" + count);
-				byte[] data = packet.getData();
+				byte[] temp = new byte[packet.getLength()];
+				System.arraycopy(packet.getData(),0,temp,0,packet.getLength());//拷贝数组中的有效数据
 				int port = packet.getPort();
 				 bf  = new StringBuffer().append(packet.getAddress().getHostAddress()).append(packet.getPort()).toString();
 				//判断数据是否收到过该主机的数据包
@@ -50,7 +53,8 @@ public class UDPServerImpl implements UDPServer{
 					//将发送的数据追加到数据列表中
 					ReceiveData rd = dataInfo.get(bf);
 					byte[] ndata = rd.getData();
-					System.arraycopy(data, 0, ndata, ndata.length, packet.getLength());
+					ndata = ArrayUtils.addAll(ndata, temp);
+//					System.arraycopy(temp, 0, ndata, ndata.length, packet.getLength());
 					rd.setData(ndata);
 					rd.setReceiveTime(new Date());
 					rd.setReceiveCount(rd.getReceiveCount()+1);
@@ -58,10 +62,9 @@ public class UDPServerImpl implements UDPServer{
 				}else {
 					ReceiveData receiveData = new ReceiveData();
 					receiveData.setAddr(packet.getAddress());
-					receiveData.setData(data);
+					receiveData.setData(temp);
 					receiveData.setPort(port);
 					receiveData.setReceiveTime(new Date());
-					receiveData.setReceiveCount(1);
 					dataInfo.put(bf, receiveData);
 				}
 				System.out.println("当前客户端连接服务端的次数为："+dataInfo.get(bf).getReceiveCount());
