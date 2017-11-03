@@ -8,7 +8,7 @@ import java.net.InetAddress;
 /**
  * UDP客户端程序，用于对服务端发送数据，并接收服务端的回应信息
  */
-public class UdpClient implements Runnable{
+public class UdpClient implements Runnable {
 	private byte[] buffer = new byte[1024];
 
 	private static DatagramSocket ds = null;
@@ -17,12 +17,10 @@ public class UdpClient implements Runnable{
 	 * 测试客户端发包和接收回应信息的方法
 	 */
 	public static void main(String[] args) throws Exception {
-		UdpClient client = new UdpClient();
-		String serverHost = "127.0.0.1";
-		int serverPort = 3344;
-		client.send(serverHost, serverPort, ("你好，亲爱的!").getBytes());
-//		byte[] bt = client.receive();
-//		System.out.println("服务端回应数据：" + new String(bt));
+		for (int i = 0; i < 1000; i++) {
+			new Thread(new UdpClient()).start();
+			Thread.currentThread().sleep(2000);
+		}
 		// 关闭连接
 		try {
 			ds.close();
@@ -35,7 +33,7 @@ public class UdpClient implements Runnable{
 	 * 构造函数，创建UDP客户端
 	 */
 	public UdpClient() throws Exception {
-		ds = new DatagramSocket(8899); // 邦定本地端口作为客户端
+		ds = new DatagramSocket(); // 邦定本地端口作为客户端
 	}
 
 	/**
@@ -66,6 +64,8 @@ public class UdpClient implements Runnable{
 			client.send(serverHost, serverPort, ("你好，亲爱的!").getBytes());
 			byte[] bt = client.receive();
 			System.out.println("服务端回应数据：" + new String(bt));
+			client.send(serverHost,serverPort,"bye bye! ".getBytes());
+			System.out.println("服务端回应数据：" + new String(client.receive()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
