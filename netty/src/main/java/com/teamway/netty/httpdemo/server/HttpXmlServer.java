@@ -21,7 +21,7 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 /**
  * ${DESCRIPTION}
  *
- * @author Ricky Fung
+ * @author gaven
  * @create 2017-01-08 20:15
  */
 public class HttpXmlServer {
