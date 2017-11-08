@@ -19,7 +19,6 @@ public class UDPServerImpl implements UDPServer {
 	private byte[] data = null;
 	Map<String, ReceiveData> dataInfo = new HashMap<String, ReceiveData>();
 
-	@Override
 	public boolean initServer(int port, int buffer) {
 		try {
 			this.socket = new DatagramSocket(port);
@@ -33,7 +32,6 @@ public class UDPServerImpl implements UDPServer {
 		return false;
 	}
 
-	@Override
 	public NetData receive() {
 		NetData netData = new NetData();
 		try {
@@ -88,7 +86,6 @@ public class UDPServerImpl implements UDPServer {
 		return netData;
 	}
 
-	@Override
 	public boolean send(NetData data) {
 		try {
 			DatagramPacket dp = new DatagramPacket(data.getData(), data.getData().length, data.getAddr(),data.getPort());

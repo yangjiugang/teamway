@@ -55,7 +55,6 @@ public class UdpClient implements Runnable {
 		return data;
 	}
 
-	@Override
 	public void run() {
 		try {
 			UdpClient client = new UdpClient();
