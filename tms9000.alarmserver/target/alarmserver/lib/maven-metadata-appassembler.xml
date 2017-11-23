@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>shenzhen.teamway</groupId>
+  <artifactId>tms9000.alarmserver</artifactId>
+  <versioning>
+    <versions>
+      <version>0.0.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20171122073209</lastUpdated>
+  </versioning>
+</metadata>
