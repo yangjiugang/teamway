@@ -1,0 +1,71 @@
+package com.teamway.cms.pgutils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.teamway.cms.pgutils.ByteUtil;
+import com.teamway.cms.pgutils.PGUtil;
+
+public class PGPojo {
+	public PGHeader  header = new PGHeader();
+	public List<PGAttr> Attrs = new ArrayList<PGAttr>();
+	
+	public PGPojo(){
+		
+	}
+	
+	public PGPojo(byte Var, short Code, byte  HdrLen, short AttrCount, short SeqNum, short SessionId, int TotalLength , byte[] attr_data) {
+		header.setVar(Var);
+		header.setCode(Code);
+		header.setHdrLen(HdrLen);
+		header.setAttrCount(AttrCount);
+		header.setSeqNum(SeqNum);
+		header.setSessionId(SessionId);
+		header.setTotalLength(TotalLength);
+		
+		int index = 0;
+		for(int i=0; i < AttrCount; i++)
+		{
+			//PGAttrHeader attr_header = (PGAttrHeader) PGUtil.byteArrayToObject(attr_data,index,PGAttrHeader.class);
+			PGAttr attr = new PGAttr();
+			attr.getHeader().setType(attr_data[index]);
+			index +=1;
+			index +=1;
+			attr.getHeader().setLength(ByteUtil.getShort(attr_data, index));
+			index +=2;
+			byte[] data = new byte[attr.getHeader().getLength()-4];
+			System.arraycopy(attr_data, index, data, 0, data.length);
+            attr.setData(data);
+			Attrs.add(attr);
+			index +=data.length;
+		}
+	}
+	
+	
+	public PGHeader getHeader() {
+		return header;
+	}
+	public void setHeader(PGHeader header) {
+		this.header = header;
+	}
+	public List<PGAttr> getAttrs() {
+		return Attrs;
+	}
+	public void setAttrs(List<PGAttr> attr) {
+		Attrs = attr;
+	}
+	@Override
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(header.toString());
+		for(PGAttr attr: Attrs){
+			buffer.append("\n"+attr.toString());
+		}
+		buffer.append("\n");
+		
+		return buffer.toString();
+	}
+	
+	
+	
+}

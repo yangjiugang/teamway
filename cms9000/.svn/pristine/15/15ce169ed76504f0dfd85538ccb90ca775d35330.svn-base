@@ -1,0 +1,394 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CMS9000</title>
+<link rel="stylesheet" type="text/css"
+	href="js/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css"
+	href="js/ztree/css/zTreeStyle/zTreeStyle.css">
+
+<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+
+<style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+img {
+	border: 0 none;
+}
+
+.box {
+	background: #1a529c;
+	position: relative;
+	height: 90px;
+}
+/*主导航菜单*/
+#nav-wmenu {
+	height: 40px;;
+	background: #1a529c;
+	width: 970px;
+	margin: 0 auto;
+	position: absolute;
+	top: 50px;
+	left: 181px;
+}
+
+#nav-wmenu .container {
+	position: relative;
+	overflow: visible;
+	z-index: 99;
+}
+
+#nav-wmenu .wmenu {
+	padding: 0 0 0 14px;
+}
+
+#nav-wmenu .wmenu li {
+	position: relative;
+	float: left;
+	padding: 0 8px 0 5px;
+	display: inline;
+	font-size: 14px;
+}
+
+#nav-wmenu .wmenu li h3 {
+	font-weight: normal;
+	display: inline-block;
+	float: left;
+}
+
+#nav-wmenu .wmenu li a.submenu {
+	margin-top: 10px;
+	display: inline-block;
+	color: #FFF;
+	height: 30px;
+	text-decoration: none;
+	font-size: 14px;
+	width: 100px;
+	text-align: center;
+}
+
+#nav-wmenu .wmenu li a.selected, #nav-wmenu .wmenu li a.navhover,
+	#nav-wmenu .wmenu li a.submenu:hover {
+	color: #1a529c;
+}
+
+#nav-wmenu .wmenu li a.navhover, #nav-wmenu .wmenu li a.submenu:hover {
+	background-color: #FFF;
+}
+
+#nav-wmenu .wmenu li a.submenu span {
+	height: 30px;
+	line-height: 25px;
+	display: inline-block;
+	font-weight: bold;
+}
+
+#nav-wmenu .wmenu li a.selected span, #nav-wmenu .wmenu li a.navhover span,
+	#nav-wmenu .wmenu li a.submenu:hover span {
+	cursor: pointer;
+}
+
+#nav-wmenu .wmenu li a.navhover span, #nav-wmenu .wmenu li a.submenu:hover span
+	{
+	width: 100px;
+}
+
+#nav-wmenu .wmenu ul.children {
+	display: none;
+	position: absolute;
+	top: 40px;
+	left: 3px;
+	width: 100px;
+	background: #FFF;
+	border: 2px solid #1a529c;
+	border-top: 0;
+	line-height: normal;
+}
+
+#nav-wmenu .wmenu ul.children li {
+	width: 100px;
+	padding: 0px;
+	display: inline-block;
+	font-size: 12px;
+	border-top: 1px solid #ccc;
+}
+
+#nav-wmenu .wmenu ul.children li h3 {
+	display: block;
+	width: 100%;
+}
+
+#nav-wmenu .wmenu ul.children li a {
+	width: 100%;
+	height: 16px;
+	line-height: 16px;
+	overflow: hidden;
+	padding: 3px 0;
+	display: block;
+	color: #1a529c;
+	text-align: center;
+	text-decoration: none;
+	font-size: 12px;
+}
+
+#nav-wmenu .wmenu ul.children li a:hover {
+	background-color: #eee;
+	text-decoration: none;
+}
+
+.layout-panel {
+	overflow: visible;
+}
+
+.panel {
+	overflow: visible;
+}
+</style>
+
+</head>
+
+<body class="easyui-layout">
+
+	<div data-options="region:'north'"
+		style="height: 90px; overflow: visible;">
+
+		<div class="box">
+			<div id="nav-wmenu">
+				<ul class="wmenu">
+					<li class="stwmenu">
+						<h3>
+							<a href="#" class="submenu"><span>首页</span></a>
+						</h3>
+					</li>
+					<li class="stwmenu">
+						<h3>
+							<a href="#" class="submenu"><span>资源管理</span></a>
+						</h3>
+						<ul class="children">
+							<li>
+								<h3>
+									<a href="#"><span>设备管理</span></a>
+								</h3>
+							</li>
+							<li>
+								<h3>
+									<a href="#"><span>区域管理</span></a>
+								</h3>
+							</li>
+						</ul>
+					</li>
+					<li class="stwmenu">
+						<h3>
+							<a href="#" class="submenu"><span>用户管理</span></a>
+						</h3>
+						<ul class="children">
+							<li>
+								<h3>
+									<a href="#"><span>用户管理</span></a>
+								</h3>
+							</li>
+							<li>
+								<h3>
+									<a href="#"><span>角色管理</span></a>
+								</h3>
+							</li>
+							<li>
+								<h3>
+									<a href="#"><span>权限管理</span></a>
+								</h3>
+							</li>
+						</ul>
+					</li>
+					<li class="stwmenu">
+						<h3>
+							<a href="#" class="submenu"><span>系统管理</span></a>
+						</h3>
+						<ul class="children">
+							<li>
+								<h3>
+									<a href="#"><span>系统配置</span></a>
+								</h3>
+							</li>
+							<li>
+								<h3>
+									<a href="#"><span>参数配置</span></a>
+								</h3>
+							</li>
+
+						</ul>
+					</li>
+					<li class="stwmenu">
+						<h3>
+							<a href="#" class="submenu"><span>关于</span></a>
+						</h3>
+						<ul class="children">
+							<li>
+								<h3>
+									<a href="#"><span>版本</span></a>
+								</h3>
+							</li>
+							<li>
+								<h3>
+									<a href="#"><span>联系方式</span></a>
+								</h3>
+							</li>
+						</ul>
+					</li>
+
+				</ul>
+			</div>
+
+		</div>
+	</div>
+	</div>
+	<div data-options="region:'south',split:true"
+		style="height: 30px; text-align: center;">
+		<p>深圳市铁越电器有限公司</p>
+	</div>
+	<div data-options="region:'west',split:true" style="width: 200px;">
+	    <button onClick="Test()" >测试</button>
+	
+		<ul id="treeDemo" class="ztree"></ul>
+	</div>
+
+	<div data-options="region:'center'">
+		
+		
+			<table id="dg" > </table>
+			<div id="toolbar" style="display:none;">
+				<a href="javascript:void(0)" class="easyui-linkbutton"
+					iconCls="icon-add" plain="true" onclick="newUser()">New User</a> <a
+					href="javascript:void(0)" class="easyui-linkbutton"
+					iconCls="icon-edit" plain="true" onclick="editUser()">Edit User</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton"
+					iconCls="icon-remove" plain="true" onclick="destroyUser()">Remove
+					User</a>
+			</div>
+
+
+	</div>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript"
+		src="js/ztree/js/jquery.ztree.all.min.js"></script>
+
+	<script type="text/javascript">
+			function Test() {
+				$.ajax({
+					type: "POST",
+					url: "connect_test",
+					beforeSend: function(XMLHttpRequest) {
+
+					},
+					success: function(data, textStatus){
+					    console.log('ss');
+					},
+					complete: function(XMLHttpRequest, textStatus) {
+
+					},
+					error: function() {
+						alert('error');
+					}
+				});
+			}
+
+			$('#nav-wmenu .wmenu > li').hover(function() {
+				$(this).find('.children').animate({ opacity: 'show', height: 'show' }, 200);
+				$(this).find('.submenu').addClass('navhover');
+			}, function() {
+				$('.children').stop(true, true).hide();
+				$('.submenu').removeClass('navhover');
+			});
+
+			var setting = {
+				data: {
+					simpleData: {
+						enable: true
+					}
+				}
+			};
+
+			var zNodes = [
+				{ id: 0, pId: -1, name: "ROOT", open: true },
+				{ id: 1, pId: 0, name: "父节点1 - 展开", open: true },
+				{ id: 11, pId: 1, name: "父节点11 - 折叠" },
+				{ id: 111, pId: 11, name: "叶子节点111" },
+				{ id: 112, pId: 11, name: "叶子节点112" },
+				{ id: 113, pId: 11, name: "叶子节点113" },
+				{ id: 114, pId: 11, name: "叶子节点114" },
+				{ id: 12, pId: 1, name: "父节点12 - 折叠" },
+				{ id: 121, pId: 12, name: "叶子节点121" },
+				{ id: 122, pId: 12, name: "叶子节点122" },
+				{ id: 123, pId: 12, name: "叶子节点123" },
+				{ id: 124, pId: 12, name: "叶子节点124" },
+				{ id: 13, pId: 1, name: "父节点13 - 没有子节点", isParent: true },
+				{ id: 2, pId: 0, name: "父节点2 - 折叠" },
+				{ id: 21, pId: 2, name: "父节点21 - 展开", open: true },
+				{ id: 211, pId: 21, name: "叶子节点211" },
+				{ id: 212, pId: 21, name: "叶子节点212" },
+				{ id: 213, pId: 21, name: "叶子节点213" },
+				{ id: 214, pId: 21, name: "叶子节点214" },
+				{ id: 22, pId: 2, name: "父节点22 - 折叠" },
+				{ id: 221, pId: 22, name: "叶子节点221" },
+				{ id: 222, pId: 22, name: "叶子节点222" },
+				{ id: 223, pId: 22, name: "叶子节点223" },
+				{ id: 224, pId: 22, name: "叶子节点224" },
+				{ id: 23, pId: 2, name: "父节点23 - 折叠" },
+				{ id: 231, pId: 23, name: "叶子节点231" },
+				{ id: 232, pId: 23, name: "叶子节点232" },
+				{ id: 233, pId: 23, name: "叶子节点233" },
+				{ id: 234, pId: 23, name: "叶子节点234" },
+				{ id: 240, pId: 234, name: "叶子节点234" },
+				{ id: 260, pId: 240, name: "叶子节点234" },
+				{ id: 280, pId: 260, name: "叶子节点234" },
+				{ id: 300, pId: 280, name: "叶子节点234" },
+				{ id: 3, pId: 0, name: "父节点3 - 没有子节点", isParent: true }
+			];
+
+			function init_grid()
+			{
+				$('#dg').datagrid({
+				    url:'getList',
+				    fit: true,
+				    columns:[[
+				        {field:'name',title:'Name',width:150},
+				        {field:'username',title:'UserName',width:100},
+				        {field:'ip',title:'addr',width:100,align:'right'},
+				        {field:'remark',title:'remark',width:100,align:'right'}
+				    ]],
+				   
+				    toolbar: '#toolbar',
+				    pagination: true,
+				    rownumbers: true
+				});
+				
+				var p = $('#dg').datagrid('getPager');
+	            $(p).pagination({
+	                pageSize: 20,  
+	                pageList: [10, 20, 30,40,50],  
+	                beforePageText: '第',  
+	                afterPageText: '页    共 {pages} 页',
+	                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+	            });
+				
+			}
+			
+			$(document).ready(function() {
+				$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+				
+				 init_grid();
+			});
+		</script>
+
+</body>
+
+</html>

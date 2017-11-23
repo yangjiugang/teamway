@@ -1,0 +1,224 @@
+/*
+ * Welcome to use the TableGo Tools.
+ * 
+ * http://vipbooks.iteye.com
+ * http://blog.csdn.net/vipbooks
+ * http://www.cnblogs.com/vipbooks
+ * 
+ * Author:bianj
+ * Email:edinsker@163.com
+ * Version:4.1.2
+ */
+
+package com.teamway.cms.dbentity;
+
+import java.util.Date;
+
+/**
+ * 传感器设备信心表(cms_res_sensor_info)
+ * 
+ * @author bianj
+ * @version 1.0.0 2017-02-14
+ */
+public class Cms_res_sensor_infoEntity implements java.io.Serializable {
+    /** 版本号 */
+    private static final long serialVersionUID = -91578851190062450L;
+    
+    /**  */
+    private Long id;
+    
+    /**  */
+    private Integer type_id;
+    
+    /**  */
+    private Long region_id;
+    
+    /**  */
+    private Integer server_id;
+    
+    /**  */
+    private String name;
+    
+    /**  */
+    private String code;
+    
+    /**  */
+    private Date gmt_create;
+    
+    /**  */
+    private Date gmt_motified;
+    
+    /**  */
+    private String remark;
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Long getId() {
+        return this.id;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param id
+     *          
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Integer getType_id() {
+        return this.type_id;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param type_id
+     *          
+     */
+    public void setType_id(Integer type_id) {
+        this.type_id = type_id;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Long getRegion_id() {
+        return this.region_id;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param region_id
+     *          
+     */
+    public void setRegion_id(Long region_id) {
+        this.region_id = region_id;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Integer getServer_id() {
+        return this.server_id;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param server_id
+     *          
+     */
+    public void setServer_id(Integer server_id) {
+        this.server_id = server_id;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public String getName() {
+        return this.name;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param name
+     *          
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public String getCode() {
+        return this.code;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param code
+     *          
+     */
+    public void setCode(String code) {
+        this.code = code;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Date getGmt_create() {
+        return this.gmt_create;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param gmt_create
+     *          
+     */
+    public void setGmt_create(Date gmt_create) {
+        this.gmt_create = gmt_create;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Date getGmt_motified() {
+        return this.gmt_motified;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param gmt_motified
+     *          
+     */
+    public void setGmt_motified(Date gmt_motified) {
+        this.gmt_motified = gmt_motified;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public String getRemark() {
+        return this.remark;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param remark
+     *          
+     */
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+}

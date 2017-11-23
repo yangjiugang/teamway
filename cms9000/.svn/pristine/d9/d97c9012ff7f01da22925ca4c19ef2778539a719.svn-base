@@ -1,0 +1,515 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ include file="header.jsp"%>
+
+<div class="easyui-layout"  data-options="fit:true">
+<div data-options="region:'west',split:true,title:'区域'" style="width:200px">
+	<div class="easyui-layout" data-options="fit:true">
+		<div data-options="region:'south',border:false" style="height:31px;">
+			<div class="datagrid-toolbar" style="border-width: 1px 0 0 0;display:none;" id="pannel_expand">
+				<table cellspacing="0" cellpadding="0">
+					<tbody>
+						<tr>
+							<td>
+								<a href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'ico i-down'" id="id_a_control_expand">展开</a>
+							</td>
+							<td>
+								<div class="datagrid-btn-separator"></div>
+							</td>
+							<td>
+								<a href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true,iconCls:'ico i-up'" id="id_a_control_collapse">收起</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div data-options="region:'center',border:false">
+			<ul id="regionTreeId" class="ztree"></ul>
+		</div>
+	</div>
+</div>
+	
+	<div data-options="region:'center',title:'监控点'">
+		   <div class="easyui-layout"  data-options="fit:true">
+		   		<div data-options="region:'north',split:true" style="height:300px">
+		   			<table id="dg"> </table>
+					<div id="toolbar" style="display:none;">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add-t" plain="true" onclick="addMonitor()">添加</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit-t" plain="true" onclick="editMonitor()">编辑</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove-t" plain="true" onclick="delMonitor()">删除</a>
+					</div>
+		   		</div>
+		   		<div data-options="region:'center',split:true,title:'摄像机'" >
+		   			<table id="dg_camera"> </table>
+					<div id="toolbar_camera" style="display:none;">
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add-t" plain="true" onclick="addCamera()">添加</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit-t" plain="true" onclick="editCamera()">编辑</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove-t" plain="true" onclick="delCamera()">删除</a>
+					</div>
+		   		</div>
+		   </div>
+	</div>
+	
+<div id="dlg" class="easyui-dialog" title="监控区域信息" style="display:none;width:240px;height:240px;" data-options="closed:true,iconCls:'ico i-add',resizable:true,modal:true,buttons:[{
+				text:'保存',
+				handler:function(){
+				   view_add();
+				}
+			},{
+				text:'取消',
+				handler:function(){$('#dlg').dialog('close')}
+			}]">
+	<div style="margin:10px;">
+		<div style="margin-bottom:5px">
+			<input type="hidden" id="id" name="id" />
+			<input class="easyui-textbox" label="监控点名称：" id="name" name="name" labelPosition="top" data-options="prompt:'请输入监控点名称...',required:true" style="width:200px;height:45px" />
+		</div>
+		<div style="margin-bottom:5px">
+			<input class="easyui-textbox" label="备注信息：" id="remark" name="remark" labelPosition="top" data-options="prompt:'请输入备注信息...',multiline:true" style="width:200px;height:60px" />
+		</div>
+	</div>
+	</div>
+	
+	
+		<div id="dlg_camera" class="easyui-dialog"  title="摄像机信息" style="display:none;width:500px;height:600px;" data-options="closed:true,iconCls:'ico i-add',resizable:true,modal:true,buttons:
+			[{
+				text:'保存', handler:function(){ reg_camera_view(); }
+			},{
+				text:'取消', handler:function(){$('#dlg_camera').dialog('close')}
+			}]">
+
+			<div class="easyui-layout" data-options="fit:true">
+			   <div data-options="region:'center',split:true,title:'摄像机'" >
+			    	<ul id="camera_tree" class="ztree">
+		   			</ul>
+			   </div>
+			
+			   <div data-options="region:'east',split:true,title:'预置位'" style="width:200px" >
+			    	<table id="dg_preset"> </table>
+			   </div>
+			</div>
+
+		  
+	   </div>
+		
+</div>
+
+
+
+		<script type="text/javascript">
+		
+			var _sync_url = 'add';
+			var _region_id = 0;
+			var _view_id = 0;
+			var _camrea_code = 0;
+			var _reg_url ='';
+			var _cfg_id=0;
+			function fn_ztree_expand_collapse(id,type){
+				var treeObj = $.fn.zTree.getZTreeObj(id);
+				treeObj.expandAll(type);
+			}
+			
+			$(document).ready(function() {
+				$.messager.defaults = { ok: "是", cancel: "否" };  
+				$.fn.zTree.init($("#regionTreeId"), setting);
+				$.fn.zTree.init($("#camera_tree"), camera_setting);
+	
+				$('#id_a_control_expand').click(function(){
+					fn_ztree_expand_collapse("regionTreeId",true);
+				});
+
+				$('#id_a_control_collapse').click(function(){
+					fn_ztree_expand_collapse("regionTreeId",false);
+				});
+				
+				init_grid();
+				init_grid_camera();
+				init_grid_preset();
+			});
+
+			
+			function addMonitor()
+			{
+				var zTree = $.fn.zTree.getZTreeObj("regionTreeId");
+				var nodes = zTree.getSelectedNodes();
+				if(nodes.length == 0){
+					$.messager.alert('提示','请选择一个区域节点!');
+					return;
+				}
+				var node = nodes[0];
+				_region_id = node.id;
+				_sync_url = 'addView';			
+				$('#dlg').dialog('open');
+			}
+			
+			function view_add()
+			{
+			    var  view_name = $('#name').textbox('getValue');
+			    if(view_name=='' || view_name==null){
+			        $.messager.alert('提示','请填写监控点名称!');
+			        return;
+			    }
+				$.ajax({
+						type: "POST",
+						url: _sync_url,
+						dataType:'json',
+						data: {id:$('#id').val(), region_id: _region_id ,name: view_name , remark:$('#remark').textbox('getValue') },
+						success: function(data, textStatus) {
+							$.messager.alert('提示','添加/修改监控点成功!');
+							$('#dg').datagrid('reload');
+						},
+						error: function() {
+							$.messager.alert('提示','服务器错误!');
+						}
+				});
+			}
+	
+			function editMonitor()
+			{
+				var rows= $('#dg').datagrid('getSelections');
+				if(rows.length == 0){
+					$.messager.alert('提示', '请选择一条记录!');
+					return;
+				}
+			    var id = rows[0].id;
+				$.ajax({
+						type: "POST",
+						url: "getViewById",
+						data: { id: id },
+						dataType:'json',
+						success: function(data, textStatus) {
+							
+							$('#dlg').dialog('open');
+							_sync_url = 'editView';	
+							$('#id').val(data.name);
+							$('#name').textbox('setValue',data.name);
+							$('#remark').textbox('setValue',data.remark);
+						},
+						error: function() {
+							$.messager.alert('提示','服务器错误!');
+						}
+				});
+			}
+	
+			function delMonitor()
+			{
+					var rows= $('#dg').datagrid('getSelections');
+					if(rows.length == 0){
+						top.$.messager.alert('提示', '请选择一条记录!');
+						return;
+					}
+					var ids_str = '';
+					for(var i=0;i<rows.length;i++){
+						if(i==0){
+							ids_str += rows[i].id;
+						}else{
+							ids_str += ','+rows[i].id;
+						}
+					}
+					$.messager.confirm('删除监控点', '请确认 是否要删除监控点信息    ?', function(flag) {
+						if(flag) {
+							$.ajax({
+								type: 'POST',
+								url: 'delViewById',
+								dataType: 'json',
+								data: { ids: ids_str },
+								success: function(data, textStatus) {
+									top.$.messager.alert('提示信息', '删除监控点信息成功!');
+									$('#dg').datagrid('reload');
+								},
+								error: function() {
+									top.$.messager.alert('提示', '服务器错误!');
+								}
+							});
+						}
+					});
+			}
+	
+	
+			function reg_camera_view()
+			{
+				var zTree = $.fn.zTree.getZTreeObj("camera_tree");
+				var nodes = zTree.getCheckedNodes(true);
+				if(nodes.length==0){
+					$.messager.alert('提示信息', '请选择一个摄像机!');
+					return;
+				}
+				var rows= $('#dg_preset').datagrid('getSelections');
+				if(rows.length == 0){
+					$.messager.alert('提示', '请选择一条预置位!');
+					return;
+				}
+			    var index_id = rows[0].id;
+				$.ajax({
+					type: 'POST',
+					url: _reg_url,
+					dataType: 'json',
+					data: { cfg_id: _cfg_id, view_id:_view_id , preset_index:index_id },
+					success: function(data, textStatus) {
+						if(data.error != 0){
+							$.messager.alert('提示信息', data.msg);	
+						}else{
+							$.messager.alert('提示信息', '保存摄像机预置位信息成功!');
+						}
+						$('#dg_camera').datagrid('reload');
+					},
+					error: function() {
+						$.messager.alert('提示', '服务器错误!');
+					}
+				});
+			}
+	
+	
+			function addCamera()
+			{
+				var rows= $('#dg').datagrid('getSelections');
+				if(rows.length == 0){
+					$.messager.alert('提示', '请选择监控点!');
+					return;
+				}
+			    _view_id = rows[0].id;
+				_reg_url = 'regCameraView';
+				$('#dlg_camera').dialog('open');				
+			}
+	
+	
+			function editCamera()
+			{
+				var rows= $('#dg_camera').datagrid('getSelections');
+				if(rows.length == 0){
+					$.messager.alert('提示', '请选择一个摄像机!');
+					return;
+				}
+			    _cfg_id = rows[0].id;
+				_reg_url = 'regUpdateCameraView';
+				var camera_code = rows[0].camera_code;
+				var zTree = $.fn.zTree.getZTreeObj("camera_tree");
+				var nodes = zTree.transformToArray(zTree.getNodes());
+				
+				for(var i=0; i < nodes.length; i++){
+					if(nodes[i].resCode == camera_code){
+					    zTree.checkNode(nodes[i],true,true);
+					    _camrea_code = camera_code;
+					    $('#dg_preset').datagrid('reload');
+					}
+				}
+				$('#dlg_camera').dialog('open');				
+			}
+
+
+			function delCamera()
+			{
+				var rows= $('#dg_camera').datagrid('getSelections');
+				if(rows.length == 0){
+					$.messager.alert('提示', '请选择一个摄像机!');
+					return;
+				}
+			    _cfg_id = rows[0].id;
+				
+				$.messager.confirm('删除摄像机', '是否要删除监控点摄像机?', function(flag){
+	                if (flag){
+	                	$.ajax({
+							type: 'POST',
+							url: 'regDelCameraView',
+							dataType: 'json',
+							data: { cfg_id: _cfg_id },
+							success: function(data, textStatus) {
+								$.messager.alert('提示信息', '删除监控点摄像机成功!');
+								$('#dg_camera').datagrid('reload');
+							},
+							error: function() {
+								$.messager.alert('提示', '服务器错误!');
+							}
+						});
+	                }
+	             });
+			}
+
+
+
+			var camera_setting = {
+					data: {
+						simpleData: {
+							enable: true,
+							idKey: "id",
+							pIdKey: "pid",
+							rootPId: 1
+						}
+					},
+					async: {
+						enable: true,
+						dataType: "json",
+						url: "camera_tree"
+					},
+					check: {
+						enable: true,
+						chkStyle: "radio",
+						radioType : "all"
+					},
+					callback: {
+						onCheck: zTreeOnCheck
+					}
+			};
+			
+			function zTreeOnCheck(event, treeId, treeNode) 
+			{
+				if(treeNode.check_Child_State==-1){
+				    _camrea_code = treeNode.resCode;
+					$('#dg_preset').datagrid('reload');
+				}
+			}
+			
+			
+			function zTreeOnDblClick(event, treeId, treeNode) {
+				_region_id = treeNode.id;
+				$('#dg').datagrid('reload');
+			};
+			
+			var setting = {
+				data: {
+					simpleData: {
+						enable: true,
+						idKey: "id",
+						pIdKey: "pid",
+						rootPId: 1
+					}
+				},
+				async: {
+					enable: true,
+					dataType: "json",
+					url: "region_tree"
+				},
+				callback: {
+					onClick: zTreeOnDblClick
+				}
+			};
+
+			
+			function getLocalTime(nS) {
+				var now = new Date(parseInt(nS));
+				var year = now.getYear() + 1900;
+				var month = now.getMonth() + 1;
+				var date = now.getDate();
+				var hour = now.getHours();
+				var minute = now.getMinutes();
+				var second = now.getSeconds();
+				return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+			}
+			
+			function timeStampFormat(timestamp) {
+				if(typeof(timestamp) == 'undefined') {
+					return '';
+				}
+				var d = new Date(timestamp);
+				var year = d.getFullYear();
+				var month = d.getMonth() + 1;
+				var date = d.getDate();
+				var hour = d.getHours();
+				var minute = d.getMinutes();
+				var second = d.getSeconds();
+				return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+			}
+			
+			function init_grid() {
+				$('#dg').datagrid({
+					url: 'getViewByRegionId',
+					fit: true,
+					columns: [
+						[
+							{ field: 'ck',checkbox:true, width: 30 },
+							{ field: 'name', title: '监控点名称', width: 150 },
+							{ field: 'gmt_create', title: '创建时间', align: 'center', width: 120, formatter: function(value, row, index) { return timeStampFormat(value) } },
+							{ field: 'gmt_modified', title: '修改时间', align: 'center', width: 120, formatter: function(value, row, index) { return timeStampFormat(value) } },
+							{ field: 'remark', title: '备注', width: 300 }
+						]
+					],
+					onBeforeLoad:function(param){
+				 		param.queryMap = {
+				 			region_id:_region_id
+	    			    };
+					},
+					onSelect:function(index, row){
+						_view_id = row.id;
+					    $('#dg_camera').datagrid('reload');
+					},
+					toolbar: '#toolbar',
+					pagination: false,
+					rownumbers: true,
+					border:false,
+					singleSelect:true
+				});
+			}	
+
+			
+			function init_grid_camera() {
+				$('#dg_camera').datagrid({
+					url: 'getCameraByViewId',
+					fit: true,
+					columns: [
+						[
+							{ field: 'ck',checkbox:true, width: 30 },
+							{ field: 'name', title: '摄像机名称', width: 150 },
+							{ field: 'channel', title: '通道号', width: 100 },
+							{ field: 'preset_index', title: '预置位索引', width: 100 },
+							{ field: 'preset_name', title: '预置位名称', width: 100 },
+							{ field: 'camera_code', title: '资源编码', width: 180 },
+							{ field: 'gmt_create', title: '创建时间', align: 'center', width: 120, formatter: function(value, row, index) { return timeStampFormat(value) } },
+							{ field: 'gmt_modified', title: '修改时间', align: 'center', width: 120, formatter: function(value, row, index) { return timeStampFormat(value) } },
+							{ field: 'remark', title: '备注', width: 300 }
+						]
+					],
+					onBeforeLoad:function(param){
+				 		param.queryMap = {
+				 			view_id:_view_id
+	    			    };
+					},
+					toolbar: '#toolbar_camera',
+					pagination: true,
+					rownumbers: true,
+					border:false,
+					singleSelect:false,
+					pageSize:20
+				});
+
+				var p = $('#dg_camera').datagrid('getPager');
+				$(p).pagination({
+					pageSize: 20,
+					pageList: [10, 20, 30, 40, 50],
+					beforePageText: '第',
+					afterPageText: '页    共 {pages} 页',
+					displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+				});
+
+			}	
+         
+			function init_grid_preset() {
+				$('#dg_preset').datagrid({
+					url: 'getPresetByCameraCode',
+					fit: true,
+					columns: [
+						[
+							{ field:'ck',checkbox:true, width: 30 },
+							{ field:'preset_index', title: '索引', width: 50 },
+							{ field:'name', title: '名称', width: 150 }
+						]
+					],
+					onBeforeLoad:function(param){
+				 		param.queryMap = {
+				 			camera_code:_camrea_code
+	    			    };
+					},
+					pagination: false,
+					rownumbers: false,
+					border:false,
+					singleSelect:true
+				});
+				
+			}
+		</script>
+
+
+
+
+
+<%@ include file="footer.jsp"%>

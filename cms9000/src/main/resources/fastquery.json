@@ -1,0 +1,11 @@
+{
+  "scope":[
+             {
+                "config": "c3p0",  
+                "dataSourceName": "teamway-c3p0", 
+                "basePackages": [   
+                     "com.teamway.cms.dao"
+                ]
+             }
+          ] 
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<c3p0-config>
+
+  <named-config name="teamway-c3p0">
+        <property name="driverClass">com.mysql.jdbc.Driver</property>
+        <property name="jdbcUrl">jdbc:mysql://192.168.12.228/cms9000</property>
+        <property name="user">root</property>
+        <property name="password">123456</property>
+         
+        <property name="acquireIncrement">5</property>
+        <property name="initialPoolSize">10</property>
+        <property name="minPoolSize">5</property>
+        <property name="maxPoolSize">30</property>
+    </named-config>
+
+</c3p0-config>

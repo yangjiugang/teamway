@@ -1,0 +1,24 @@
+package com.teamway.cms.pgcleint;
+
+import org.apache.log4j.Logger;
+
+class RpuClientThread implements Runnable {
+	protected Logger log = Logger.getLogger(RpuClientThread.class);
+	private String ip;
+	private int  port;
+	@SuppressWarnings("unused")
+	public RpuClientThread(String ip, int port) {
+		this.ip = ip;
+		this.port = port;
+	}
+	
+	@Override
+	public void run() {
+		try {
+			new RpuClient(ip,port);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+}

@@ -1,0 +1,512 @@
+package com.teamway.cms.pgutils;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.teamway.cms.pgutils.ByteUtil;
+import com.teamway.cms.pgutils.PGAttrHeader;
+import com.teamway.cms.pgutils.PGHeader;
+
+
+/**
+ * @author jincy
+ * PG协议工具类
+ */
+public class PGUtil 
+{
+
+	/**
+	 * 实例化一个PG对象
+	 * @param pgCode
+	 * @param sessionId
+	 * @param seqNum
+	 * @param attrTypes 属相类型数组
+	 * @param attrValues 属性值对象数组
+	 * @return PG对象
+	 */
+	public static PGPojo  newInstancePGObject(int pgCode,int sessionId,int seqNum,byte[] attrTypes,Object[] attrValues)
+	{
+		if( (attrTypes==null && attrValues!=null) || (attrTypes!=null && attrValues==null) || (attrTypes!=null && attrValues!=null && attrTypes.length !=attrValues.length )   ){
+			return null;
+		}
+		PGPojo pg= new PGPojo();	
+		pg.getHeader().setCode(pgCode);
+		pg.getHeader().setSeqNum(seqNum);
+		pg.getHeader().setSessionId(sessionId);
+		if(attrTypes != null ){
+			pg.getHeader().setAttrCount(attrTypes.length);	
+		}else{
+			pg.getHeader().setAttrCount(0);
+			pg.getHeader().setTotalLength(12);
+			return pg;
+		}
+		int  total_length = 12;
+		for(int i=0; i < attrTypes.length; i++)
+		{
+			byte type = attrTypes[i];
+			PGAttr attr = new PGAttr();
+			attr.getHeader().setType(type);
+			int len= attr.setDataObj(attrValues[i]);
+			attr.getHeader().setLength(len+4);
+			total_length+=attr.getHeader().getLength();
+			pg.getAttrs().add(attr);
+		}
+		pg.getHeader().setTotalLength(total_length);
+		return pg;
+	}
+
+	
+	
+	
+	
+	/**
+	 * 数组转化成PG对象，属性值无法转换成对象仍然是数组  如果需要转化，调用
+	 * com.teamway.pgprotocol.PGAttr.getDataObj(Class mc)
+	 * @param buf
+	 * @return
+	 */
+	public static PGPojo byteArrayToPgObject(byte[] buf)
+	{
+		return byteArrayToPGObject(buf,0,null);
+	}
+
+	/**
+	 * 数组转化成PG对象
+	 * @param buf
+	 * @param mc 属性对象Class数组
+	 * @return
+	 */
+	public static PGPojo byteArrayToPgObject(byte[] buf,Class mc[])
+	{
+		return byteArrayToPGObject(buf,0,mc);
+	}
+	
+	/**
+	 *  数组转化成PG对象，属性值无法转换成对象仍然是数组  如果需要转化，调用
+	 * com.teamway.pgprotocol.PGAttr.getDataObj(Class mc)
+	 * @param buf
+	 * @param index 起始索引
+	 * @return
+	 */
+	public static PGPojo byteArrayToPGObject(byte[] buf,int index)
+	{
+		return byteArrayToPGObject(buf,index,null);
+	}
+	
+	/**
+	 * 数组转化成PG对象，
+	 * @param buf
+	 * @param index
+	 * @param mc
+	 * @return
+	 */
+	public static PGPojo byteArrayToPGObject(byte[] buf,int index,Class mc[])
+	{
+		PGPojo info = new PGPojo();
+		int offset = index;
+		PGHeader header = (PGHeader) byteArrayToObject(buf,offset,PGHeader.class);
+		if((buf.length-index) < header.getTotalLength()){ //不合法
+			return null;
+		}
+		info.setHeader(header);
+		offset += 12;
+		List<PGAttr>  attr_list = new ArrayList<PGAttr>();
+		for(int i = 0; i < header.getAttrCount(); i++){
+			PGAttr attr = new PGAttr(); 
+			PGAttrHeader attr_header = (PGAttrHeader) byteArrayToObject(buf,offset,PGAttrHeader.class);
+			offset+=4;
+			attr.setHeader(attr_header);
+			byte[] data = new byte[attr_header.getLength()-4];
+			System.arraycopy(buf, offset, data, 0, data.length);
+			attr.setData(data);
+			if(mc != null && mc.length != 0){
+				attr.setDataObj(byteArrayToObject(data,mc[i]));	
+			}
+			attr_list.add(attr);
+		}	
+		info.setAttrs(attr_list);
+		return info;
+	}	
+	
+	
+	
+	
+
+	/**
+	 * PG对象转换成数组
+	 * @param buf
+	 * @param info
+	 * @return
+	 */
+	public static int PGObjectToByteArray(byte[] buf,PGPojo info)
+	{
+		return  PGObjectToByteArray(buf,0,info);
+	}
+
+	/**
+	 * PG对象转换成数组
+	 * @param buf
+	 * @param index 起始索引
+	 * @param info
+	 * @return
+	 */
+	public static int PGObjectToByteArray(byte[] buf,int index,PGPojo info)
+	{
+		int offset = index;
+		PGHeader header = info.getHeader();
+		objectToByteArray(buf,offset,header);
+		offset += 12;
+		for(int i = 0; i < info.getAttrs().size(); i++){
+			PGAttr attr = info.getAttrs().get(i); 
+			objectToByteArray(buf,offset,attr.getHeader());
+			offset+=4;
+			System.arraycopy( attr.getData(), 0, buf, offset,attr.getData().length);
+			offset+=attr.getData().length;
+		}	
+		return offset-index;
+	}
+
+	/**
+	 * PG对象转换成数组 针对PG attr_count,total_length,attr_length 自定计算大小 并赋值
+	 * @param buf
+	 * @param info
+	 * @return
+	 */
+	public static int PGObjectToByteArrayAutoSize(byte[] buf,PGPojo info)
+	{
+		return pgObjectToByteArrayAutoSize(buf,0,info);
+	}
+
+	/**
+	 * PG对象转换成数组 针对PG attr_count,total_length,attr_length 自定计算大小 并赋值
+	 * @param buf
+	 * @param index
+	 * @param info
+	 * @return
+	 */
+	public static int pgObjectToByteArrayAutoSize(byte[] buf,int index,PGPojo info)
+	{
+		int offset = index;
+		PGHeader header = info.getHeader();
+		header.setAttrCount(info.getAttrs().size());
+		offset += 12;
+		for(int i = 0; i < info.getAttrs().size(); i++){
+			PGAttr attr = info.getAttrs().get(i); 
+			attr.getHeader().setLength(attr.getData().length+4);
+			objectToByteArray(buf,offset,attr.getHeader());
+			offset+=4;
+			System.arraycopy( attr.getData(), 0, buf, offset,attr.getData().length);
+			offset+=attr.getData().length;
+		}
+		header.setTotalLength(offset-index);
+		objectToByteArray(buf,index,header);
+		return offset-index;
+	}
+
+	/**
+	 * PG对象转换成数组 针对PG attr_count,total_length,attr_length 自定计算大小 并赋值
+	 * @param info
+	 * @return
+	 */
+	public static byte[] pgObjectToByteArrayAutoSize(PGPojo info)
+	{
+		byte[] buf = new byte[4096];
+		int offset = 0;
+		PGHeader header = info.getHeader();
+		header.setAttrCount(info.getAttrs().size());
+		offset += 12;
+		for(int i = 0; i < info.getAttrs().size(); i++){
+			PGAttr attr = info.getAttrs().get(i); 
+			attr.getHeader().setLength(attr.getData().length+4);
+			objectToByteArray(buf,offset,attr.getHeader());
+			offset+=4;
+			System.arraycopy( attr.getData(), 0, buf, offset,attr.getData().length);
+			offset+=attr.getData().length;
+		}
+		header.setTotalLength(offset);
+		objectToByteArray(buf,0,header);
+		byte[] result = new byte[offset];
+		System.arraycopy(buf, 0, result, 0, result.length);
+		return result;
+	}	
+
+	/**
+	 * @param info
+	 * @return
+	 */
+	public static byte[] pgObjectToByteArray(PGPojo info)
+	{
+		byte[] buf = new byte[4096];
+		int offset = 0;
+		PGHeader header = info.getHeader();
+		objectToByteArray(buf,offset,header);
+		offset += 12;
+		for(int i = 0; i < info.getAttrs().size(); i++){
+			PGAttr attr = info.getAttrs().get(i); 
+			objectToByteArray(buf,offset,attr.getHeader());
+			offset+=4;
+			System.arraycopy( attr.getData(), 0, buf, offset,attr.getData().length);
+			offset+=attr.getData().length;
+		}	
+		byte[] result = new byte[offset];
+		System.arraycopy(buf, 0, result, 0, result.length);
+		return result;
+	}	
+
+	/**
+	 * PG对象转换成数组
+	 * @param buffer
+	 * @param obj
+	 * @return
+	 */
+	public static int objectToByteArray(byte[] buffer,Object obj) 
+	{
+		return objectToByteArray(buffer,0,obj); 
+	}
+
+	/**
+	 * PG对象转换成数组
+	 * @param obj
+	 * @return
+	 */
+	public static byte[] objectToByteArray(Object obj)
+	{
+		byte[] buffer = new byte[4096];
+		Class mc = obj.getClass();
+		Field[] fs = mc.getDeclaredFields();
+		int index = 0;
+		try {
+			for(Field field:fs)
+			{  
+				Class type = field.getType();
+				if( type==Byte.TYPE){
+					buffer[index] = field.getByte(obj);
+					index++;
+				}else if( type==Short.TYPE ){
+					ByteUtil.putShort(buffer, field.getShort(obj), index);
+					index=index+2;
+				}else if( type== Integer.TYPE){
+					ByteUtil.putInt(buffer, field.getInt(obj), index);
+					index=index+4;
+				}else if( type==Long.TYPE ){
+					ByteUtil.putLong(buffer, field.getLong(obj), index);
+					index=index+8;
+				}else if( type==Double.TYPE ){
+					ByteUtil.putDouble(buffer, field.getDouble(obj), index);
+					index=index+8;
+				}else if( type== Float.TYPE){
+					ByteUtil.putFloat(buffer, field.getFloat(obj), index);
+					index=index+4;
+				}else if( type.getSimpleName().equals("byte[]")) {
+					Object value = field.get(obj);
+					byte[] arr = (byte[])value;
+					System.arraycopy(arr, 0, buffer, index,arr.length);
+					index = index+arr.length;
+				}
+			}
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		byte[] result = new byte[index];
+		System.arraycopy(buffer, 0, result, 0, index);
+		return result;
+	} 
+
+	/**
+	 * PG对象转换成数组
+	 * @param buffer
+	 * @param offset
+	 * @param obj
+	 * @return
+	 */
+	public static int objectToByteArray(byte[] buffer,int offset,Object obj) 
+	{
+		Class mc = obj.getClass();
+		Field[] fs = mc.getDeclaredFields();
+		int index = offset;
+		try {
+			for(Field field:fs)
+			{  
+				Class type = field.getType();
+				if( type==Byte.TYPE){
+					buffer[index] = field.getByte(obj);
+					index++;
+				}else if( type==Short.TYPE ){
+					ByteUtil.putShort(buffer, field.getShort(obj), index);
+					index=index+2;
+				}else if( type== Integer.TYPE){
+					ByteUtil.putInt(buffer, field.getInt(obj), index);
+					index=index+4;
+				}else if( type==Long.TYPE ){
+					ByteUtil.putLong(buffer, field.getLong(obj), index);
+					index=index+8;
+				}else if( type==Double.TYPE ){
+					ByteUtil.putDouble(buffer, field.getDouble(obj), index);
+					index=index+8;
+				}else if( type== Float.TYPE){
+					ByteUtil.putFloat(buffer, field.getFloat(obj), index);
+					index=index+4;
+				}else if( type.getSimpleName().equals("byte[]")) {
+					Object value = field.get(obj);
+					byte[] arr = (byte[])value;
+					System.arraycopy(arr, 0, buffer, index,arr.length);
+					index = index+arr.length;
+				}
+			}
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return index-offset;
+	}
+
+
+	/** 
+	 * 获取对象转换成byte数组时大小
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public static int getObjectSize(Object obj) 
+	{
+		Class mc = obj.getClass();
+		Field[] fs = mc.getDeclaredFields();
+		int index = 0;
+		try {
+			for(Field field:fs)
+			{  
+				Class type = field.getType();
+				if( type==Byte.TYPE){
+					index++;
+				}else if( type==Short.TYPE ){
+					index=index+2;
+				}else if( type== Integer.TYPE){
+					index=index+4;
+				}else if( type==Long.TYPE ){
+					index=index+8;
+				}else if( type==Double.TYPE ){
+					index=index+8;
+				}else if( type== Float.TYPE){
+					index=index+4;
+				}else if( type.getSimpleName().equals("byte[]")) {
+					Object value = field.get(obj);
+					byte[] arr = (byte[])value;
+					index = index+arr.length;
+				}
+			}
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return index;
+	}
+
+
+	/**
+	 * 数组转化成对象
+	 * @param buffer
+	 * @param offset
+	 * @param mc
+	 * @return
+	 */
+	public static  Object byteArrayToObject(byte[] buffer,int offset,Class mc)
+	{
+		int index = offset;
+		Field[] fs = mc.getDeclaredFields();
+		Object obj = null;
+		try {
+			obj = mc.newInstance();
+			int last_value = 0;
+			for(Field field:fs)
+			{  
+				Class type = field.getType();
+				if( type==Byte.TYPE){
+					field.setByte(obj, buffer[index]);
+					last_value = buffer[index];
+					index++;
+				}else if( type==Short.TYPE ){
+					field.setShort(obj,ByteUtil.getShort(buffer, index));
+					last_value = ByteUtil.getShort(buffer, index);
+					index=index+2;
+				}else if( type== Integer.TYPE){
+					field.setInt(obj,ByteUtil.getInt(buffer, index));
+					last_value = ByteUtil.getInt(buffer, index);
+					index=index+4;
+				}else if( type==Long.TYPE ){
+					field.setLong(obj,ByteUtil.getLong(buffer, index));
+					last_value = (int)ByteUtil.getLong(buffer, index);
+					index=index+8;
+				}else if( type==Double.TYPE ){
+					field.setDouble(obj,ByteUtil.getDouble(buffer, index));
+					index=index+8;
+				}else if( type== Float.TYPE){
+					field.setFloat(obj,ByteUtil.getFloat(buffer, index));
+					index=index+4;
+				}else if( type.getSimpleName().equals("byte[]")) {
+					Object value = field.get(obj);
+					if(value==null){
+						if(last_value > 0){
+							byte[] arr = new byte[last_value];
+							System.arraycopy(buffer, index, arr, 0, arr.length);
+							field.set(obj, arr);
+							index = index+arr.length;
+						}else{
+							System.out.println("in ByteArrayToObject length less than 0");
+						}
+					}else{
+						byte[] arr = (byte[])value;
+						System.arraycopy(buffer, index, arr, 0, arr.length);
+						field.set(obj, value);
+						index = index+arr.length;
+					}
+				}
+//					else{
+//					System.out.println(type.getCanonicalName());
+//					System.out.println(type.getSimpleName());
+//					System.out.println(type.getTypeName());
+//					System.out.println(type.getInterfaces());	
+//				}
+			} 
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return obj;
+	}
+
+
+	/**
+	 * 数组转化成对象
+	 * @param buffer
+	 * @param mc
+	 * @return
+	 */
+	public static  Object byteArrayToObject(byte[] buffer,Class mc)
+	{
+		return byteArrayToObject(buffer,0,mc);
+	}
+	
+    
+	/**将 byte 数组转换成 16 进制字符串
+	 * @param buf
+	 * @return
+	 */
+	public static String byteArraytoHexString(byte[] buf) { 
+		StringBuffer sb = new StringBuffer();
+		String result="";
+		for(byte b : buf){
+			result = Integer.toHexString(b & 0xFF);  
+			if (result.length() == 1) {  
+				result = '0' + result;  
+			}
+			sb.append(result+" ");
+		}
+		return sb.toString();
+	}
+}

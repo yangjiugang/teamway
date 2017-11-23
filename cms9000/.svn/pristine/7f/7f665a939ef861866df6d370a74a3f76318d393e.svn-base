@@ -1,0 +1,137 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CMS9000</title>
+<link rel="stylesheet" type="text/css" href="<%=basePath %>/js/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="<%=basePath %>/js/ztree/css/zTreeStyle/zTreeStyle.css">
+<link rel="stylesheet" type="text/css" href="<%=basePath %>/style/common-6.0.css">
+<link rel="icon" href="<%=basePath %>/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="<%=basePath %>/images/favicon.ico" type="image/x-icon" />
+<script type="text/javascript" src="<%=basePath %>/js/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="<%=basePath %>/js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="<%=basePath %>/js/ztree/js/jquery.ztree.all.min.js"></script>
+
+<style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+img {
+	border: 0 none;
+}
+
+.box {
+	background: #35353b url(<%=basePath %>/images/logo.png) no-repeat;
+	position: relative;
+	height: 70px;
+	background-image: ;
+}
+
+.layout-panel {
+	overflow: visible;
+}
+
+.panel {
+	overflow: visible;
+}
+
+
+ul,li{list-style: none;}
+a:link,a:visited{text-decoration: none;}
+.list{width: 192px;margin:0 auto 0 auto;}
+.list ul li{background-color:#E1E1E1;padding-left:10px; }
+.list ul li a{padding-left: 10px;color:#333333; font-size:14px; display: block; height:32px;line-height: 32px;position: relative;
+}
+.list ul li .inactive{ background:url(<%=basePath %>/images/off.png) no-repeat 165px center;}
+.list ul li .inactives{background:url(<%=basePath %>/images/on.png) no-repeat 165px center;} 
+.list ul li ul{display: block;}
+.list ul li ul li { border-left:0; border-right:0; background-color:#E1E1E1; padding-left:30px;}
+.list ul li ul li ul{display: none;}
+.list ul li ul li a{ padding-left:20px;}
+.list ul li ul li ul li { background-color:#E1E1E1;}
+.last{ background-color:#d6e6f1; border-color:#6196bb; }
+.list ul li ul li ul li a{ color:#316a91; padding-left:30px;}
+.menu_line { font-size:14px; height:28px;line-height:28px;cursor:pointer;}
+.menu_title { font-size:14px; height:28px;line-height:28px; }
+</style>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$.messager.defaults = { ok: "是", cancel: "否" };
+		/*
+		$('.inactive').click(function(){
+			if($(this).siblings('ul').css('display')=='none'){
+				$(this).parent('li').siblings('li').removeClass('inactives');
+				$(this).addClass('inactives');
+				$(this).siblings('ul').slideDown(100).children('li');
+			}else{				
+				$(this).removeClass('inactives');
+				$(this).siblings('ul').slideUp(100);
+				$(this).siblings('ul').children('li').children('ul').parent('li').children('a').addClass('inactives');
+				$(this).siblings('ul').children('li').children('ul').slideUp(100);
+			}
+		})
+		*/
+	});
+	
+	
+
+	
+	</script>
+</head>
+
+<body class="easyui-layout">
+
+	<div data-options="region:'north'" style="height: 70px; overflow: visible;">
+		<div class="box" onclick="window.location.href='../index';return false"> </div>
+	</div>
+
+	<div data-options="region:'south',split:true" style="height: 24px; text-align: center;">
+		<p>深圳市铁越电器有限公司  版权所有</p>
+	</div>
+	<div data-options="region:'west',split:true" style="width: 200px;background:#e1e1e1;">
+	<div class="list" >
+	<ul class="menu_nav"  style="display:none;">
+	
+		<li><div class="menu_title">资源管理</div>
+			<ul>
+				<li><div class="menu_line" >设备管理</div></li>
+				<li><div class="menu_line" >区域管理</div></li>
+				<li><div class="menu_line" >监控点管理</div></li>
+			</ul>
+		</li>
+		<li><div  class="menu_title">系统管理</div>
+			<ul >
+				<li><div class="menu_line" >用户管理</div></li>
+				<li><div class="menu_line" >角色管理</div></li>
+			</ul>
+		</li>
+	
+	
+	<!--
+		<li><a href="#" class="inactive">资源管理</a>
+			<ul>
+				<li><a href="<%=basePath %>server/page">设备管理</a></li>
+				<li><a href="<%=basePath %>region/page">区域管理</a></li>
+				<li><a href="<%=basePath %>monitor/page">监控点管理</a></li>
+			</ul>
+		</li>
+		<li><a href="#" class="inactive">系统管理</a>
+			<ul >
+				<li><a href="<%=basePath %>user/page">用户管理</a></li>
+				<li><a href="<%=basePath %>role/page">角色管理</a></li>
+			</ul>
+		</li>
+	-->
+	</ul>
+	</div>
+	</div>
+
+	<div data-options="region:'center'">

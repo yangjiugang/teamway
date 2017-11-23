@@ -1,0 +1,128 @@
+package com.teamway.cms.pgcleint;
+
+import java.net.DatagramSocket;
+import java.net.SocketException;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.log4j.Logger;
+
+import com.teamway.cms.pgserver.PgRecvQueue;
+import com.teamway.cms.pgserver.TaskBean;
+import com.teamway.cms.pgutils.PG;
+import com.teamway.cms.pgutils.PGHeader;
+import com.teamway.cms.pgutils.PGPojo;
+import com.teamway.cms.pgutils.PGUtil;
+
+import com.teamway.cms.pgutils.PG.CPTYPE_USERINFOR;
+
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+
+public class RpuClientHandler  extends ChannelInboundHandlerAdapter {
+
+	protected Logger log = Logger.getLogger(RpuClientHandler.class);
+
+	private static  int seqNum=0;
+	private volatile ScheduledFuture<?> heartBeat;
+	private int  session_id;
+
+
+	public static int  getNextSeqNum() {
+		if(seqNum >=65535)
+			seqNum = 0;
+		seqNum ++;
+		return seqNum;
+	}
+
+	public RpuClientHandler(){
+
+	}
+
+	public static int  getRandomPort() {
+		DatagramSocket s = null;
+		int port = 0;
+		try {
+			s = new DatagramSocket();
+			if(s != null){
+				port = s.getLocalPort();
+			}
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}finally{
+			if(s != null){
+				s.close();
+			}
+		}
+		return port;
+	}
+
+
+	@Override
+	public void channelActive(ChannelHandlerContext ctx) {	
+		//this.ctx = ctx;
+		//连接成功后，发送登录服务器请求
+		PGPojo info = PGUtil.newInstancePGObject(PG.LOGIN_REQ, 0,getNextSeqNum(), new byte[]{PG.CPTYPE_USERINFO}, new Object[]{ new PG.CPTYPE_USERINFOR("admin".getBytes(),"teamway123456".getBytes(),(short)1,(short)1)});
+		ctx.writeAndFlush(info);
+	}
+
+
+	@Override  
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception { 
+		
+		
+		PGPojo pg = (PGPojo)msg;
+		PGHeader head = pg.getHeader();
+	    System.out.println("head.Code="+head.getCode());
+		
+		if(head.Code ==PG.LOGIN_RES )
+		{
+			session_id = head.getSessionId();
+			//heartBeat = ctx.executor().scheduleAtFixedRate( new HeartBeatTask(ctx,session_id), 0, 1000*10,TimeUnit.MILLISECONDS );
+			String key = ctx.channel().remoteAddress().toString().replaceAll("/", "");
+			RpuConnectMap.getInstance().put(key, new RpuClientBean(ctx,session_id,1));
+		}else if(head.Code ==PG.HEARTBEAT_REQ ){
+			PGPojo info =  PGUtil.newInstancePGObject(PG.HEARTBEAT_RES, head.getSessionId(),head.getSeqNum(), new byte[]{}, new Object[]{});
+			ctx.writeAndFlush(info);
+			//log.info("心跳响应 3007 ["+ctx.channel().remoteAddress()+"]");
+		}else{
+			// 将接收到的消息放入队列
+			TaskBean bean = new TaskBean(ctx.channel().remoteAddress().toString().replaceAll("/", ""),pg);
+			PgRecvQueue.getInstance().put(bean);
+			ctx.fireChannelRead(msg);
+		}
+	}
+
+	private class HeartBeatTask implements Runnable {
+		private final ChannelHandlerContext ctx;
+		private int  session_id;
+		public HeartBeatTask(final ChannelHandlerContext ctx,int sessionid) {
+			this.ctx = ctx;
+			this.session_id = sessionid;
+		}
+
+		@Override
+		public void run() {
+			PGPojo info =  PGUtil.newInstancePGObject(PG.HEARTBEAT_REQ, this.session_id, RpuClientHandler.getNextSeqNum(), new byte[]{}, new Object[]{});
+			ctx.writeAndFlush(info);
+			log.info("send  heart beat to ["+ctx.channel().remoteAddress()+"]");
+		}
+
+	}
+
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+		cause.getMessage();
+
+		cause.printStackTrace();
+		if (heartBeat != null) {
+			heartBeat.cancel(true);
+			heartBeat = null;
+		}
+		ctx.close();
+	}
+}

@@ -1,0 +1,67 @@
+package com.teamway.cms.model;
+
+public class AlarmCameraCfgModel {
+	    private Long id;
+	    private int type;
+	    private String code;
+	    private String name;
+	    private Integer alarm_type;
+	    private Integer alarm_level;
+	    private String gmt_create;
+	    private String gmt_modified;
+	    private String remark;
+		public Long getId() {
+			return id;
+		}
+		public void setId(Long id) {
+			this.id = id;
+		}
+		public int getType() {
+			return type;
+		}
+		public void setType(int type) {
+			this.type = type;
+		}
+		public String getCode() {
+			return code;
+		}
+		public void setCode(String code) {
+			this.code = code;
+		}
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public Integer getAlarm_type() {
+			return alarm_type;
+		}
+		public void setAlarm_type(Integer alarm_type) {
+			this.alarm_type = alarm_type;
+		}
+		public Integer getAlarm_level() {
+			return alarm_level;
+		}
+		public void setAlarm_level(Integer alarm_level) {
+			this.alarm_level = alarm_level;
+		}
+		public String getGmt_create() {
+			return gmt_create;
+		}
+		public void setGmt_create(String gmt_create) {
+			this.gmt_create = gmt_create;
+		}
+		public String getGmt_modified() {
+			return gmt_modified;
+		}
+		public void setGmt_modified(String gmt_modified) {
+			this.gmt_modified = gmt_modified;
+		}
+		public String getRemark() {
+			return remark;
+		}
+		public void setRemark(String remark) {
+			this.remark = remark;
+		}
+}

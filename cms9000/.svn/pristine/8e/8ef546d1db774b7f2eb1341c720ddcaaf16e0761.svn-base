@@ -1,0 +1,227 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+%>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>CMS9000</title>
+		<link rel="stylesheet" type="text/css" href="<%=basePath%>js/easyui/themes/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="<%=basePath%>js/easyui/themes/icon.css">
+
+		<link rel="stylesheet" type="text/css" href="<%=basePath%>js/ztree/css/zTreeStyle/zTreeStyle.css">
+
+		<link rel="stylesheet" type="text/css" href="<%=basePath%>style/common-6.0.css">
+
+		<script type="text/javascript" src="<%=basePath%>js/easyui/jquery.min.js"></script>
+		<script type="text/javascript" src="<%=basePath%>js/easyui/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="<%=basePath%>js/ztree/js/jquery.ztree.all.min.js"></script>
+
+		<style type="text/css">
+
+		</style>
+
+	</head>
+
+	<body class="easyui-layout">
+
+		
+
+		<div data-options="region:'center'">
+				
+			<table id="dg"></table>
+			
+			
+			<div id="toolbar" style="display:none;">
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="ico i-add" plain="true" onclick="newUser()">新增</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="ico i-edit" plain="true" onclick="editUser()">修改</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="ico i-del" plain="true" onclick="delUser()">删除</a>	
+				<input  id="search" type="text" />
+			</div>
+
+		</div>
+		
+		<div id="dlg" class="easyui-dialog"  title="用户信息" style="display:none;width:400px;height:200px;" data-options="closed:true,iconCls:'ico i-add',resizable:true,modal:true,buttons:[{
+				text:'保存',
+				handler:function(){
+				   add();
+				}
+			},{
+				text:'取消',
+				handler:function(){$('#dlg').dialog('close')}
+			}]">
+   			<label>区域名称：</label><input  type="text" id="name" />
+   			<br />
+   			<br />
+   			<label>备注信息：</label><input  type="text" id="remark"/>
+   			<br />
+		</div>
+		
+		
+
+
+		<script type="text/javascript">
+		var _sync_url = 'add';
+		$(document).ready(function() {
+			$('#search').textbox({
+			    buttonText:'查询',
+			    buttonIcon:'ico i-search',
+			    prompt:'账户，姓名...',
+			    width:200
+			});
+			
+			$.messager.defaults = { ok: "是", cancel: "否" };
+			
+			init_grid();
+		});
+		
+		
+		
+		
+		
+		 function timeStampFormat(timestamp) { 
+			if(typeof(timestamp) == 'undefined'){
+				return '';
+			} 
+			var d = new Date(timestamp);
+			var year=d.getYear()+1900; 
+			var month=d.getMonth()+1; 
+			var date=d.getDate(); 
+			var hour=d.getHours(); 
+			var minute=d.getMinutes(); 
+			var second=d.getSeconds(); 
+			return year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second; 
+		} 
+		
+		 
+		 function userStateFormat(state) { 
+			 if(state==1){
+				return '启用'; 
+			 }else{
+				return '禁用'; 
+			 }
+		 }
+		 
+		function init_grid()
+		{
+			$('#dg').datagrid({
+			    url:'getAllUser',
+			    fit: true,
+			    columns:[[
+			        {field:'login_name',title:'账号',width:150},
+			        {field:'user_name',title:'姓名',width:100},
+			        {field:'mobile',title:'手机',width:100},
+			        {field:'email',title:'邮箱',width:180},
+			        {field:'state',title:'状态',width:60,align:'center',formatter:function(value,row,index){ return userStateFormat(value)}},
+			        
+			        
+			        {field:'expired_time',title:'账号有效期至',align:'center',width:120,formatter:function(value,row,index){ return timeStampFormat(value)}},
+			        {field:'last_login_time',title:'最后登录时间',align:'center',width:120,formatter:function(value,row,index){ return timeStampFormat(value)}},
+			        {field:'count',title:'登录次数',align:'center',width:60},
+			        {field:'gmt_ctreate',title:'创建时间',align:'center',width:120,formatter:function(value,row,index){ return timeStampFormat(value)}},
+			        {field:'gmt_modified',title:'修改时间',align:'center',width:120,formatter:function(value,row,index){ return timeStampFormat(value)}},
+			        {field:'remark',title:'备注',width:300}
+			    ]],
+			   
+			    toolbar: '#toolbar',
+			    pagination: true,
+			    rownumbers: true
+			});
+			
+			var p = $('#dg').datagrid('getPager');
+            $(p).pagination({
+                pageSize: 20,  
+                pageList: [10, 20, 30,40,50],  
+                beforePageText: '第',  
+                afterPageText: '页    共 {pages} 页',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+            });
+			
+		}
+		
+		
+			
+			
+	
+			  
+		
+			
+			function dlg_open(){
+				var zTree = $.fn.zTree.getZTreeObj("regionTreeId");
+				var nodes = zTree.getSelectedNodes();
+				var node = nodes[0];
+				if(node) {
+					$('#name').val('');
+					$('#remark').val('');
+					$('#dlg').dialog('open');
+				}else {
+					 $.messager.alert('提示','请选择一个区域!');
+				}
+				_sync_url = 'region_add';
+			}
+			
+			
+			
+			function newUser()
+			{
+				$.ajax({
+					type: "POST",
+					url: _sync_url,
+					dataType:'json',
+					data: { },
+					success: function(data, textStatus) {
+					
+					},
+					error: function() {
+						$.messager.alert('错误','服务器错误!');
+					}
+				});				
+			}
+			
+			function editUser(){
+				$.ajax({
+					type: "POST",
+					url: _sync_url,
+					dataType:'json',
+					data: { },
+					success: function(data, textStatus) {
+					
+					},
+					error: function() {
+						$.messager.alert('错误','服务器错误!');
+					}
+				});	
+			}
+			
+			
+			function delUser(){
+				$.messager.confirm('删除用户', '是否要删除用户?', function(flag){
+	                if (flag){
+	                	$.ajax({
+							type: 'POST',
+							url: 'region_del_by_id',
+							dataType:'json',
+							data: { id: node.id },
+							success: function(data, textStatus) {
+								zTree.reAsyncChildNodes(null, "refresh");
+							},
+							error: function() {
+								$.messager.alert('提示','服务器错误!');
+							}
+						});
+	                }
+	            });
+				
+			}
+			
+			
+		
+
+		
+		</script>
+
+	</body>
+
+</html>

@@ -1,0 +1,94 @@
+package com.teamway.cms.pgcleint;
+
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import org.apache.log4j.Logger;
+
+import com.teamway.cms.pgserver.PgRecvQueue;
+import com.teamway.cms.pgserver.TaskBean;
+import com.teamway.cms.pgserver.VideoClientPojo;
+import com.teamway.cms.pgutils.PGPojo;
+import com.teamway.cms.webcontroller.PublicCtl;
+
+import io.netty.channel.ChannelHandlerContext;
+
+public class RpuConnectMap {
+	protected Logger log = Logger.getLogger(RpuConnectMap.class);
+	
+	
+	private static Map<String,RpuClientBean> rpuMap = new ConcurrentHashMap<String, RpuClientBean>();
+	private static RpuConnectMap instance;
+	
+	private RpuConnectMap (){
+		
+	}
+	public static synchronized RpuConnectMap getInstance() {
+		if (instance == null) {
+			instance = new RpuConnectMap();
+		}
+		return instance;
+	}
+	
+	public  void put(String key , RpuClientBean value ){
+		rpuMap.put(key, value);
+	}
+	
+
+	public  RpuClientBean get(String key){
+		return rpuMap.get(key);
+	}
+	
+	public  void  remove(String key){
+		 rpuMap.remove(key);
+	}
+	
+	public  int  getSessionId(String key){
+		RpuClientBean bean = get(key);
+		ChannelHandlerContext ctx = bean !=null ? bean.getCtx():null;
+		int session = 0;
+		if(ctx != null){
+			 session =  bean.getSessionId();
+		}else{
+			log.error("get session id error key=["+key+"] ! ");
+		}
+		return session;
+	}
+	
+	public  int  getSeqNum(String key){
+		RpuClientBean bean = get(key);
+		ChannelHandlerContext ctx = bean !=null ? bean.getCtx():null;
+		int seqNum = 0;
+		if(ctx != null){
+			seqNum =  bean.getSessionId();
+			seqNum++;
+			bean.setSeqNum(seqNum);
+			put(key,bean);
+		}else{
+			log.error("get session id error key=["+key+"] ! ");
+		}
+		return seqNum;
+	}
+	
+	
+	public  void  sendToRpu(String key,PGPojo obj)
+	{
+		RpuClientBean bean = get(key);
+		ChannelHandlerContext ctx = (bean !=null ? bean.getCtx():null);
+		if(ctx != null){
+			log.info("key="+key +"  "+obj.toString());
+			
+			
+			System.out.println("write = "+ctx.channel().isWritable());
+			
+			ctx.writeAndFlush(obj);
+		}
+	
+		
+		
+	}
+	
+}

@@ -1,0 +1,202 @@
+/*
+ * Welcome to use the TableGo Tools.
+ * 
+ * http://vipbooks.iteye.com
+ * http://blog.csdn.net/vipbooks
+ * http://www.cnblogs.com/vipbooks
+ * 
+ * Author:bianj
+ * Email:edinsker@163.com
+ * Version:4.1.2
+ */
+
+package com.teamway.cms.dbentity;
+
+import java.util.Date;
+
+/**
+ * 摄像机预置位配置表(CMS_RES_CAMERA_PRESET_INFO)
+ * 
+ * @author bianj
+ * @version 1.0.0 2017-03-17
+ */
+public class Cms_res_camera_preset_infoEntity implements java.io.Serializable {
+    /** 版本号 */
+    private static final long serialVersionUID = -8264485419207551884L;
+    
+    /** 预置位ID */
+    private Integer id;
+    
+    /** 摄像机code 关联camera_info表的code 字段 */
+    private Integer camera_code;
+    
+    /** 预置位序列号 */
+    private Integer preset_index;
+    
+    /** 预置位名称 */
+    private String name;
+    
+    /** 是否启用 */
+    private Byte[] enable;
+    
+    /** 创建时间 */
+    private Date gmt_create;
+    
+    /** 修改时间 */
+    private Date gmt_modified;
+    
+    /** 说明 */
+    private String remark;
+    
+    /**
+     * 获取预置位ID
+     * 
+     * @return 预置位ID
+     */
+    public Integer getId() {
+        return this.id;
+    }
+     
+    /**
+     * 设置预置位ID
+     * 
+     * @param id
+     *          预置位ID
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    
+    /**
+     * 获取摄像机code 关联camera_info表的code 字段
+     * 
+     * @return 摄像机code 关联camera_info表的code 字段
+     */
+    public Integer getCamera_code() {
+        return this.camera_code;
+    }
+     
+    /**
+     * 设置摄像机code 关联camera_info表的code 字段
+     * 
+     * @param camera_code
+     *          摄像机code 关联camera_info表的code 字段
+     */
+    public void setCamera_code(Integer camera_code) {
+        this.camera_code = camera_code;
+    }
+    
+    /**
+     * 获取预置位序列号
+     * 
+     * @return 预置位序列号
+     */
+    public Integer getPreset_index() {
+        return this.preset_index;
+    }
+     
+    /**
+     * 设置预置位序列号
+     * 
+     * @param preset_index
+     *          预置位序列号
+     */
+    public void setPreset_index(Integer preset_index) {
+        this.preset_index = preset_index;
+    }
+    
+    /**
+     * 获取预置位名称
+     * 
+     * @return 预置位名称
+     */
+    public String getName() {
+        return this.name;
+    }
+     
+    /**
+     * 设置预置位名称
+     * 
+     * @param name
+     *          预置位名称
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    /**
+     * 获取是否启用
+     * 
+     * @return 是否启用
+     */
+    public Byte[] getEnable() {
+        return this.enable;
+    }
+     
+    /**
+     * 设置是否启用
+     * 
+     * @param enable
+     *          是否启用
+     */
+    public void setEnable(Byte[] enable) {
+        this.enable = enable;
+    }
+    
+    /**
+     * 获取创建时间
+     * 
+     * @return 创建时间
+     */
+    public Date getGmt_create() {
+        return this.gmt_create;
+    }
+     
+    /**
+     * 设置创建时间
+     * 
+     * @param gmt_create
+     *          创建时间
+     */
+    public void setGmt_create(Date gmt_create) {
+        this.gmt_create = gmt_create;
+    }
+    
+    /**
+     * 获取修改时间
+     * 
+     * @return 修改时间
+     */
+    public Date getGmt_modified() {
+        return this.gmt_modified;
+    }
+     
+    /**
+     * 设置修改时间
+     * 
+     * @param gmt_modified
+     *          修改时间
+     */
+    public void setGmt_modified(Date gmt_modified) {
+        this.gmt_modified = gmt_modified;
+    }
+    
+    /**
+     * 获取说明
+     * 
+     * @return 说明
+     */
+    public String getRemark() {
+        return this.remark;
+    }
+     
+    /**
+     * 设置说明
+     * 
+     * @param remark
+     *          说明
+     */
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+}

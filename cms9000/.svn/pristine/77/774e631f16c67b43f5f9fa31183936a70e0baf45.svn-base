@@ -1,0 +1,81 @@
+package com.teamway.cms.cmsserver;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.fastquery.service.FQuery;
+
+import com.teamway.cms.cmsserver.TYProtoBean.RspResTreeInfo;
+import com.teamway.cms.cmsserver.TYProtoBean.RspTreeInfo;
+import com.teamway.cms.dao.CameraInfoDBService;
+import com.teamway.cms.dao.RegionInfoDBService;
+import com.teamway.cms.dbentity.Cms_res_camera_infoEntity;
+import com.teamway.cms.dbentity.Cms_res_region_infoEntity;
+
+public class ResourceTree {
+
+	public RspResTreeInfo getVideoResTree(int role)
+	{
+		RegionInfoDBService regionDB = FQuery.getRepository(RegionInfoDBService.class);
+		List<Cms_res_region_infoEntity> regionList = regionDB.findAll();
+
+		Map<Long , List<Cms_res_camera_infoEntity> >  treeMap = new HashMap<Long , List<Cms_res_camera_infoEntity> >();
+		CameraInfoDBService cameraDB= FQuery.getRepository(CameraInfoDBService.class);
+		List<Cms_res_camera_infoEntity> cameraList = cameraDB.findAll();
+
+		for(Cms_res_camera_infoEntity camera : cameraList){
+			Long regionId = camera.getRegion_id();
+			if(treeMap.containsKey(regionId)){
+				List<Cms_res_camera_infoEntity> camList = treeMap.get(regionId);
+				camList.add(camera);
+			}else{
+				List<Cms_res_camera_infoEntity> camList = new LinkedList<Cms_res_camera_infoEntity>();
+				camList.add(camera);
+				treeMap.put(regionId, camList);
+			}
+		}
+
+		RspResTreeInfo.Builder builder =	RspResTreeInfo.newBuilder();
+		int offsetId = 100000;
+		for(Cms_res_region_infoEntity item : regionList){
+			RspTreeInfo.Builder itemBuilder = RspTreeInfo.newBuilder();
+			itemBuilder.setChecked(0);
+			itemBuilder.setExpand(1);
+			itemBuilder.setIcon("file.png");
+			itemBuilder.setId(item.getId().intValue());
+			itemBuilder.setPid(item.getPid().intValue());
+			itemBuilder.setName(item.getName());
+			//itemBuilder.setResCode(item.getCode());
+			itemBuilder.setResState(1);
+			itemBuilder.setType(0);
+			RspTreeInfo value = itemBuilder.build();
+			builder.addInfos(value);
+
+			List<Cms_res_camera_infoEntity> camList = treeMap.get(item.getId());
+			if(camList != null)
+			{
+				for(Cms_res_camera_infoEntity camera : cameraList){
+					RspTreeInfo.Builder camBuilder = RspTreeInfo.newBuilder();
+					camBuilder.setChecked(0);
+					camBuilder.setExpand(0);
+					camBuilder.setIcon("ipc.png");
+					camBuilder.setId(offsetId);
+					camBuilder.setPid(item.getId().intValue());
+					camBuilder.setName(camera.getName());
+					camBuilder.setResCode(camera.getCode());
+					camBuilder.setResState(1);
+					camBuilder.setType(0);
+					RspTreeInfo camerNode = camBuilder.build();
+					builder.addInfos(camerNode);
+					offsetId++;
+				}
+			}
+		}
+		
+		System.out.println(builder.build().toString());
+		return builder.build();
+	}
+
+}

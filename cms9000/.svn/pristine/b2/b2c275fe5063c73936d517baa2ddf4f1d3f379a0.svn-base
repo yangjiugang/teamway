@@ -1,0 +1,154 @@
+package com.teamway.cms.pgserver;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.log4j.Logger;
+
+import com.teamway.cms.pgutils.PG;
+import com.teamway.cms.pgutils.PG.CPTYPE_MESSAGECODE;
+import com.teamway.cms.pgutils.PG.CPTYPE_PERFORMANCE;
+import com.teamway.cms.pgutils.PG.CPTYPE_STORAGEFILE_DATA;
+import com.teamway.cms.pgutils.PG.CPTYPE_STORAGEFILE_SEARCH;
+import com.teamway.cms.pgutils.PG.CPTYPE_VIDEOTRANCFG;
+import com.teamway.cms.pgutils.PGHeader;
+import com.teamway.cms.pgutils.PGPojo;
+import com.teamway.cms.pgutils.PGUtil;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+
+public class PGServerInHandler extends ChannelInboundHandlerAdapter {  
+	private static Logger logger = Logger.getLogger(PGServerInHandler.class);  
+
+	@Override  
+	public void channelRead(ChannelHandlerContext ctx, Object msg)  
+			throws Exception {  
+		PGPojo pojo = (PGPojo) msg; 
+		PGHeader head = pojo.getHeader();
+		
+		TaskBean bean = new TaskBean(ctx.channel().remoteAddress().toString().replaceAll("/",""),pojo);
+		PgRecvQueue.getInstance().put(bean);
+		
+/*		switch(head.Code)
+		{
+		case PG.START_VIDEO_REQ:
+		{
+			PG.CPTYPE_VIDEOTRANCFG video = (PG.CPTYPE_VIDEOTRANCFG) pojo.getAttrs().get(0).getAttrDataObject(PG.CPTYPE_VIDEOTRANCFG.class);
+			String key = video.iVideoId+"";
+			if(PAGServer.videoClient.containsKey(key)){
+
+				List<VideoClientPojo> list = PAGServer.videoClient.get(key);
+				VideoClientPojo addr = new VideoClientPojo(ctx.channel().remoteAddress().toString(),new String(video.szDstIpAddr),video.iDstPort);
+				int flag=0;
+				synchronized (list){
+					for(int i = 0; i<list.size();i++ ){
+						if(list.get(i).equals(addr)){
+							flag = 1;
+							break;
+						}
+					}
+					if(flag ==0){
+						list.add(addr);
+					}
+				}
+				PAGServer.videoClient.put(key, list);
+			}else{
+				List<VideoClientPojo> list = new Vector<VideoClientPojo>();
+				synchronized (list){
+					VideoClientPojo addr = new VideoClientPojo(ctx.channel().remoteAddress().toString(),new String(video.szDstIpAddr),video.iDstPort);
+					list.add(addr);
+					PAGServer.videoClient.put(key, list);
+				}
+
+				VideoUdpThread thread_t= new VideoUdpThread(); 
+				thread_t.setChannel( key);
+				Thread thread = new Thread(thread_t); 
+				thread.start(); 
+			}
+			ctx.writeAndFlush(PGUtil.newInstancePGObject(PG.START_VIDEO_RES,head.getSessionId(),head.getSeqNum(), new byte[]{PG.CPTYPE_VIDEOTRANS}, new Object[]{video }));
+			break;
+		}
+		case PG.STOP_VIDEO_REQ:
+		{
+			CPTYPE_VIDEOTRANCFG video = (CPTYPE_VIDEOTRANCFG) pojo.getAttrs().get(0).getAttrDataObject(CPTYPE_VIDEOTRANCFG.class);
+			String key = video.iVideoId+"";
+			if(PAGServer.videoClient.containsKey(key)){
+				List<VideoClientPojo> list = PAGServer.videoClient.get(key);
+				int i=0;
+				VideoClientPojo addr = new VideoClientPojo(ctx.channel().remoteAddress().toString(),new String(video.szDstIpAddr),video.iDstPort);
+				for(i = 0; i<list.size();i++ ){
+					if(list.get(i).equals(addr)){
+						break;
+					}
+				}
+				list.remove(i-1);
+				if(list.size()==0){
+					PAGServer.videoClient.remove(key);
+				}else{
+					PAGServer.videoClient.put(key, list);	
+				}
+			}
+			ctx.writeAndFlush(PGUtil.newInstancePGObject(PG.STOP_VIDEO_RES,head.getSessionId(),head.getSeqNum(), new byte[]{PG.CPTYPE_MESSAGECODE}, new Object[]{ new CPTYPE_MESSAGECODE(-1,"success !".getBytes()) }));
+			break;
+		}
+		case PG.GET_RPU_PREFORMACE_REQ:
+		{
+			java.util.Random random=new java.util.Random();
+			SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+			String time = sf.format(new Date());
+			CPTYPE_PERFORMANCE cpu = new CPTYPE_PERFORMANCE(random.nextFloat(),random.nextFloat(),random.nextFloat(),time.getBytes());
+			ctx.writeAndFlush(PGUtil.newInstancePGObject(PG.GET_RPU_PREFORMACE_RSP,head.getSessionId(),head.getSeqNum(), new byte[]{PG.CPTYPE_PERFORM}, new Object[]{ cpu }));
+			break;
+		}
+		case PG.CTL_FINDFILE_REQ:
+		{
+
+			PG.CPTYPE_STORAGEFILE_SEARCH find = (CPTYPE_STORAGEFILE_SEARCH) pojo.getAttrs().get(0).getAttrDataObject(PG.CPTYPE_STORAGEFILE_SEARCH.class);
+
+			System.out.println(new String(find.szStartTime)+"  "+new String(find.szStartTime));
+
+			PGPojo obj = RecordFile.getPGPojoRecordFile((int)head.getSessionId(),(int)head.getSeqNum(),find.iVideoId,find.szStartTime,find.szStopTime);
+
+
+			ctx.writeAndFlush(obj);
+			break;
+		}
+
+		case PG.GET_FILE_REQ:
+		{
+			CPTYPE_STORAGEFILE_DATA find = (CPTYPE_STORAGEFILE_DATA) pojo.getAttrs().get(0).getAttrDataObject(PG.CPTYPE_STORAGEFILE_DATA.class);
+
+			String rtsp = "rtsp://192.168.10.110:554/data/"+new String(find.szFileName);
+			byte[] arr = rtsp.getBytes();
+			System.arraycopy(arr, 0, find.playURL, 0, arr.length);
+			find.iCompression=16;
+			PGPojo obj = PGUtil.newInstancePGObject(PG.GET_FILE_RES,head.getSessionId(),head.getSeqNum(),new byte[]{PG.CPTYPE_STORAGEDATA},new Object[]{find});
+			ctx.writeAndFlush(obj);
+
+
+			break;
+		}
+
+		default:
+		{
+			System.out.println("未处理code CODE="+head.Code);
+		}
+
+		}*/
+
+		ctx.fireChannelRead(msg);
+	}  
+
+	@Override  
+	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {  
+		ctx.flush();  
+	}  
+}  
+

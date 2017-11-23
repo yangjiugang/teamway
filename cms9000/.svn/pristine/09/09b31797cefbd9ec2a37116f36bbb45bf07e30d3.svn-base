@@ -1,0 +1,93 @@
+package com.teamway.cms.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import org.fastquery.core.Id;
+import org.fastquery.core.Modifying;
+import org.fastquery.core.Param;
+import org.fastquery.core.Primarykey;
+import org.fastquery.core.Query;
+import org.fastquery.core.QueryByNamed;
+import org.fastquery.core.QueryRepository;
+import org.fastquery.filter.After;
+import org.fastquery.filter.Before;
+
+import org.fastquery.filter.SkipFilter;
+import org.fastquery.page.Page;
+import org.fastquery.page.Pageable;
+import org.fastquery.where.Condition;
+
+import com.alibaba.fastjson.JSONArray;
+import com.teamway.cms.dbentity.Cms_res_camera_infoEntity;
+import com.teamway.cms.dbentity.Cms_res_sensor_infoEntity;
+import com.teamway.cms.dbentity.Cms_res_server_infoEntity;
+
+
+
+public interface CameraInfoDBService extends QueryRepository {
+   
+	
+   @Query("insert into cms_res_camera_info (id, type_id, region_id, server_id, name, username, password, ip, port, state, code, ipc_channel, rtsp_url, ptz_url, gmt_create, gmt_motified, remark) values (NULL,?1,NULL,?2,?3,NULL,NULL,NULL,NULL,NULL,?4,?5,NULL,NULL,now(),now(),NULL)")
+   @Modifying(table="cms_res_camera_info",id="id")
+   Cms_res_camera_infoEntity addCamera(Integer type_id,Integer server_id,String name,String code,Integer ipc_channel);
+    
+   
+   @Modifying
+   @Query("delete from cms_res_camera_info where server_id=?1")
+   boolean deleteCameraByServerId(Integer server_id);
+   
+   
+   @Query("select * from cms_res_camera_info")
+   List< Cms_res_camera_infoEntity> findAll();
+   
+   	@Query("select *  from cms_res_camera_info  where code = ?1")
+   	Cms_res_camera_infoEntity findCameraInfoByCode(String code);
+   
+	
+//	    @Query("select id, name, state from city")
+//	    JSONArray findAll();
+//	    
+//	    @Query("select  id, name, state from city")
+//	    CityPojo[] find();
+//	    
+//	    @Query("select  id, name, state from city")
+//	    List< CityPojo> findList();
+//	    
+//	    @Query("select id, name, state  from city u where u.id = :id")
+//	    List<CityPojo> findCityInfoById(@Param("id") Integer id);
+//	    
+//	    @Query("select id, name, state  from city u where u.id = :id")
+//	    CityPojo findCityInfoById(@Param("id") Integer id);
+//	    
+//	    @Query("select * from city where id in (?1)")
+//	    List<CityPojo> findByIdIn(Integer...ids);
+//	    
+//	
+//	    @Query("insert into city (id, name, state) values (NULL,?1, ?2)")
+//	    @Modifying(table="city",id="id")
+//
+//	    CityPojo addCity(String name,String  state);
+//	    
+//	    
+//	    
+//	    @QueryByNamed("findCityOne")
+//	    CityPojo findCityOne(@Param("id") Integer id);
+//	    
+//	    
+//	    @QueryByNamed("findCityAll")
+//	    List<CityPojo> findCityAll();
+//	    
+//	    
+//	    @QueryByNamed("findCityByNameAndState")
+//	    List<CityPojo> findCityByNameAndState(@Param("name") String name,@Param("state") String state);
+//	    
+//	    
+//	    
+//	    @QueryByNamed("findPage")
+//	    Page<CityPojo> findPage(Pageable pageable,@Param("name") String name,@Param("state") String state);
+//	    
+	   
+ 
+}
+

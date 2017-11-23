@@ -1,0 +1,290 @@
+<html>
+<head>
+<title>Test page for WebCall ActiveX</title>
+<SCRIPT LANGUAGE="JavaScript" type="text/javascript"
+	EVENT="OnUserMessageSelected(pos,type,msg)" for="activeX">
+	callEvent(pos, type, msg);
+</SCRIPT>
+<script LANGUAGE="JavaScript" type="text/javascript">
+	function callEvent(pos, type, msg) {
+		alert(pos + "~~" + type);
+	}
+	function test() {
+activeX.initShowWindowNum = 16;
+		var ret = activeX.initShowWindowNum;
+		alert("~~" + ret);
+	}
+	function getCurWindowPos() {
+
+		var ret = activeX.getCurWindowPos();
+		alert("~~" + ret);
+	}
+
+	function showWindowFullScreen() {
+		activeX.showWindowFullScreen;
+	}
+	function setShowWindowNum() {
+		activeX.setShowWindowNum;
+	}
+	function initControlMode() {
+		activeX.initControlMode(1);
+	}
+
+	function startRealPlay() {
+
+		 
+		var url = document.getElementById("playxml").value;
+     
+		if(!url )
+		   alert("XML为空 - "+url);
+		  else
+		  {   alert("XML - " +url);
+		var ret = activeX.startPlay(-1, url);
+		if (ret != 0)
+			alert("~~" + ret);
+			}
+	}
+	function stopAllPlay() {
+		activeX.stopAllPlay();
+
+	}
+	function stopRealPlay() {
+		activeX.stopPlay(-1);
+
+	}
+	function startRecord() {
+		activeX.startRecord();
+
+	}
+	function stopRecord() {
+		activeX.stopRecord();
+
+	}
+	function capturePicture() {
+		activeX.capturePicture();
+
+	}
+	function configCapturePicture() {
+		var path = document.getElementById("picturePath").value;
+		alert(path);
+		activeX.configCapturePicture(path, 0);
+	}
+	function configRecord() {
+		var path = document.getElementById("recordPath").value;
+		alert(path);
+		activeX.configRecord(path, 100000);
+	}
+		function editOSD1() {
+		var ret =activeX.editOSD(1);
+		if (ret != 0)
+			alert("~~" + ret);
+			 
+	}
+	function editOSD() {
+		var ret =activeX.editOSD(0);
+		if (ret != 0)
+			alert("~~" + ret);
+			 
+	}
+	function saveOSD() {
+		var ret =activeX.saveOSD();
+		if (ret != 0)
+			alert("~~" + ret);
+			 
+	}
+	function setOSD() {
+	var xml  = document.getElementById("osdxml").value;
+		var ret =activeX.setOSD(xml);
+		if (ret != 0)
+			alert("~~" + ret);
+		 
+	}
+	function getOSD() {
+		var ret =activeX.getOSD();
+ 
+			alert("~~" + ret);
+			   document.getElementById("osdxml").value = ret;	
+	}
+		function drawCoverArea() {
+		var ret =activeX.drawCoverArea(0,255,255,0);
+		if (ret != 0)
+			alert("~~" + ret);
+			 
+	}
+	function   saveCoverArea() {
+		var ret =activeX.saveCoverArea();
+		if (ret != 0)
+			alert("~~" + ret);
+			 
+	}
+	function cleanCoverArea() {
+ 
+		var ret =activeX.cleanCoverArea( );
+		if (ret != 0)
+			alert("~~" + ret);
+		 
+	}
+		function drawDetectionArea1() {
+		var ret =activeX.drawDetectionArea(1,4);
+		if (ret != 0)
+			alert("~~" + ret);
+			 
+	}
+		function drawDetectionArea() {
+		var ret =activeX.drawDetectionArea(0,4);
+		if (ret != 0)
+			alert("~~" + ret);
+			 
+	}
+	function saveDetectionArea() {
+		var ret =activeX.saveDetectionArea();
+		if (ret != 0)
+			alert("~~" + ret);
+			 
+	}
+	function cleanDetectionArea() {
+ 
+		var ret =activeX.cleanDetectionArea( );
+		if (ret != 0)
+			alert("~~" + ret);
+		 
+	}
+	function getVideoParam() {
+ 
+		var ret =activeX.getVideoParam( );
+	 
+			alert("~~" + ret);
+		 
+	}
+	function setVideoParam() {
+ 
+		var ret =activeX.setVideoParam(250,20,21,200 );
+		if (ret != 0)
+			alert("~~" + ret);
+		 
+	}
+	
+	
+</script>
+</head>
+<!-- width="469"
+					height="384">  -->
+<body topmargin=0>
+	<table border="1">
+		<tr>
+			<th><object name=activeX ID="activeX"
+					CLASSID="CLSID:FF6238E2-16D7-419A-A1C2-2CF66C915E7D"
+					
+					 width="1000"
+					height="600" codebase="MediaPlayerControl.cab#version=1,0,0,5">
+					<param name="InitMaxWindowNum" value="9">
+					<param name="InitShowWindowNum" value="4">
+<param name="InitControlMode" value="1">					</object></th>
+			<th valign="top">
+				<table width="100%" border="1">
+					<tr>
+						<td>
+							<form id="form1" runat="server">
+
+								<div> <a href=".\demo.123.html">点击返回</a>
+								 <br />  请输入XML:  <textarea id="playxml" cols="70" rows="10" value="">
+<play> 
+<connConfig> 
+  <protocolType>1000</protocolType> 
+  <playMode>1000</playMode> 
+</connConfig> 
+<connInfo> 
+ <ip>192.168.12.201</ip> 
+ <port>9000</port>  
+ <username>admin</username> 
+ <password>teamway123456</password> 
+ <userPriority>1</userPriority>
+ <transferType>1</transferType>
+</connInfo> 
+<playInfo>
+  <devCode>1040020050000001</devCode> 
+  <channel>1</channel> 
+  <subtype>0</subtype>	
+</playInfo> 
+</play> 
+								 </textarea>
+									  <br /> <input type="button"
+										value="播放视频" onclick="startRealPlay()"></input> <input
+										type="button" value="停止视频" onclick="stopRealPlay()"></input>
+										<input
+										type="button" value="停止全部视频" onclick="stopAllPlay()"></input>
+										
+										<input
+										type="button" value="设置视频参数" onclick="setVideoParam()"></input>
+										<input
+										type="button" value="获取视频参数" onclick="getVideoParam()"></input>
+										
+										
+										
+								</div>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form id="form2" runat="server">
+
+								  <input
+									type="button" value="startRecord" onclick="startRecord()" /> <input
+									type="button" value="stopRecord" onclick="stopRecord()" /> <input
+									type="button" value="capturePicture" onclick="capturePicture()" /> 
+									截图路径<input
+									type="text" id="picturePath" value="c:\picturePath" /><br />
+ 
+									录像路径<input type="text" id="recordPath" value="c:\recordPath" /><br />
+<input
+									type="button" value="configRecord" onclick="configRecord()" />
+									<input
+									type="button" value="configCapturePicture" onclick="configCapturePicture()" />  
+									<input
+									type="button" value="编辑OSD" onclick="editOSD()" />  
+									<input
+									type="button" value="退出编辑OSD" onclick="editOSD1()" />  
+									<input
+									type="button" value="获取OSD" onclick="getOSD()" />  
+									<input
+									type="button" value="设置OSD" onclick="setOSD()" />  
+									<input
+									type="button" value="保存OSD" onclick="saveOSD()" />  
+									 <br />  osdXML:  <textarea id="osdxml" cols="70" rows="10" value=""></textarea>
+									 
+									  <br /> 
+									 	<input
+									type="button" value="编辑移动区域" onclick="drawDetectionArea()" />  
+									<input
+									type="button" value="清空移动区域" onclick="cleanDetectionArea()" />  
+									<input
+									type="button" value="保存移动区域" onclick="saveDetectionArea()" />
+									
+									 <input
+									type="button" value="编辑遮盖区域" onclick="drawCoverArea()" />  
+									 <input
+									type="button" value="退出编辑遮盖" onclick="drawCoverArea1()" />  
+									<input
+									type="button" value="清空遮盖区域" onclick="cleanCoverArea()" />  
+									<input
+									type="button" value="保存遮盖区域" onclick="saveCoverArea()" />
+							</form>
+						</td>
+
+					</tr>
+					<tr>
+						<td>获取结果: <textarea id="retstring" cols="70" rows="10"></textarea><br /></td>
+					</tr>
+				</table>
+
+
+			</th>
+		</tr>
+	 
+	</table>
+
+
+
+</body>
+</html>

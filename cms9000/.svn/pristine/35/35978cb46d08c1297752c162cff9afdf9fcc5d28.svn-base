@@ -1,0 +1,422 @@
+/*
+ * Welcome to use the TableGo Tools.
+ * 
+ * http://vipbooks.iteye.com
+ * http://blog.csdn.net/vipbooks
+ * http://www.cnblogs.com/vipbooks
+ * 
+ * Author:bianj
+ * Email:edinsker@163.com
+ * Version:4.1.2
+ */
+
+package com.teamway.cms.dbentity;
+
+import java.util.Date;
+
+/**
+ * 设备信息表（摄像机）(cms_res_camera_info)
+ * 
+ * @author bianj
+ * @version 1.0.0 2017-02-14
+ */
+public class Cms_res_camera_infoEntity implements java.io.Serializable {
+    /** 版本号 */
+    private static final long serialVersionUID = 2004934670843616446L;
+    
+    /**  */
+    private Long id;
+    
+    /**  */
+    private Long pid;
+    
+    /**  */
+    private Integer type_id;
+    
+    /**  */
+    private Long region_id;
+    
+    /**  */
+    private Integer server_id;
+    
+    /**  */
+    private String name;
+    
+    /**  */
+    private String username;
+    
+    /**  */
+    private String password;
+    
+    /**  */
+    private String ip;
+    
+    /**  */
+    private Integer port;
+    
+    /**  */
+    private Integer state;
+    
+    /**  */
+    private String code;
+    
+    /**  */
+    private Integer ipc_channel;
+    
+    /**  */
+    private String rtsp_url;
+    
+    /**  */
+    private String ptz_url;
+    
+    /**  */
+    private Date gmt_create;
+    
+    /**  */
+    private Date gmt_motified;
+    
+    /**  */
+    private String remark;
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Long getId() {
+        return this.id;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param id
+     *          
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Long getPid() {
+        return this.pid;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param pid
+     *          
+     */
+    public void setPid(Long pid) {
+        this.pid = pid;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Integer getType_id() {
+        return this.type_id;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param type_id
+     *          
+     */
+    public void setType_id(Integer type_id) {
+        this.type_id = type_id;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Long getRegion_id() {
+        return this.region_id;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param region_id
+     *          
+     */
+    public void setRegion_id(Long region_id) {
+        this.region_id = region_id;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Integer getServer_id() {
+        return this.server_id;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param server_id
+     *          
+     */
+    public void setServer_id(Integer server_id) {
+        this.server_id = server_id;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public String getName() {
+        return this.name;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param name
+     *          
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public String getUsername() {
+        return this.username;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param username
+     *          
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public String getPassword() {
+        return this.password;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param password
+     *          
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public String getIp() {
+        return this.ip;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param ip
+     *          
+     */
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Integer getPort() {
+        return this.port;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param port
+     *          
+     */
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Integer getState() {
+        return this.state;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param state
+     *          
+     */
+    public void setState(Integer state) {
+        this.state = state;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public String getCode() {
+        return this.code;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param code
+     *          
+     */
+    public void setCode(String code) {
+        this.code = code;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Integer getIpc_channel() {
+        return this.ipc_channel;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param ipc_channel
+     *          
+     */
+    public void setIpc_channel(Integer ipc_channel) {
+        this.ipc_channel = ipc_channel;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public String getRtsp_url() {
+        return this.rtsp_url;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param rtsp_url
+     *          
+     */
+    public void setRtsp_url(String rtsp_url) {
+        this.rtsp_url = rtsp_url;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public String getPtz_url() {
+        return this.ptz_url;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param ptz_url
+     *          
+     */
+    public void setPtz_url(String ptz_url) {
+        this.ptz_url = ptz_url;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Date getGmt_create() {
+        return this.gmt_create;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param gmt_create
+     *          
+     */
+    public void setGmt_create(Date gmt_create) {
+        this.gmt_create = gmt_create;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public Date getGmt_motified() {
+        return this.gmt_motified;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param gmt_motified
+     *          
+     */
+    public void setGmt_motified(Date gmt_motified) {
+        this.gmt_motified = gmt_motified;
+    }
+    
+    /**
+     * 获取
+     * 
+     * @return 
+     */
+    public String getRemark() {
+        return this.remark;
+    }
+     
+    /**
+     * 设置
+     * 
+     * @param remark
+     *          
+     */
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+}

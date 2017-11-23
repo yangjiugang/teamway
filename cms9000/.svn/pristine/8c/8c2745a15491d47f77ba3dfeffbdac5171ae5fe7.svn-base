@@ -1,0 +1,105 @@
+package com.teamway.cms.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import org.fastquery.core.Id;
+import org.fastquery.core.Modifying;
+import org.fastquery.core.Param;
+import org.fastquery.core.Primarykey;
+import org.fastquery.core.Query;
+import org.fastquery.core.QueryByNamed;
+import org.fastquery.core.QueryRepository;
+import org.fastquery.core.Transactional;
+import org.fastquery.filter.After;
+import org.fastquery.filter.Before;
+
+import org.fastquery.filter.SkipFilter;
+import org.fastquery.page.Page;
+import org.fastquery.page.Pageable;
+import org.fastquery.where.Condition;
+
+import com.alibaba.fastjson.JSONArray;
+import com.teamway.cms.dbentity.Cms_config_roleEntity;
+import com.teamway.cms.dbentity.Cms_config_userEntity;
+import com.teamway.cms.dbentity.Cms_config_user_roleEntity;
+import com.teamway.cms.dbentity.Cms_res_server_infoEntity;
+
+
+
+public interface UserDBService extends QueryRepository {
+
+	
+	
+	
+	
+	
+	@Query("select * from cms_config_user")
+	List<Cms_config_userEntity> findAllUser();
+
+	@Query("select * from cms_config_role")
+	List<Cms_config_roleEntity> findAllRole();
+
+	@Query("select * from cms_config_user_role where user_id = ?1")
+	List<Cms_config_user_roleEntity> findUserRole(int user_id);
+
+	
+	@Modifying
+	@Query("insert into cms_config_user_role (user_id,role_id,gmt_create,gmt_modified) values (?1,?2,now(),now())")
+	int insertUserRole(int user_id,int role_id);
+
+	@Modifying
+	@Query("delete from  cms_config_user_role where user_id =?1")
+	int delteUserRoleByUserId(int user_id);
+
+	
+	
+
+	@Query("select * from cms_config_user where login_name= ?1 limit 1")
+	Cms_config_userEntity findUserByLoginName(String login_name);
+	
+	@Query("select * from cms_config_user where id= ?1")
+	Cms_config_userEntity getUserById(int id);
+	
+	@Query("insert into cms_config_user (id,login_name, user_name,password, mobile,email,state,expired_time,remark,count,gmt_ctreate,gmt_modified) values (NULL,?1, ?2,?3, ?4,?5, 1 ,?6,?7,0,now(),now())")
+	@Modifying(table="cms_config_user",id="id")
+	Cms_config_userEntity newUser(String login_name,String user_name,String password,String  mobile,String email,String expired_time,String remark);
+
+	
+	@Query("update cms_config_user set user_name=?2,mobile=?3,email=?4,expired_time=?5,remark=?6,gmt_modified=now() where id=?1")
+	@Modifying(table="cms_config_user",id="id")
+	int editUser(@Id String id,String user_name,String mobile,String email,String expired_time,String remark);
+
+	
+	@Query("update cms_config_user set password=?2,gmt_modified=now() where id=?1")
+	@Modifying(table="cms_config_user",id="id")
+	int changeUserPassword(@Id String id,String password);
+	
+	
+	@Query("delete from cms_config_user where id=?1")
+	@Modifying(table="cms_config_user",id="id")
+	int delUserById(@Id String id);
+
+	@Query("delete from cms_config_user where id in (?1)")
+	@Modifying(table="cms_config_user",id="id")
+	int delUserByIds(List<String> ids);
+	
+	@Query("update cms_config_user set state=?2 ,gmt_modified=now() where id in (?1)")
+	@Modifying(table="cms_config_user",id="id")
+	int enableUserByIds(List<String> ids,int state);
+	
+	
+	@Query("select * from cms_config_user where login_name like ?1 or user_name like ?1")
+	List<Cms_config_userEntity>  findLikeLoginUserNameUsers(String text);
+	
+	
+	
+    @Query("select * from cms_config_user #{#where}")
+    @Condition("login_name like ?1 ")
+    @Condition("or user_name like ?1 ")
+    @Condition("or remark like ?1 ")
+    Page<Cms_config_userEntity> findLikeLoginUserNameUsers(String text,Pageable pageable);
+	
+	
+}
+

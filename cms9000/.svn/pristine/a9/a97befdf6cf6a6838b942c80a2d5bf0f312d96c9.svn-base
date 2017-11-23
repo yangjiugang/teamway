@@ -1,0 +1,62 @@
+package com.teamway.cms.cmsserver;
+
+
+
+import com.teamway.cms.cmsserver.TYProtoBean.ReqLoginInfo;
+import com.teamway.cms.cmsserver.TYProtoBean.ReqResTreeInfo;
+import com.teamway.cms.cmsserver.TYProtoBean.ResTreeTypeEnum;
+import com.teamway.cms.cmsserver.TYProtoBean.RspLoginInfo;
+import com.teamway.cms.cmsserver.TYProtoBean.*;
+
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+
+public class ServerProtoHandler extends ChannelInboundHandlerAdapter implements TYProtoSerilizer.TYProtoFunc {
+	
+	
+	@Override
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+		assert( msg != null );
+		try
+		{
+			TYProtoSerilizer serial = (TYProtoSerilizer) msg;
+			serial.Handler(ctx, this);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+
+		super.exceptionCaught(ctx, cause);
+		cause.printStackTrace();
+		//出现异常，关闭链路
+		ctx.close();
+	}
+
+	@Override
+	public void OnLogin(ChannelHandlerContext ctx, ReqLoginInfo user) {
+		// 验证用户名和密码  用户验证模块
+		if( user.getPassword().equals("12345") &&  user.getUsername().equals("admin") ){
+			RspObjectModel model = new RspObjectModel(TYProtoBean.ProtoMsgTypeEnum.LOGIN_RSP_ENUM_VALUE,RspLoginInfo.newBuilder().setMsgCode(1).build());
+			ctx.writeAndFlush(model);
+		}else{
+			RspObjectModel model = new RspObjectModel(TYProtoBean.ProtoMsgTypeEnum.LOGIN_RSP_ENUM_VALUE,RspLoginInfo.newBuilder().setMsgCode(-1).setMsg("username or password error !") .build());
+			ctx.writeAndFlush(model);
+		}
+	}
+
+	@Override
+	public void OnResTree(ChannelHandlerContext ctx, ReqResTreeInfo data) {
+		if(data.getResTreeType()== ResTreeTypeEnum.VIDEO_TYPE_ENUM){ //获取视频界面资源列表
+			ResourceTree resTree = new ResourceTree();
+			
+			RspObjectModel model = new RspObjectModel(TYProtoBean.ProtoMsgTypeEnum.RES_TREE_RSP_ENUM_VALUE, resTree.getVideoResTree(0));
+			ctx.writeAndFlush(model);
+		}		
+	}
+
+}

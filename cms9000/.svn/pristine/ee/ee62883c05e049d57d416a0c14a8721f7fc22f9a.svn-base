@@ -1,0 +1,19 @@
+#配置文件
+
+#web 配置工具访问端口  浏览器访问
+WebServerPort=8080
+
+#核心对外服务端口，供客户端连接
+CmsServerPort=9000
+
+#对接南网RPU 上报
+PagServerPort=8090
+PagServerPwd=12345
+
+
+
+##对接动力环境
+EnvServerPort=8808
+EnvServerName=admin
+EnvServerPwd=12345
+

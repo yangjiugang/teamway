@@ -1,0 +1,534 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+
+<%@ include file="header.jsp"%>
+		<table id="dg"></table>
+
+		<div id="toolbar" style="display:none;">
+			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="ico i-add" plain="true" onclick="_dlg_open('add')">新增</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="ico i-edit" plain="true" onclick="editUser()">修改</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="ico i-del" plain="true" onclick="delUser()">删除</a>
+				
+			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="ico i-reset-password" plain="true" onclick="changePWD()">修改密码</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="ico i-unlock" plain="true" onclick="enableUser('1')">启用</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="ico i-lock" plain="true" onclick="enableUser('0')">禁用</a>
+			<input id="search" type="text" />
+		</div>
+		
+		<div id="dlg" class="easyui-dialog" title="用户信息" style="display:none;width:500px;height:500px;" data-options="closed:true,iconCls:'ico i-add',resizable:true,modal:true,buttons:[{
+				text:'保存', handler:function(){ newUser(); }
+			},{
+				text:'取消', handler:function(){$('#dlg').dialog('close')}
+			}]">
+
+			<div class="easyui-layout" data-options="fit:true,border:false">
+				<div data-options="region:'west',split:false" style="width:250px;padding:10px">
+
+					<form id="user_form" class="easyui-form"  method="post" >
+						<div style="margin-bottom:5px">
+						    <input type="hidden" id="id" name="id" />
+							<input class="easyui-textbox" label="账号：" id="login_name" name="login_name" labelPosition="top" data-options="prompt:'请输入账号...',required:true" style="width:200px;height:45px">
+						</div>
+						<div style="margin-bottom:5px">
+							<input class="easyui-textbox" label="姓名：" id="user_name" name="user_name" labelPosition="top" data-options="prompt:'请输入姓名...',required:true" style="width:200px;height:45px">
+						</div>
+
+						<div style="margin-bottom:5px" id="password_div">
+							<input class="easyui-passwordbox" label="密码：" id="password" name="password" labelPosition="top" data-options="prompt:'请输入密码...',required:true,validType:{ length:[4,20] }" style="width:200px;height:45px">
+						</div>
+
+						<div style="margin-bottom:5px">
+							<input class="easyui-textbox" label="手机号：" id="mobile" name="mobile" labelPosition="top" data-options="prompt:'请输入手机号...',required:true,validType:'phoneRex'" style="width:200px;height:45px">
+						</div>
+
+						<div style="margin-bottom:5px">
+							<input class="easyui-textbox" label="邮箱：" id="email" name="email" labelPosition="top" data-options="prompt:'请输入邮箱...',required:true,validType:'email'" style="width:200px;height:45px">
+						</div>
+
+						<div style="margin-bottom:5px">
+							<input class="easyui-datebox" label="账户有效期至：" id="expired_time" name="expired_time" labelPosition="top" data-options="formatter:myformatter,parser:myparser,prompt:'请输入有效期...'" style="width:200px;height:45px;">
+						</div>
+
+						<div style="margin-bottom:5px">
+							<input class="easyui-textbox" label="备注信息：" id="remark" name="remark" labelPosition="top" data-options="prompt:'请输入备注信息...',multiline:true" style="width:200px;height:80px;">
+						</div>
+					</form>
+
+				</div>
+				<div data-options="region:'center'" style="padding:0px">
+					<div class="easyui-panel" title="用户所属角色" style="width:100%;height:100%;padding:0px;" data-options="fit:true,border:false">
+		                <div id="roles" style="margin:10px;">
+		                
+		                </div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+			
+
+
+
+			<script type="text/javascript">
+				var _sync_url = 'add';
+				
+				$.extend($.fn.validatebox.defaults.rules, {
+					phoneRex: {
+						validator: function(value){
+						var rex=/^1[3-8]+\d{9}$/;
+						var rex2=/^((0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/;
+						if(rex.test(value)||rex2.test(value))
+						{
+						  return true;
+						}else
+						{
+						   return false;
+						}
+						  
+						},
+						message: '请输入正确电话或手机格式'
+					}
+				})
+
+				
+				$(document).ready(function() {
+					$('#search').textbox({
+						buttonText: '查询',
+						buttonIcon: 'ico i-search',
+						prompt: '账户，姓名，备注...',
+						width: 200,
+						onClickButton:function(){
+							$('#dg').datagrid('reload');
+						}
+					});
+					
+					top.$.messager.defaults = { ok: "是", cancel: "否" };
+					init_grid();
+				});
+
+				function changePWD()
+				{
+					var rows= $('#dg').datagrid('getSelections');
+					if(rows.length == 0){
+						top.$.messager.alert('提示', '请选择一条记录!');
+						return;
+					}					
+					$('#dlg_pwd').dialog('open');
+					$('#new_password').textbox('setValue','');
+					$('#confirm_password').textbox('setValue','');
+					$('#super_password').textbox('setValue','');
+					
+				}
+				function changeUserPwd()
+				{
+					var rows= $('#dg').datagrid('getSelections');
+					if(rows.length == 0){
+						top.$.messager.alert('提示', '请选择一条记录!');
+						return;
+					}
+			        var row_id = rows[0].id;
+			        var super_password = $('#super_password').textbox('getValue');
+			        var new_password = $('#new_password').textbox('getValue');
+			        var confirm_password = $('#confirm_password').textbox('getValue');
+			        if(confirm_password !==new_password){
+			        	top.$.messager.alert('提示', '两次输入密码不相同!');
+						return;
+			        }
+
+			        $.ajax({
+						type: 'POST',
+						url: 'changePassword',
+						dataType: 'json',
+						data: { id: row_id,super_password:super_password,password:new_password },
+						success: function(data, textStatus) {
+							if(data.error !=0){
+								top.$.messager.alert('错误信息', data.msg);	
+							}else{
+							    top.$.messager.alert('提示信息', '用户密码修改成功!');	
+							    $('#dlg_pwd').dialog('close');
+								$('#dg').datagrid('reload');
+							}
+						},
+						error: function() {
+							top.$.messager.alert('提示', '服务器错误!');
+						}
+					});
+				}
+				
+				
+				function enableUser(enable)
+				{
+					var rows= $('#dg').datagrid('getSelections');
+					if(rows.length == 0){
+						top.$.messager.alert('提示', '请选择一条记录!');
+						return;
+					}
+					var ids_str = '';
+					for(var i=0;i<rows.length;i++){
+						if(i==0){
+							ids_str += rows[i].id;
+						}else{
+							ids_str += ','+rows[i].id;
+						}
+					}
+					$.ajax({
+						 type: 'POST',
+						 url: 'enableUserById',
+						 dataType: 'json',
+						 data: { ids: ids_str,enable:enable },
+						 success: function(data, textStatus) {
+							 $('#dg').datagrid('reload');  	
+							 top.$.messager.alert('提示信息', '账号状态修改成功!');
+						 },
+						 error: function() {
+									top.$.messager.alert('提示', '服务器错误!');
+						  }
+					 });	
+				}
+				function myformatter(date) {
+					var y = date.getFullYear();
+					var m = date.getMonth() + 1;
+					var d = date.getDate();
+					return y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d);
+				}
+/*
+<<<<<<< .mine
+		<script type="text/javascript">
+		var _sync_url = 'add';
+		$(document).ready(function() {
+			$('#search').textbox({
+			    buttonText:'查询',
+			    buttonIcon:'ico i-search',
+			    prompt:'账户，姓名...',
+			    width:200
+			});
+			
+			$.messager.defaults = { ok: "是", cancel: "否" };
+			
+			init_grid();
+		});
+		
+		
+		
+		function pad2(num, n) {
+			if ((num + "").length >= n) return num;
+			return pad2("0" + num, n);
+		}
+		
+		 function timeStampFormat(timestamp) { 
+			if(typeof(timestamp) == 'undefined'){
+				return '';
+			} 
+			var d = new Date(timestamp);
+			var year=d.getYear()+1900; 
+			var month=d.getMonth()+1; 
+			var date=d.getDate(); 
+			var hour=d.getHours(); 
+			var minute=d.getMinutes(); 
+			var second=d.getSeconds(); 
+			return year+"-"+pad2(month,2)+"-"+pad2(date,2)+" "+pad2(hour,2)+":"+pad2(minute,2)+":"+pad2(second,2); 
+		} 
+		
+		 
+		 function userStateFormat(state) { 
+			 if(state==1){
+				return '启用'; 
+			 }else{
+				return '禁用'; 
+			 }
+		 }
+		 
+		function init_grid()
+		{
+			$('#dg').datagrid({
+			    url:'getAllUser',
+			    fit: true,
+			    columns:[[
+			        {field:'login_name',title:'账号',width:150},
+			        {field:'user_name',title:'姓名',width:100},
+			        {field:'mobile',title:'手机',width:100},
+			        {field:'email',title:'邮箱',width:180},
+			        {field:'state',title:'状态',width:60,align:'center',formatter:function(value,row,index){ return userStateFormat(value)}},
+			        
+			        
+			        {field:'expired_time',title:'账号有效期至',align:'center',width:120,formatter:function(value,row,index){ return timeStampFormat(value)}},
+			        {field:'last_login_time',title:'最后登录时间',align:'center',width:120,formatter:function(value,row,index){ return timeStampFormat(value)}},
+			        {field:'count',title:'登录次数',align:'center',width:60},
+			        {field:'gmt_create',title:'创建时间',align:'center',width:120,formatter:function(value,row,index){ return timeStampFormat(value)}},
+			        {field:'gmt_modified',title:'修改时间',align:'center',width:120,formatter:function(value,row,index){ return timeStampFormat(value)}},
+			        {field:'remark',title:'备注',width:300}
+			    ]],
+			   
+			    toolbar: '#toolbar',
+			    pagination: true,
+			    rownumbers: true
+			});
+			
+			var p = $('#dg').datagrid('getPager');
+            $(p).pagination({
+                pageSize: 20,  
+                pageList: [10, 20, 30,40,50],  
+                beforePageText: '第',  
+                afterPageText: '页    共 {pages} 页',
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+            });
+			
+		}
+		
+		
+			
+			
+	
+			  
+		
+			
+			function dlg_open(){
+				var zTree = $.fn.zTree.getZTreeObj("regionTreeId");
+				var nodes = zTree.getSelectedNodes();
+				var node = nodes[0];
+				if(node) {
+					$('#name').val('');
+					$('#remark').val('');
+=======
+	*/
+				function myparser(s) {
+					if(!s) return new Date();
+					var ss = (s.split('-'));
+					var y = parseInt(ss[0], 10);
+					var m = parseInt(ss[1], 10);
+					var d = parseInt(ss[2], 10);
+					if(!isNaN(y) && !isNaN(m) && !isNaN(d)) {
+						return new Date(y, m - 1, d);
+					} else {
+						return new Date();
+					}
+				}
+
+				function timeStampFormat(timestamp) {
+					if(typeof(timestamp) == 'undefined') {
+						return '';
+					}
+					var d = new Date(timestamp);
+					var year = d.getFullYear();
+					var month = d.getMonth() + 1;
+					var date = d.getDate();
+					var hour = d.getHours();
+					var minute = d.getMinutes();
+					var second = d.getSeconds();
+					return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+				}
+
+				function userStateFormat(state) {
+					if(state == 1) {
+						return '<span class="ico i-unlock">&nbsp;</span>';
+					} else {
+						return '<span class="ico i-lock">&nbsp;</span>';
+					}
+				}
+
+				function init_grid() {
+					$('#dg').datagrid({
+						url: 'getAllUser',
+						fit: true,
+						columns: [
+							[
+								{ field: 'ck',checkbox:true, width: 30 },
+								{ field: 'login_name', title: '账号', width: 150 },
+								{ field: 'user_name', title: '姓名', width: 100 },
+								{ field: 'mobile', title: '手机', width: 100 },
+								{ field: 'email', title: '邮箱', width: 180 },
+								{ field: 'state', title: '状态', width: 60, align: 'center', formatter: function(value, row, index) { return userStateFormat(value) } },
+								{ field: 'expired_time', title: '账号有效期至', align: 'center', width: 120, formatter: function(value, row, index) { return timeStampFormat(value) } },
+								{ field: 'last_login_time', title: '最后登录时间', align: 'center', width: 120, formatter: function(value, row, index) { return timeStampFormat(value) } },
+								{ field: 'count', title: '登录次数', align: 'center', width: 60 },
+								{ field: 'gmt_ctreate', title: '创建时间', align: 'center', width: 120, formatter: function(value, row, index) { return timeStampFormat(value) } },
+								{ field: 'gmt_modified', title: '修改时间', align: 'center', width: 120, formatter: function(value, row, index) { return timeStampFormat(value) } },
+								{ field: 'remark', title: '备注', width: 300 }
+							]
+						],
+						onBeforeLoad:function(param){
+					 		param.queryMap = {
+								text: $('#search').textbox('getValue')
+		    			    };
+						},
+						toolbar: '#toolbar',
+						pagination: true,
+						rownumbers: true,
+						singleSelect:true,
+						pageSize:20
+					});
+
+					var p = $('#dg').datagrid('getPager');
+					$(p).pagination({
+						pageSize: 20,
+						pageList: [10, 20, 30, 40, 50],
+						beforePageText: '第',
+						afterPageText: '页    共 {pages} 页',
+						displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+					});
+
+				}
+
+				function _dlg_open(flag) {
+					if(flag=='add'){
+						_sync_url = 'newUser';
+						$('#user_form').form('clear');
+						$('#login_name').textbox('readonly',false);
+						$('#password_div').show();
+						$('#expired_time').datebox('setValue', '2099-12-30');
+						getAllRoles();
+					}else{
+						$('#login_name').textbox('readonly',true);
+						$('#password_div').hide();
+						_sync_url = 'editUser';
+					}
+//>>>>>>> .r4965
+					$('#dlg').dialog('open');
+				}
+		
+				function getAllRoles()
+				{
+					$.ajax({
+						type: 'POST',
+						url: 'getAllRoles',
+						dataType: 'json',
+						data: { },
+						success: function(data, textStatus) {
+							var roleStr='';
+							for(i=0; i < data.length;i++ ){
+								roleStr+= '<input type="checkbox"  name="checkbox"  value="'+data[i].id+'"/> '+data[i].role_name+' </br>';
+							}
+							$('#roles').empty().append(roleStr);
+						},
+						error: function() {
+							top.$.messager.alert('提示', '服务器错误!');
+						}
+					});
+					
+					
+				}
+				
+				
+				function newUser() {
+					var str='';
+					$('input[name="checkbox"]:checked').each(function(){
+					     str+=$(this).val()+',';
+					})
+					str = str.substring(0,str.length-1);
+					var isvalid = $('#user_form').form('enableValidation').form('validate');
+				    if(!isvalid){
+				    	top.$.messager.alert('提示信息', '请按照正确的数据格式填写!');
+				    	return;
+				    }
+				    	
+					var user_data = $('#user_form').serializeArray();    
+					user_data.push({name:'user_roles',value:str});
+					
+					//console.log(user_data);
+					$.ajax({
+						type: 'POST',
+						url: _sync_url,
+						dataType: 'json',
+						data: user_data,
+						success: function(data, textStatus) {
+							top.$.messager.alert('提示信息', '用户信息保存成功!');
+							$('#dg').datagrid('reload');
+							$('#dlg').dialog('close');
+						},
+						error: function() {
+							top.$.messager.alert('错误', '服务器错误!');
+						}
+					});
+				}
+
+				function editUser() {
+					var rows= $('#dg').datagrid('getSelections');
+					if(rows.length == 0){
+						top.$.messager.alert('提示', '请选择一条记录!');
+						return;
+					}
+			        var row_id = rows[0].id;
+					$.ajax({
+						type: "POST",
+						url: 'getUserById',
+						dataType: 'json',
+						data: {id:row_id},
+						success: function(data, textStatus) {
+							
+							// user info
+							var _arr=['login_name','user_name','mobile','email','remark'];
+							var user = data.user
+							for (i in _arr){
+								var item = _arr[i];
+								$('#'+item).textbox('setValue',user[item])
+							}
+							$('#expired_time').datebox('setValue', myformatter(new Date(user.expired_time)));
+							$('#password').textbox('setValue', '******');
+							$('#id').val(user.id);
+							
+							// role info
+							var m = new Map();
+							for(i=0;i<data.user_roles.length;i++){
+								m.set(data.user_roles[i].role_id,true);
+							}
+							
+						   var roleStr='';
+						   for(i=0; i < data.roles.length;i++ ){
+							   if(m.get(data.roles[i].id)==true){
+									roleStr+= '<input type="checkbox"  name="checkbox" checked="true" value="'+data.roles[i].id+'"/> '+data.roles[i].role_name+' </br>';
+							   }else{
+									roleStr+= '<input type="checkbox"  name="checkbox"  value="'+data.roles[i].id+'"/> '+data.roles[i].role_name+' </br>';
+							   }
+						   }
+						   $('#roles').empty().append(roleStr);
+		
+							_dlg_open('edit');
+						},
+						error: function() {
+							top.$.messager.alert('错误', '服务器错误!');
+						}
+					});
+					
+					
+					
+					
+				}
+
+				function delUser() {
+					
+					var rows= $('#dg').datagrid('getSelections');
+					if(rows.length == 0){
+						top.$.messager.alert('提示', '请选择一条记录!');
+						return;
+					}
+					var ids_str = '';
+					for(var i=0;i<rows.length;i++){
+						if(i==0){
+							ids_str += rows[i].id;
+						}else{
+							ids_str += ','+rows[i].id;
+						}
+					}
+
+					top.$.messager.confirm('删除用户', '请确认 是否要删除用户信息    ?', function(flag) {
+						if(flag) {
+							$.ajax({
+								type: 'POST',
+								url: 'delUserById',
+								dataType: 'json',
+								data: { ids: ids_str },
+								success: function(data, textStatus) {
+									top.$.messager.alert('提示信息', '用户信息删除成功!');
+									$('#dg').datagrid('reload');
+								},
+								error: function() {
+									top.$.messager.alert('提示', '服务器错误!');
+								}
+							});
+						}
+					});
+
+				}
+			</script>
+	
+<%@ include file="footer.jsp"%>

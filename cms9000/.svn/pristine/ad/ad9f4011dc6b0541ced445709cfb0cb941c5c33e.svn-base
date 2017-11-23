@@ -1,0 +1,39 @@
+package com.teamway.cms.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import org.fastquery.core.Id;
+import org.fastquery.core.Modifying;
+import org.fastquery.core.Param;
+import org.fastquery.core.Primarykey;
+import org.fastquery.core.Query;
+import org.fastquery.core.QueryByNamed;
+import org.fastquery.core.QueryRepository;
+import org.fastquery.filter.After;
+import org.fastquery.filter.Before;
+
+import org.fastquery.filter.SkipFilter;
+import org.fastquery.page.Page;
+import org.fastquery.page.Pageable;
+import org.fastquery.where.Condition;
+
+import com.alibaba.fastjson.JSONArray;
+import com.teamway.cms.dbentity.Cms_res_server_infoEntity;
+
+
+
+public interface ServerDBService extends QueryRepository {
+
+    @Query("select * from `cms_res_server_info` #{#where}")
+    @Condition("type_id = ?1")    
+    Page<Cms_res_server_infoEntity> findByType(Integer type_id,Pageable pageable);
+
+
+    @Query("select * from cms_res_server_info s where s.ip=?1 and s.port = ?2 limit 1")
+    Cms_res_server_infoEntity findOneByIpAndPort(String ip,Integer port);
+    
+    
+
+}
+

@@ -1,0 +1,57 @@
+package com.teamway.cms.webcontroller;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.fastquery.service.FQuery;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.teamway.cms.dao.UserDBService;
+import com.teamway.cms.dbentity.Cms_config_userEntity;
+import com.teamway.cms.model.ResultMessageModel;
+
+
+@Controller
+@RequestMapping("/user") 
+public class UserCtl {
+
+	protected Logger log = Logger.getLogger(UserCtl.class);
+	@RequestMapping("/page")
+	public String page(){
+		return "user";
+	}
+	
+	@RequestMapping("/getAllUser")
+	@ResponseBody
+	public List<Cms_config_userEntity>  getUserAll(){
+		UserDBService DBService = FQuery.getRepository(UserDBService.class);
+		List<Cms_config_userEntity> users = DBService.findAllUser();
+		return users;
+	}
+	
+	
+	@RequestMapping("/newUser")
+	@ResponseBody
+	public ResultMessageModel  newUser(String login_name,String user_name,String password,String  mobile,String email,int state,String expired_time,String remark){
+
+		ResultMessageModel ret =  null;
+		UserDBService DBService = FQuery.getRepository(UserDBService.class);
+		
+		
+		Cms_config_userEntity existed_user = DBService.findUserByLoginName(login_name);
+		if(existed_user != null){
+			return new ResultMessageModel(-1,login_name +" 账户已存在!");
+		}
+		
+		Cms_config_userEntity user = DBService.newUser(login_name, user_name, password, mobile, email, state, expired_time, remark);
+		if(user != null){
+			ret =  new ResultMessageModel(0,"");
+		}else{
+			ret =  new ResultMessageModel(-1,"新建用户，不成功");
+		}
+	
+		return ret;
+	}
+}

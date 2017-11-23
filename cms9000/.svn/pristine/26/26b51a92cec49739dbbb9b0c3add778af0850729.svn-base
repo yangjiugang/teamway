@@ -1,0 +1,100 @@
+package com.teamway.cms.dao;
+
+import java.util.List;
+
+import org.fastquery.core.Id;
+import org.fastquery.core.Modifying;
+import org.fastquery.core.Query;
+import org.fastquery.core.QueryRepository;
+
+import com.teamway.cms.dbentity.Cms_config_rightEntity;
+import com.teamway.cms.dbentity.Cms_config_roleEntity;
+import com.teamway.cms.dbentity.Cms_config_role_rightEntity;
+import com.teamway.cms.dbentity.Cms_config_role_viewsEntity;
+import com.teamway.cms.dbentity.Cms_res_camera_infoEntity;
+import com.teamway.cms.dbentity.Cms_res_region_infoEntity;
+
+public interface RoleDBService extends QueryRepository {
+	//查询全部角色信息
+	@Query("select * from cms_config_role")
+	List<Cms_config_roleEntity> findAllRole();
+	
+	//按角色名称匹配查询
+	@Query("select * from cms_config_role where role_name like ?1")
+	List<Cms_config_roleEntity> findRoleLikeRoleName(String role_name);
+	
+	//按角色名称精确查询
+	@Query("select * from cms_config_role where role_name = ?1")
+	Cms_config_roleEntity findRoleByRoleName(String role_name);
+	
+	//按角色id精确查询
+	@Query("select * from cms_config_role where id = ?1")
+	Cms_config_roleEntity findRoleById(String id);
+	
+	//查询相同角色名不同角色id的记录
+	@Query("select * from cms_config_role where role_name = ?1 and id <> ?2")
+	Cms_config_roleEntity findRoleByRoleNameAndId(String role_name,String id);
+	
+	//新增角色记录
+	@Query("insert into cms_config_role (id, role_name, gmt_create, gmt_modified, remark) values (NULL,?1, ?2,?3, ?4)")
+	@Modifying(table="cms_config_role",id="id")
+	Cms_config_roleEntity newRole(String role_name, String gmt_create, String gmt_modified, String remark);
+	
+	//修改角色记录
+	@Query("update cms_config_role set role_name = ?1,gmt_modified = ?2,remark = ?3 where id = ?4")
+	@Modifying(table="cms_config_role",id="id")
+	Cms_config_roleEntity editRole(String role_name,String gmt_modified,String remark,@Id String id);
+	
+	//删除角色记录
+	@Query("delete from cms_config_role where id in (?1)")
+	@Modifying(table="cms_config_role",id="id")
+	int delRole(List<Integer> list_id);
+	
+	//查询全部权限信息
+	@Query("select * from cms_config_right")
+	List<Cms_config_rightEntity> findAllRight();
+	
+	//查询配置的角色权限信息
+	@Query("select * from cms_config_role_right where role_id = ?1")
+	List<Cms_config_role_rightEntity> findRoleRight(String role_id);
+	
+	//按角色id和权限id查询记录
+	@Query("select * from cms_config_role_right where role_id = ?1 and right_id = ?2")
+	Cms_config_role_rightEntity findRoleRightByRoleRight(int role_id,int right_id);
+	
+	//新增角色权限关联记录
+	@Query("insert into cms_config_role_right (id,role_id,right_id,gmt_create,gmt_modified) values (NULL,?1,?2,?3,?4)")
+	@Modifying(table="cms_config_role_right",id="id")
+	Cms_config_role_rightEntity newRoleRight(int role_id,int right_id,String gmt_create,String gmt_modified);
+	
+	//删除角色关联记录
+	@Query("delete from cms_config_role_right where role_id = ?1 and right_id not in (?2)")
+	@Modifying(table="cms_config_role_right",id="id")
+	int delRoleRight(int role_id,List<Integer> list_right_id);
+	
+	//查询所有的区域信息
+	@Query("select * from cms_res_region_info")
+	List<Cms_res_region_infoEntity> findAllRegion();
+	
+	//查询所有的摄像机信息
+	@Query("select * from cms_res_camera_info")
+	List<Cms_res_camera_infoEntity> findAllCamera();
+	
+	//查询角色关联的摄像机字段
+	@Query("select camera_codes from cms_config_role_views where role_id = ?1")
+	String findRoleCameras(String role_id);
+	
+	//查询角色关联的摄像机记录
+	@Query("select * from cms_config_role_views where role_id = ?1")
+	Cms_config_role_viewsEntity findRoleViews(int role_id);
+	
+	//修改角色关联的摄像机记录
+	@Query("update cms_config_role_views set camera_codes = ?1,gmt_modified = ?2 where role_id = ?3")
+	@Modifying(table="cms_config_role_views",id="id")
+	Cms_config_role_viewsEntity editRoleViews(String camera_codes,String gmt_modified,int role_id);
+	
+	//新增角色关联的摄像机记录
+	@Query("insert into cms_config_role_views (id,role_id,camera_codes,gmt_create,gmt_modified) values (NULL,?1,?2,?3,?4)")
+	@Modifying(table="cms_config_role_views",id="id")
+	Cms_config_role_viewsEntity newRoleViews(int role_id,String camera_codes,String gmt_create,String gmt_modified);
+}

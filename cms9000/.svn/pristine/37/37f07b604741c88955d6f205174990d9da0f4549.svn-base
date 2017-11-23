@@ -1,0 +1,538 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>CMS9000</title>
+		<link rel="stylesheet" type="text/css" href="js/easyui/themes/default/easyui.css">
+
+		<link rel="stylesheet" type="text/css" href="js/ztree/css/zTreeStyle/zTreeStyle.css">
+
+		<link rel="stylesheet" type="text/css" href="style/common-6.0.css">
+
+		<link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			
+			img {
+				border: 0 none;
+			}
+			
+			.box {
+				background: #1a529c;
+				position: relative;
+				height: 90px;
+			}
+			/*主导航菜单*/
+			
+			#nav-wmenu {
+				height: 40px;
+				background: #1a529c;
+				width: 970px;
+				margin: 0 auto;
+				position: absolute;
+				top: 50px;
+				left: 181px;
+			}
+			
+			#nav-wmenu .container {
+				position: relative;
+				overflow: visible;
+				z-index: 99;
+			}
+			
+			#nav-wmenu .wmenu {
+				padding: 0 0 0 14px;
+			}
+			
+			#nav-wmenu .wmenu li {
+				position: relative;
+				float: left;
+				padding: 0 8px 0 5px;
+				display: inline;
+				font-size: 14px;
+			}
+			
+			#nav-wmenu .wmenu li h3 {
+				font-weight: normal;
+				display: inline-block;
+				float: left;
+			}
+			
+			#nav-wmenu .wmenu li a.submenu {
+				margin-top: 10px;
+				display: inline-block;
+				color: #FFF;
+				height: 30px;
+				text-decoration: none;
+				font-size: 14px;
+				width: 100px;
+				text-align: center;
+			}
+			
+			#nav-wmenu .wmenu li a.selected,
+			#nav-wmenu .wmenu li a.navhover,
+			#nav-wmenu .wmenu li a.submenu:hover {
+				color: #1a529c;
+			}
+			
+			#nav-wmenu .wmenu li a.navhover,
+			#nav-wmenu .wmenu li a.submenu:hover {
+				background-color: #FFF;
+			}
+			
+			#nav-wmenu .wmenu li a.submenu span {
+				height: 30px;
+				line-height: 25px;
+				display: inline-block;
+				font-weight: bold;
+			}
+			
+			#nav-wmenu .wmenu li a.selected span,
+			#nav-wmenu .wmenu li a.navhover span,
+			#nav-wmenu .wmenu li a.submenu:hover span {
+				cursor: pointer;
+			}
+			
+			#nav-wmenu .wmenu li a.navhover span,
+			#nav-wmenu .wmenu li a.submenu:hover span {
+				width: 100px;
+			}
+			
+			#nav-wmenu .wmenu ul.children {
+				display: none;
+				position: absolute;
+				top: 40px;
+				left: 3px;
+				width: 100px;
+				background: #FFF;
+				border: 2px solid #1a529c;
+				border-top: 0;
+				line-height: normal;
+			}
+			
+			#nav-wmenu .wmenu ul.children li {
+				width: 100px;
+				padding: 0px;
+				display: inline-block;
+				font-size: 12px;
+				border-top: 1px solid #ccc;
+			}
+			
+			#nav-wmenu .wmenu ul.children li h3 {
+				display: block;
+				width: 100%;
+			}
+			
+			#nav-wmenu .wmenu ul.children li a {
+				width: 100%;
+				height: 16px;
+				line-height: 16px;
+				overflow: hidden;
+				padding: 3px 0;
+				display: block;
+				color: #1a529c;
+				text-align: center;
+				text-decoration: none;
+				font-size: 12px;
+			}
+			
+			#nav-wmenu .wmenu ul.children li a:hover {
+				background-color: #eee;
+				text-decoration: none;
+			}
+			
+			.layout-panel {
+				overflow: visible;
+			}
+			
+			.panel {
+				overflow: visible;
+			}
+			
+			
+			/* Basic Grey */
+.basic-grey {
+margin-left:auto;
+margin-right:auto;
+max-width: 500px;
+background: #F7F7F7;
+padding: 25px 15px 25px 10px;
+font: 12px Georgia, "Times New Roman", Times, serif;
+color: #888;
+text-shadow: 1px 1px 1px #FFF;
+border-top:1px solid #E4E4E4;
+border-left:1px solid #E4E4E4;
+border-right:1px solid #E4E4E4;
+}
+.basic-grey h1 {
+font-size: 25px;
+padding: 0px 0px 10px 40px;
+display: block;
+border-bottom:1px solid #E4E4E4;
+margin: -10px -15px 30px -10px;;
+color: #888;
+}
+.basic-grey h1>span {
+display: block;
+font-size: 11px;
+}
+.basic-grey label {
+display: block;
+margin: 0px;
+}
+.basic-grey label>span {
+float: left;
+width: 20%;
+text-align: right;
+padding-right: 10px;
+margin-top: 10px;
+color: #888;
+}
+.basic-grey input[type="text"], .basic-grey input[type="email"], .basic-grey textarea, .basic-grey select {
+border: 1px solid #DADADA;
+color: #888;
+height: 30px;
+margin-bottom: 16px;
+margin-right: 6px;
+margin-top: 2px;
+outline: 0 none;
+padding: 3px 3px 3px 5px;
+width: 70%;
+font-size: 12px;
+line-height:15px;
+box-shadow: inset 0px 1px 4px #ECECEC;
+-moz-box-shadow: inset 0px 1px 4px #ECECEC;
+-webkit-box-shadow: inset 0px 1px 4px #ECECEC;
+}
+.basic-grey textarea{
+padding: 5px 3px 3px 5px;
+}
+.basic-grey select {
+background: #FFF url('down-arrow.png') no-repeat right;
+background: #FFF url('down-arrow.png') no-repeat right);
+appearance:none;
+-webkit-appearance:none;
+-moz-appearance: none;
+text-indent: 0.01px;
+text-overflow: '';
+width: 70%;
+height: 35px;
+line-height: 25px;
+}
+.basic-grey textarea{
+height:100px;
+}
+.basic-grey .button {
+background: #E27575;
+border: none;
+padding: 10px 25px 10px 25px;
+color: #FFF;
+box-shadow: 1px 1px 5px #B6B6B6;
+border-radius: 3px;
+text-shadow: 1px 1px 1px #9E3F3F;
+cursor: pointer;
+}
+.basic-grey .button:hover {
+background: #CF7A7A
+}
+			
+			
+			
+		</style>
+
+	</head>
+
+	<body class="easyui-layout">
+
+		<div data-options="region:'north'" style="height: 90px; overflow: visible;">
+
+			<div class="box">
+				<!-- 
+				<div id="nav-wmenu">
+					<ul class="wmenu">
+						<li class="stwmenu">
+							<h3>
+							<a href="#" class="submenu"><span>首页</span></a>
+						</h3>
+						</li>
+						<li class="stwmenu">
+							<h3>
+							<a href="#" class="submenu"><span>资源管理</span></a>
+						</h3>
+							<ul class="children">
+								<li>
+									<h3>
+									<a href="#"><span>设备管理</span></a>
+								</h3>
+								</li>
+								<li>
+									<h3>
+									<a href="#"><span>区域管理</span></a>
+								</h3>
+								</li>
+							</ul>
+						</li>
+						<li class="stwmenu">
+							<h3>
+							<a href="#" class="submenu"><span>用户管理</span></a>
+						</h3>
+							<ul class="children">
+								<li>
+									<h3>
+									<a href="#"><span>用户管理</span></a>
+								</h3>
+								</li>
+								<li>
+									<h3>
+									<a href="#"><span>角色管理</span></a>
+								</h3>
+								</li>
+								<li>
+									<h3>
+									<a href="#"><span>权限管理</span></a>
+								</h3>
+								</li>
+							</ul>
+						</li>
+						<li class="stwmenu">
+							<h3>
+							<a href="#" class="submenu"><span>系统管理</span></a>
+						</h3>
+							<ul class="children">
+								<li>
+									<h3>
+									<a href="#"><span>系统配置</span></a>
+								</h3>
+								</li>
+								<li>
+									<h3>
+									<a href="#"><span>参数配置</span></a>
+								</h3>
+								</li>
+
+							</ul>
+						</li>
+						<li class="stwmenu">
+							<h3>
+							<a href="#" class="submenu"><span>关于</span></a>
+						</h3>
+							<ul class="children">
+								<li>
+									<h3>
+									<a href="#"><span>版本</span></a>
+								</h3>
+								</li>
+								<li>
+									<h3>
+									<a href="#"><span>联系方式</span></a>
+								</h3>
+								</li>
+							</ul>
+						</li>
+
+					</ul>
+				</div>
+ -->
+			</div>
+		</div>
+		</div>
+		<div data-options="region:'south',split:true" style="height: 30px; text-align: center;">
+			<p>深圳市铁越电器有限公司</p>
+		</div>
+		<div data-options="region:'west',split:true" style="width: 200px;">
+			<ul id="regionTreeId" class="ztree"></ul>
+		</div>
+
+		<div data-options="region:'center'">
+			<table id="dg"> </table>
+			<div id="toolbar" style="display:none;">
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="ico i-add" plain="true" onclick="newUser()">新增</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="ico i-edit" plain="true" onclick="editUser()">编辑</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="ico i-del" plain="true" onclick="destroyUser()">删除</a>
+			</div>
+		</div>
+
+		<div id="dlg" style="background:#F7F7F7;">
+	<form action="" method="post" class="basic-grey">
+		<h1>设备信息
+			
+		</h1>
+		<label>
+			<span>名称 :</span>
+			<input id="name" type="text" name="name" placeholder="设备名称" />
+		</label>
+		<label>
+			<span>Ip地址 :</span>
+			<input id="ip" type="email" name="ip" placeholder="设备IP地址" />
+		</label>
+		<label>
+			<span>端口号 :</span>
+			<input id="port" type="text"  name="port" placeholder="服务端口号" />
+		</label>
+		<label>
+			<span>用户名 :</span>
+			<input id="username" type="text"  name="username" placeholder="登录设备用户名" />
+		</label>
+		<label>
+			<span>密码 :</span>
+			<input id="password" type="text"  name="password" placeholder="登录设备密码" />
+		</label>
+		<label>
+			<span>备注 :</span>
+			<textarea id="remark"   name="remark" placeholder="备注信息" ></textarea>
+		</label>
+		
+		<label>
+			<span>Subject :</span>
+			<select name="selection">
+				<option value="Job Inquiry">Job Inquiry</option>
+				<option value="General Question">General Question</option>
+			</select>
+		</label>
+
+	</form>
+</div>
+
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/easyui/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="js/ztree/js/jquery.ztree.all.min.js"></script>
+
+		<script type="text/javascript">
+			var _sync_url = 'add';
+			$(document).ready(function() {
+				$.messager.defaults = { ok: "是", cancel: "否" };
+				$.fn.zTree.init($("#regionTreeId"), setting, nodes);
+				init_grid();
+				init_dlg();
+			});
+
+			
+			function init_dlg()
+			{
+				$('#dlg').dialog({
+				    title: '添加设备',
+				    width: 500,
+				    height: 502,
+				    closed: false,
+				    cache: false,
+				    modal: true,
+				    buttons:[{
+						text:'保存',
+						handler:function(){
+							
+						}
+					},{
+						text:'取消',
+						handler:function(){
+							
+						}
+					}]
+				});
+				
+				
+			}
+			
+			
+			//导航
+			$('#nav-wmenu .wmenu > li').hover(function() {
+				$(this).find('.children').animate({ opacity: 'show', height: 'show' }, 200);
+				$(this).find('.submenu').addClass('navhover');
+			}, function() {
+				$('.children').stop(true, true).hide();
+				$('.submenu').removeClass('navhover');
+			});
+
+			var nodes = [
+				{ id: 1, pid: 0, name: "设备类型", open: true },
+				{ id: 11, pid: 1, name: "通讯控制器" },
+				{ id: 12, pid: 1, name: "通用NVR" },
+				{ id: 13, pid: 1, name: "动环主机" }
+			];
+			//Ztree 配置
+			var setting = {
+				data: {
+					simpleData: {
+						enable: true,
+						idKey: "id",
+						pIdKey: "pid",
+						rootPId: 0
+					}
+				},
+				async: {
+					enable: true,
+					url: "region_tree"
+				}
+			};
+
+			function getLocalTime(nS) {
+				var now = new Date(parseInt(nS));
+				var year = now.getYear() + 1900;
+				var month = now.getMonth() + 1;
+				var date = now.getDate();
+				var hour = now.getHours();
+				var minute = now.getMinutes();
+				var second = now.getSeconds();
+				return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+			}
+
+			function init_grid() {
+				$('#dg').datagrid({
+					url: 'getDeciveList',
+					fit: true,
+					columns: [
+						[
+							{ field: 'ck', checkbox: true },
+							{ field: 'name', title: '名称', width: 150 },
+							{ field: 'ip', title: 'IP地址', width: 100 },
+							{ field: 'port', title: '端口号', width: 100 },
+							{ field: 'username', title: '用户名', width: 100 },
+							{ field: 'password', title: '密码', width: 100 },
+							{ field: 'state', title: '设备状态', width: 100 },
+							{ field: 'remark', title: '备注', width: 100 },
+							{
+								field: 'gmt_create',
+								title: '创建时间',
+								width: 120,
+								formatter: function(value, row, index) {
+									return getLocalTime(value);
+								}
+							},
+							{
+								field: 'gmt_modified',
+								title: '修改时间',
+								width: 120,
+								formatter: function(value, row, index) {
+									return getLocalTime(value);
+								}
+							},
+						]
+					],
+					toolbar: '#toolbar',
+					pagination: true,
+					rownumbers: true
+				});
+
+				var p = $('#dg').datagrid('getPager');
+				$(p).pagination({
+					pageSize: 20,
+					pageList: [10, 20, 30, 40, 50],
+					beforePageText: '第',
+					afterPageText: '页    共 {pages} 页',
+					displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+				});
+
+			}
+
+		</script>
+
+	</body>
+
+</html>

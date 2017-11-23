@@ -1,0 +1,61 @@
+package com.teamway.cms.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import org.fastquery.core.Id;
+import org.fastquery.core.Modifying;
+import org.fastquery.core.Param;
+import org.fastquery.core.Primarykey;
+import org.fastquery.core.Query;
+import org.fastquery.core.QueryByNamed;
+import org.fastquery.core.QueryRepository;
+import org.fastquery.filter.After;
+import org.fastquery.filter.Before;
+
+import org.fastquery.filter.SkipFilter;
+import org.fastquery.page.Page;
+import org.fastquery.page.Pageable;
+import org.fastquery.where.Condition;
+
+import com.alibaba.fastjson.JSONArray;
+import com.teamway.cms.dbentity.Cms_config_userEntity;
+
+
+
+public interface UserDBService extends QueryRepository {
+
+	@Query("select * from cms_config_user")
+	List<Cms_config_userEntity> findAllUser();
+
+
+	@Query("select * from cms_config_user where login_name= ?1")
+	Cms_config_userEntity findUserByLoginName(String login_name);
+	
+
+	@Query("insert into cms_config_user (id,login_name, user_name,password, mobile,email,state,expired_time,remark) values (NULL,?1, ?2,?3, ?4,?5, ?6,?7, ?8)")
+	@Modifying(table="cms_config_user",id="id")
+	Cms_config_userEntity newUser(String login_name,String user_name,String password,String  mobile,String email,int state,String expired_time,String remark);
+
+	
+	
+	//	    @QueryByNamed("findCityOne")
+	//	    CityPojo findCityOne(@Param("id") Integer id);
+	//	    
+	//	    
+	//	    @QueryByNamed("findCityAll")
+	//	    List<CityPojo> findCityAll();
+	//	    
+	//	    
+	//	    @QueryByNamed("findCityByNameAndState")
+	//	    List<CityPojo> findCityByNameAndState(@Param("name") String name,@Param("state") String state);
+	//	    
+	//	    
+	//	    
+	//	    @QueryByNamed("findPage")
+	//	    Page<CityPojo> findPage(Pageable pageable,@Param("name") String name,@Param("state") String state);
+	//	    
+
+
+}
+

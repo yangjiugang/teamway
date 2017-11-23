@@ -1,0 +1,71 @@
+package com.teamway.cms.pgserver;
+
+import java.util.List;
+
+import com.teamway.cms.pgutils.PGPojo;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.ByteToMessageDecoder;
+
+public class PGDecoder extends ByteToMessageDecoder  {
+
+	private  byte  Var;
+	private  short Code;
+	private  byte  HdrLen ;
+	private  short AttrCount;
+	private  short SeqNum;
+	private  short SessionId;
+	private  int TotalLength;
+
+	@Override
+	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+
+		int  len = in.readableBytes();
+		if (len < 12) {  
+			return;
+		}  
+		in.markReaderIndex();    
+		Var = in.readByte();  
+		if(Var != 1){
+			return;
+		}
+		Code = (short)in.readShortLE();
+
+		HdrLen = in.readByte();
+		if(HdrLen != 12){
+			return;
+		}
+		AttrCount = in.readShortLE();
+		SeqNum = in.readShortLE();
+		SessionId = in.readShortLE();
+		byte [] lenTmp = new byte[4];
+		lenTmp[0] = in.readByte();
+		lenTmp[1] = in.readByte();
+		lenTmp[2] = 0;
+		lenTmp[3] = 0;
+		TotalLength = byte2int(lenTmp);//in.readShortLE();
+
+		if(in.readableBytes() < (TotalLength-12)){
+			in.resetReaderIndex();
+			return;
+		}
+		
+
+		ByteBuf attr_data = in.readBytes(TotalLength-12);  
+		byte[] _data = new byte[TotalLength-12];
+		attr_data.readBytes(_data);  
+		out.add(new PGPojo( Var,  Code,   HdrLen,  AttrCount,  SeqNum,  SessionId,  TotalLength , _data) );
+
+		//attr_data.release(); 
+
+	}
+
+	public static int byte2int(byte[] res) {   
+		int targets = (res[0] & 0xff) | ((res[1] << 8) & 0xff00) // | 表示安位或   
+				| ((res[2] << 24) >>> 8) | (res[3] << 24);   
+		return targets;   
+	}  
+
+}

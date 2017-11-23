@@ -1,0 +1,136 @@
+package com.teamway.cms.cmsserver;
+
+
+
+import com.google.protobuf.MessageLite;
+import com.teamway.cms.cmsserver.TYProtoBean.ReqGetAllViewInfo;
+import com.teamway.cms.cmsserver.TYProtoBean.ReqLoginInfo;
+import com.teamway.cms.cmsserver.TYProtoBean.ReqResTreeInfo;
+
+
+import io.netty.channel.ChannelHandlerContext;
+
+
+public class TYProtoSerilizer {
+	
+	public interface TYProtoFunc 
+	{	
+		void OnLogin(ChannelHandlerContext ctx,ReqLoginInfo user);
+		void OnResTree(ChannelHandlerContext ctx,ReqResTreeInfo data);
+		void OnGetView(ChannelHandlerContext ctx, ReqGetAllViewInfo data);
+		
+	}
+	
+	private byte codec;
+	private MessageLite body;
+	
+	
+	static final int hdrlen = 5;
+	static final byte version = 1;
+	static final byte reserve = 0;
+	
+	
+	public TYProtoSerilizer()
+	{
+		codec = 0;
+		body = null;
+	}
+	public boolean Handler(ChannelHandlerContext ctx, TYProtoFunc  proto)
+	{
+		if( body == null ) return false;
+		switch( codec )
+		{
+		case TYProtoBean.ProtoMsgTypeEnum.LOGIN_REQ_ENUM_VALUE:
+		{	
+			ReqLoginInfo user = (ReqLoginInfo) body;
+			proto.OnLogin(ctx, user);
+			break;
+		}
+		case TYProtoBean.ProtoMsgTypeEnum.RES_TREE_REQ_ENUM_VALUE:
+		{
+			ReqResTreeInfo data = (ReqResTreeInfo) body;
+			proto.OnResTree(ctx, data);
+			break;
+		}
+		case TYProtoBean.ProtoMsgTypeEnum.GET_VIDEO_VIEWS_REQ_ENUM_VALUE:
+		{
+			ReqGetAllViewInfo data = (ReqGetAllViewInfo) body;
+			proto.OnGetView(ctx, data);
+			break;
+		}
+		default:
+			return false;
+		}
+
+
+
+
+		return true;
+	}
+	
+	public boolean BytesDecode(byte dataType, byte[] array, int offset, int readableLen)
+	{
+		codec = dataType;		
+		try{
+			switch( codec )
+			{
+			case TYProtoBean.ProtoMsgTypeEnum.LOGIN_REQ_ENUM_VALUE:{
+				body = ReqLoginInfo.getDefaultInstance().getParserForType().parseFrom(array,offset,readableLen); 
+				break;
+			}	
+			case TYProtoBean.ProtoMsgTypeEnum.RES_TREE_REQ_ENUM_VALUE:
+			{
+				body = ReqResTreeInfo.getDefaultInstance().getParserForType().parseFrom(array,offset,readableLen);
+				break;
+			}
+			case TYProtoBean.ProtoMsgTypeEnum.GET_VIDEO_VIEWS_REQ_ENUM_VALUE:
+			{
+				body = ReqGetAllViewInfo.getDefaultInstance().getParserForType().parseFrom(array,offset,readableLen);
+				break;
+			}
+			default:
+				return false;
+			}
+		}
+		catch(Exception e){
+			
+		}
+		return true;
+	}
+
+	public byte[] Encode( RspObjectModel model )
+	{
+		byte[] pack = null;
+		byte dataType = 0;
+		if(model == null)
+			return pack;
+				
+		dataType = (byte) model.getType();
+		
+		byte[] body =model.getMsg().toByteArray();
+		
+		int blen = body.length;
+		int require = hdrlen + blen;
+		assert(require >= hdrlen );
+		pack = new byte [ require ];
+		
+		pack[0] = version;
+		pack[1] = dataType;
+		pack[2] = (byte)( require&0xff);
+		pack[3] = (byte)( (require>>8) & 0xff );
+		pack[4] = reserve;
+		
+		System.arraycopy(body, 0, pack, hdrlen,  blen);
+		return pack;
+	}
+	
+	
+	protected void finalize()
+	{
+		System.out.println("run finalize");
+	}
+	
+	
+	
+
+}
