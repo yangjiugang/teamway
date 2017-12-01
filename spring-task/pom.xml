@@ -66,6 +66,13 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<!-- spring end -->
+		<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
+		<dependency>
+		    <groupId>org.quartz-scheduler</groupId>
+		    <artifactId>quartz</artifactId>
+		    <version>1.8.6</version>
+		</dependency>
+		
 
 		<!-- web jar -->
 		<dependency>
