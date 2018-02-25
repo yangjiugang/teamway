@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.flf.portal.mapper.UserInfoMapper">
+
+	<resultMap id="UserInfoMap" type="UserInfo">
+		<result property="userId" column="user_id"/>
+		<result property="name" column="name"/>
+		<result property="birth" column="birth"/>
+		<result property="sex" column="sex"/>
+		<result property="photoPath" column="photo_path"/>
+		<result property="areaId" column="area_id"/>
+		<result property="userCity" column="user_city"/>
+		<result property="bhri" column="bhri"/>
+		<result property="trustrank" column="trustrank"/>
+		<result property="userSkills" column="user_skills"/>
+		<result property="firstWorkDate" column="first_work_date"/>
+		<result property="userDesc" column="user_desc"/>
+		<association property="userInfoDetail"
+			javaType="com.fc.flf.common.domain.UserInfoDetail" column="user_id"
+			resultMap="com.fc.flf.eagent.mapper.ICustomerFunMapper.userInfoDetailMap">
+		</association>
+	</resultMap>
+	
+<!-- Code By Zhenglh Start-->
+	<!-- 查看经纪人列表,分页 -->
+    <select id="userInfoListOnPage" parameterType="String" resultMap="UserInfoMap">  
+		SELECT user_id,name,birth,sex,photo_path,area_id,user_city,bhri,trustrank,first_work_date,user_desc
+		  FROM user_info
+		 LIMIT ${pageStr}
+    </select>
+    
+    <!-- 经纪人总数 -->
+    <select id="getUserInfoCount" resultType="int">
+    	SELECT COUNT(user_id) FROM user_info
+    </select>
+    
+    <!-- 经纪人多条件查询 -->
+    <select id="findUserInfoByLike" parameterType="map" resultMap="UserInfoMap">
+    	 SELECT 
+				userInfo.user_id,
+				userInfo.name,
+				userInfo.birth,
+				userInfo.sex,
+				userInfo.photo_path,
+				userInfo.area_id,
+				userInfo.user_city,
+				userInfo.bhri,
+				userInfo.trustrank,
+				userInfo.first_work_date,
+				userInfo.user_desc
+    	   FROM user_info userInfo,
+    	        user_info_detail infoDetail,
+    	        fc_sys_visitor fcSys
+		  WHERE userInfo.user_id = infoDetail.user_id
+		    AND infoDetail.user_id = fcSys.visitor_id
+		    AND fcSys.visitor_type='ROLE_0'
+		<if test="isOnline != null and isOnline !='' ">
+		    AND fcSys.is_online=${isOnline}
+		</if>
+		<if test="userCity != null and userCity !='' ">
+		    AND userInfo.user_city='${userCity}'
+		</if>
+		<if test="registeredAddress != null and registeredAddress !='' ">
+		    AND infoDetail.registered_address=${registeredAddress}
+		</if>
+		<if test="sex != null and sex !='' ">
+		    AND userInfo.sex=${sex}
+		</if>
+		 <if test="keyWord !='' and keyWord !=null">
+		    AND (userInfo.name LIKE '%${keyWord}%'
+		     OR userInfo.user_desc LIKE '%${keyWord}%')
+		 </if>
+		  LIMIT ${start},${end}
+    </select>
+    
+    <!-- 经纪人多条件查询总数 -->
+    <select id="findUserInfoCountByLike" parameterType="map" resultType="int">
+    	SELECT COUNT(userInfo.user_id)
+    	  FROM user_info userInfo,
+    	       user_info_detail infoDetail,
+    	       fc_sys_visitor fcSys
+		 WHERE userInfo.user_id = infoDetail.user_id
+		   AND infoDetail.user_id = fcSys.visitor_id
+		   AND fcSys.visitor_type='ROLE_0'
+		<if test="isOnline != null and isOnline !='' ">
+		   AND fcSys.is_online=${isOnline}
+		</if>
+		<if test="userCity != null and userCity !='' ">
+		   AND userInfo.user_city='${userCity}'
+		</if>
+		<if test="registeredAddress != null and registeredAddress !='' ">
+		   AND infoDetail.registered_address=${registeredAddress}
+		</if>
+		<if test="sex != null and sex !='' ">
+		   AND userInfo.sex=${sex}
+		</if>
+		 <if test="keyWord !='' and keyWord !=null">
+		   AND (userInfo.name LIKE '%${keyWord}%' 
+		    OR userInfo.user_desc LIKE '%${keyWord}%')
+		 </if>
+    </select>
+    
+    <!-- 您最近了解过的经纪人 -->
+    <select id="getSkimUserListByUserId" parameterType="int" resultMap="UserInfoMap">
+		 SELECT 
+				userInfo.user_id,
+				userInfo.name,
+				userInfo.birth,
+				userInfo.sex,
+				userInfo.photo_path,
+				userInfo.area_id,
+				userInfo.user_city,
+				userInfo.bhri,
+				userInfo.trustrank,
+				userInfo.user_skills,
+				userInfo.first_work_date,
+				userInfo.user_desc
+		   FROM user_info userInfo,
+		        customer_skim_user skimUser,
+		        fc_sys_visitor fcSys
+		  WHERE userInfo.user_id=fcSys.visitor_id 
+		    AND skimUser.visitor_id=fcSys.visitor_id
+		    AND skimUser.user_id=#{userId}
+		    AND fcSys.visitor_type='ROLE_0'
+		  LIMIT 0,10
+	</select>
+	
+	<!-- 经纪人最近排行 -->
+	<select id="getSkimUserListOnTop" resultMap="UserInfoMap">
+		SELECT user_id,name,birth,sex,photo_path,area_id,user_city,bhri,trustrank,user_skills,first_work_date,user_desc 
+		  FROM user_info 
+	  ORDER BY bhri 
+	     LIMIT 0,10 
+	</select>
+	
+	<!-- 经纪人历史排行 -->
+	<select id="getSkimUserListOnOldTop" resultMap="UserInfoMap">
+		SELECT user_id,name,birth,sex,photo_path,area_id,user_city,bhri,trustrank,user_skills,first_work_date,user_desc 
+		  FROM user_info 
+	  ORDER BY bhri 
+	     LIMIT 10,10 
+	</select>
+	<!-- 经纪人详细 -->
+	<select id="getUserInfoById" parameterType="int" resultType="UserInfo" resultMap="UserInfoMap">
+	SELECT
+		  ui.user_id,
+		  ui.name,
+		  ui.birth,
+		  ui.sex,
+		  ui.photo_path,
+		  ui.area_id,
+		  ui.user_city,
+		  ui.bhri,
+		  ui.trustrank,
+		  ui.first_work_date,
+		  ui.user_desc,
+		  uid.cellphone,
+		  uid.hobbies
+	 FROM user_info ui,user_info_detail uid
+	WHERE ui.user_id=uid.user_id
+	  AND ui.user_id=1
+	</select>
+<!-- Code By Zhenglh End-->
+
+<!-- Code By Gaoqifang Start-->
+<!-- 根据customer id 查找对应的user信息 -->
+	<select id="selectUserInfoWithDetail" resultMap="UserInfoMap" parameterType="int">
+		SELECT  ui.user_id,ui.name,ui.birth,ui.user_city,uid.cellphone 
+		  FROM  user_info ui,
+  				customer_info_detail cid,
+  				user_info_detail uid 
+		 WHERE  ui.user_id = cid.created_user 
+  		   AND cid.customer_id = #{customerId} 
+  		   AND uid.user_id = ui.user_id
+  		   AND cid.is_exchange = 0  
+	</select>
+<!-- Code By Gaoqifang End-->
+
+<!-- Code By HuangShan start-->
+	<!-- 最近到访同行(经纪人) -->
+	<select id="findRecentVisitUser" parameterType="int" resultMap="UserInfoMap">
+		SELECT ui1.name,ui1.user_city,ui1.bhri,ui1.user_skills,ui1.photo_path
+		  FROM visitor_skim_user vsu,
+		       user_info ui,
+		       user_info ui1
+		 WHERE vsu.skim_user_id = ui.user_id 
+		   AND ui1.user_id = vsu.visitor_id 
+		   AND vsu.skim_user_id = #{userId} 
+		   AND vsu.visitor_type = 1
+	  ORDER BY vsu.skim_time		   
+		 LIMIT 5
+	</select>
+<!-- Code By HuangShan end-->
+	
+</mapper>  

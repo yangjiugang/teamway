@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.eagent.mapper.IFcSysMsgMapper">
+	<resultMap id="fcSysMsgMap" type="FcSysMsg">
+		<result property="msgId" column="msg_id"/>
+		<result property="msgSendType" column="msg_send_type"/>
+		<result property="msgContent" column="msg_content"/>
+		<result property="msgSendTime" column="msg_send_time"/>
+		<result property="msgSendUserId" column="msg_send_user_id"/>
+	</resultMap>
+
+
+	<!-- Start gaoqifang -->
+	<!-- 根据msg_send_type查找消息 -->
+	<select id="selectMsgByMsgType" resultMap="fcSysMsgMap">
+		SELECT  fsm.msg_id,fsm.msg_send_type,fsm.msg_content,fsm.msg_send_time
+		  FROM  fc_sys_msg fsm
+		 WHERE  fsm.msg_send_type = #{msgSendType} 
+  	  ORDER BY  fsm.msg_send_time DESC
+  	     LIMIT  ${limit}
+	</select>
+	
+	<!-- 根据msg_send_type查找消息总数 -->
+	<select id="selectMsgCountByMsgType" resultType="int" parameterType="int">
+		SELECT  COUNT(fsm.msg_id)
+		  FROM  fc_sys_msg fsm
+		 WHERE  fsm.msg_send_type = #{msgSendType} 
+	</select>
+	
+	<!-- 根据msg_send_type查找消息总数 -->
+	<select id="selectMsgById" resultType="int" resultMap="fcSysMsgMap">
+		SELECT  fsm.msg_id,fsm.msg_send_type,fsm.msg_content,fsm.msg_send_time,fsm.msg_send_user_id
+		  FROM  fc_sys_msg fsm
+		 WHERE  fsm.msg_id = #{sysMsgId} 
+	</select>
+</mapper>

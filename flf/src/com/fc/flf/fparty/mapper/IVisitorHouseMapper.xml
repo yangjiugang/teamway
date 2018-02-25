@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.fparty.mapper.IVisitorHouseMapper">
+
+     <resultMap id="houseInfoMap" type="HouseInfo">
+		<id property="houseId" column="house_id"/>
+		<result property="houseNum" column="house_num"/>
+		<result property="tenementId" column="tenement_id"/>
+		<result property="developerId" column="developer_id"/>
+		<result property="houseDevelopersName" column="house_developers_name"/>
+		<result property="areaId" column="area_id"/>
+		<result property="houseName" column="house_name"/>
+		<result property="houseNameExtend" column="house_name_extend"/>
+		<result property="houseLogo" column="house_logo"/>
+		<result property="housePic" column="house_pic"/>
+		<result property="houseLocation" column="house_location"/>
+		<result property="houseProperties" column="house_properties"/>
+		<result property="housePrice" column="house_price"/>
+		<result property="houseMinArea" column="house_min_area"/>
+		<result property="houseMaxArea" column="house_max_area"/>
+		<result property="houseStructureType" column="house_structure_type"/>
+		<result property="houseDecorations" column="house_decorations"/>
+		<result property="houseBuildProcess" column="house_build_process"/>
+		<result property="houseSights" column="house_sights"/>
+		<result property="brokerageRate" column="brokerage_rate"/>
+		<result property="signDate" column="sign_date"/>
+		<result property="houseSaleEvent" column="house_sale_event"/>
+		<result property="houseBuildType" column="house_build_type"/>
+		<result property="businessRegion" column="business_region"/>
+		<result property="belongToRegion" column="belong_to_region"/>
+		<result property="metroIn15minBywalk" column="metro_in15min_bywalk"/>
+		<result property="busIn15minBywalk" column="bus_in15min_bywalk"/>
+		<result property="longDistanceBus" column="long_distance_bus"/>
+		<result property="wharf" column="wharf"/>
+		<result property="airportBus" column="airport_bus"/>
+		<result property="kindergartenIn15minBywalk" column="kindergarten_in15min_bywalk"/>
+		<result property="kindergartenIn20minBycar" column="kindergarten_in20min_bycar"/>
+		<result property="kindergartenIn15minBybus" column="kindergarten_in15min_bybus"/>
+		<result property="elementarySchoolIn15minBywalk" column="elementary_school_in15min_bywalk"/>
+		<result property="elementarySchoolIn20minBycar" column="elementary_school_in20min_bycar"/>
+		<result property="elementarySchoolIn15minBybus" column="elementary_school_in15min_bybus"/>
+		<result property="juniorHighSchoolIn15minBywalk" column="junior_high_school_in15min_bywalk"/>
+		<result property="juniorHighSchoolIn20minBycar" column="junior_high_school_in20min_bycar"/>
+		<result property="juniorHighSchoolIn15minBybus" column="junior_high_school_in15min_bybus"/>
+		<result property="clubHospitalIn15minBywalk" column="club_hospital_in15min_bywalk"/>
+		<result property="clubHospitalIn20minBycar" column="club_hospital_in20min_bycar"/>
+		<result property="clubHospitalIn15minBybus" column="club_hospital_in15min_bybus"/>
+		<result property="aaaHospitalIn15minBywalk" column="aaa_hospital_in15min_bywalk"/>
+		<result property="aaaHospitalIn20minBycar" column="aaa_hospital_in20min_bycar"/>
+		<result property="aaaHospitalIn15minBybus" column="aaa_hospital_in15min_bybus"/>
+		<result property="hospitalIn15minBywalk" column="hospital_in15min_bywalk"/>
+		<result property="hospitalIn15minBycar" column="hospital_in15min_bycar"/>
+		<result property="hospitalIn15minBybus" column="hospital_in15min_bybus"/>
+		<result property="marketIn15minBywalk" column="market_in15min_bywalk"/>
+		<result property="supermarketIn15minBywalk" column="supermarket_in15min_bywalk"/>
+		<result property="restaurantIn15minBywalk" column="restaurant_in15min_bywalk"/>
+		<result property="shoppingIn15minBywalk" column="shopping_in15min_bywalk"/>
+		<result property="hopscaIn15minBywalk" column="hopsca_in15min_bywalk"/>
+		<result property="cbdIn15minBywalk" column="cbd_in15min_bywalk"/>
+		<result property="marketIn5minBywalk" column="market_in5min_bywalk"/>
+		<result property="supermarketIn5minBywalk" column="supermarket_in5min_bywalk"/>
+		<result property="restaurantIn5minBywalk" column="restaurant_in5min_bywalk"/>
+		<result property="shoppingIn5minBywalk" column="shopping_in5min_bywalk"/>
+		<result property="hopscaIn5minBywalk" column="hopsca_in5min_bywalk"/>
+		<result property="cbdIn5minBywalk" column="cbd_in5min_bywalk"/>
+		<result property="houseAttenttionCnt" column="house_attenttion_cnt"/>
+		<result property="houseCollectCnt" column="house_collect_cnt"/>
+		<result property="houseCommentCnt" column="house_comment_cnt"/>
+		<result property="userRecommendCnt" column="user_recommend_cnt"/>
+		<result property="createdUser" column="created_user"/>
+		<result property="createdAt" column="created_at"/>
+		<result property="updatedUser" column="updated_user"/>
+		<result property="updatedAt" column="updated_at"/>
+		<result property="houseDesc" column="house_desc"/>		
+		
+		<association property="fcSysArea" column="area_id" javaType="FcSysArea">
+		   <result property="areaId" column="area_id"/>
+		   <result property="areaName" column="area_name"/>
+		</association>		
+	</resultMap>
+   
+	<!-- gonghj start -->
+	
+	<!-- 客户关注的楼盘 -->	
+	<select id="skimHouseList" parameterType="map" resultMap="houseInfoMap">
+	    SELECT hi.house_id,hi.house_name,hi.house_price,hi.house_logo,hi.house_pic,hi.house_comment_cnt,hi.house_attenttion_cnt,
+		       hi.house_structure_type,hi.business_region,hi.house_sights,hi.house_properties,hi.house_developers_name,
+		       hi.developer_id,fsa.area_id,fsa.area_name
+		  FROM house_info hi,
+		       fc_sys_area fsa,
+		       visitor_skim_house vsh
+		 WHERE hi.area_id=fsa.area_id      
+		   AND hi.house_id=vsh.house_id
+		   AND vsh.visitor_type=1
+		   AND vsh.visitor_id=#{customerId}
+	  ORDER BY hi.house_id DESC
+	     LIMIT ${limit}	
+	</select>
+	<!-- 客户关注的楼盘  总条数-->
+	<select id="getSkimCount" parameterType="int" resultType="int">
+	    SELECT count(hi.house_id)
+		  FROM house_info hi,
+		       fc_sys_area fsa,
+		       visitor_skim_house vsh
+		 WHERE hi.area_id=fsa.area_id      
+		   AND hi.house_id=vsh.house_id
+		   AND vsh.visitor_type=1
+		   AND vsh.visitor_id=#{customerId}	
+	</select>
+	<!-- 客户收藏的楼盘 -->
+	<select id="collectHouse" parameterType="map" resultMap="houseInfoMap">
+	    SELECT hi.house_id,hi.house_name,hi.house_price,hi.house_logo,hi.house_pic,hi.house_comment_cnt,hi.house_attenttion_cnt,
+			   hi.house_structure_type,hi.business_region,hi.house_sights,hi.house_properties,hi.house_developers_name,
+			   hi.developer_id,fsa.area_id,fsa.area_name
+		  FROM house_info hi,
+		       fc_sys_area fsa,
+		       visitor_collect_house vch
+		 WHERE hi.area_id=fsa.area_id      
+		   AND hi.house_id=vch.house_id
+		   AND vch.visitor_type=1
+		   AND vch.visitor_id=#{customerId}
+	  ORDER BY hi.house_id DESC
+		 LIMIT ${limit}	
+	</select>
+	<!-- 客户收藏的楼盘  总条数-->
+	<select id="getCollectCount" parameterType="int" resultType="int">
+	    SELECT count(hi.house_id)
+		  FROM house_info hi,
+		       fc_sys_area fsa,
+		       visitor_collect_house vch
+		 WHERE hi.area_id=fsa.area_id      
+		   AND hi.house_id=vch.house_id
+		   AND vch.visitor_type=1
+		   AND vch.visitor_id=#{customerId}
+	</select>
+	<!-- 经济人推荐的楼盘 -->
+	<select id="recommendHouse" parameterType="map" resultMap="houseInfoMap">
+	    SELECT hi.house_id,hi.house_name,hi.house_price,hi.house_logo,hi.house_pic,hi.house_comment_cnt,hi.house_attenttion_cnt,
+			   hi.house_structure_type,hi.business_region,hi.house_sights,hi.house_properties,hi.house_developers_name,
+			   hi.developer_id,fsa.area_id,fsa.area_name  
+	      FROM customer_info_detail cid,
+	           house_info hi, 
+	           fc_sys_area fsa,         
+	           user_recommend_share urs,
+	           customer_info ci
+	     WHERE ci.customer_id=cid.customer_id      
+	       AND urs.user_id=cid.created_user
+	       AND hi.area_id=fsa.area_id
+	       AND urs.recommend_type=2
+	       AND urs.recommend_visitor_type=1
+	       AND urs.recommend_visitor=ci.customer_id  
+	       AND urs.recommend_content_id=hi.house_id   
+	       AND ci.customer_id=#{customerId}
+	  ORDER BY hi.house_id DESC
+		 LIMIT ${limit}		
+	</select>
+	<!-- 经纪人推荐楼盘的条数 -->
+	<select id="getRecommendCount" parameterType="int" resultType="int">
+	    SELECT count(hi.house_id)
+	      FROM customer_info_detail cid,
+	           house_info hi, 
+	           fc_sys_area fsa,         
+	           user_recommend_share urs,
+	           customer_info ci
+	     WHERE ci.customer_id=cid.customer_id      
+	       AND urs.user_id=cid.created_user
+	       AND hi.area_id=fsa.area_id
+	       AND urs.recommend_type=2
+	       AND urs.recommend_visitor_type=1
+	       AND urs.recommend_visitor=ci.customer_id  
+	       AND urs.recommend_content_id=hi.house_id   
+	       AND ci.customer_id=#{customerId}	 	
+	</select>
+    <!-- 客户喊过价的楼盘  -->    
+    <select id="priceHouse" parameterType="map" resultMap="houseInfoMap">
+      SELECT hi.house_id,hi.house_name,hi.house_price,hi.house_logo,hi.house_pic,hi.house_comment_cnt,hi.house_attenttion_cnt,
+		     hi.house_structure_type,hi.business_region,hi.house_sights,hi.house_properties,hi.house_developers_name,
+		     hi.developer_id,fsa.area_id,fsa.area_name
+		FROM house_info hi,
+		     fc_sys_area fsa,
+		     house_price hp
+	   WHERE hi.area_id=fsa.area_id      
+		 AND hi.house_id=hp.house_id
+		 AND hp.visitor_type=1
+		 AND hp.visitor_id=#{customerId}
+    ORDER BY hi.house_id DESC
+	   LIMIT ${limit} 
+    </select>
+    <!-- 客户喊过价的楼盘条数 -->
+    <select id="getPriceCount" parameterType="int" resultType="int">
+      SELECT count(hi.house_id)
+        FROM house_info hi,
+		     fc_sys_area fsa,
+		     house_price hp
+	   WHERE hi.area_id=fsa.area_id      
+		 AND hi.house_id=hp.house_id
+		 AND hp.visitor_type=1
+		 AND hp.visitor_id=#{customerId}
+    </select>
+    <!-- 客户实地看过的楼盘 -->
+    <select id="lookHouse" parameterType="map" resultMap="houseInfoMap">
+        SELECT hi.house_id,hi.house_name,hi.house_price,hi.house_logo,hi.house_pic,hi.house_comment_cnt,hi.house_attenttion_cnt,
+		       hi.house_structure_type,hi.business_region,hi.house_sights,hi.house_properties,hi.house_developers_name,
+		       hi.developer_id,fsa.area_id,fsa.area_name
+		  FROM house_info hi,
+		       fc_sys_area fsa,
+		       event_info ei, 
+		       event_info_customer eic
+		 WHERE hi.area_id=fsa.area_id   
+		   AND hi.house_id=ei.info_id 
+		   AND ei.event_type=1   
+		   AND eic.is_checkin=1		   
+		   AND ei.event_id=eic.event_id
+		   AND eic.cus_id=#{customerId}
+      ORDER BY hi.house_id DESC
+	     LIMIT ${limit} 
+    </select>
+    <select id="getLookCount" parameterType="int" resultType="int">
+        SELECT count(hi.house_id)
+          FROM house_info hi,
+		       fc_sys_area fsa,
+		       event_info ei, 
+		       event_info_customer eic
+		 WHERE hi.area_id=fsa.area_id   
+		   AND hi.house_id=ei.info_id 
+		   AND ei.event_type=1   
+		   AND eic.is_checkin=1		   
+		   AND ei.event_id=eic.event_id
+		   AND eic.cus_id=#{customerId}
+    </select>
+	<!-- gonghj end -->
+</mapper>

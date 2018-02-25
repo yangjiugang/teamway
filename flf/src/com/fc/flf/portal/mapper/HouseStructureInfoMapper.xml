@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.flf.portal.mapper.HouseStructureInfoMapper">
+
+	<resultMap id="HouseStructureInfoMap" type="HouseStructureInfo">
+			<id property="structureId" column="structure_id"/>
+			<result property="houseID" column="house_ID"/>
+			<result property="structureName" column="structure_name"/>
+			<result property="structureArea" column="structure_area"/>
+			<result property="structureHigh" column="structure_high"/>
+			<result property="structureDesc" column="structure_desc"/>
+			<result property="picId" column="pic_id"/>
+			<result property="picDetailPath" column="pic_detail_path"/>
+	</resultMap>
+	
+	<!-- Code By Zhenglh Start-->
+	<!-- 根据house_ID查找表记录  parameter : [int houseId,int picType,int start,int end]  return : List-->
+    <select id="findStructureInfoByHouseId" parameterType="map" resultMap="HouseStructureInfoMap">  
+		SELECT hsi.structure_id,hsi.house_ID,hsi.structure_name,hsi.structure_area,hsi.structure_high,hsi.structure_desc,hsi.pic_id,hsi.pic_detail_path
+		  FROM house_structure_info hsi,
+		       house_pic_info hpi
+		 WHERE hsi.pic_id = hpi.pic_id 
+		   AND hsi.house_ID = hpi.house_id
+		   AND hpi.house_id = #{houseId} 
+		   AND hpi.pic_type = #{picType} 
+		 LIMIT #{start},#{end}
+    </select>
+	<!-- Code By Zhenglh End--> 
+</mapper>  

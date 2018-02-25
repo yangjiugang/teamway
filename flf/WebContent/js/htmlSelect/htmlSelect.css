@@ -1,0 +1,3 @@
+.menu {display:none;background:#FFF;border:#0566ad 1px solid;position:absolute;z-index:9999;}
+.menu ul{margin-bottom:5px;}
+.menu ul li{text-align:left;height:25px;line-height:25px;text-indent:5px;font-size:12px;color:#8b8bb8;border-bottom:1px dashed #ccc;cursor:pointer;}

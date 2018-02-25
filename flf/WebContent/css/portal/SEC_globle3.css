@@ -1,0 +1,30 @@
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td,button{margin:0; padding:0; border:0;}
+body {background:#FFF; color:#000; font-family:"新宋体"; font-size:12px;}
+img{border:0; vertical-align:top;}
+ol,ul,li{list-style:none outside none;}
+button{border:0; text-align:center; cursor:pointer;}
+label{cursor:pointer;}
+input, select, button, textarea {font-size:12px; vertical-align:middle;  font-family:"新宋体";}
+.grey {color:#999}
+.red {color:#f00}
+.blue{ color:#0055d8 !important; text-decoration:underline;}
+.red {color:#a00000; font-size:12px; }
+.redc {color:#a00000; font-size:13px; }
+.rede {color:#a00000; font-size:15px; font-weight:bold;}
+.redb {color:#a00000; font-size:18px; }
+.more { font-size:12px;}
+.more a {color:#999}
+h1{ font-size:14px; font-weight:bold; color:#222;}
+.clear{clear:both;}
+/*s LINK*/
+/*:focus{outline:0;}*/
+a:link {color: #666665; text-decoration:none;cursor:pointer;}
+a:visited {color: #666665;text-decoration:none;cursor:pointer;}
+a:hover {color: #a00000; text-decoration:underline;cursor:pointer;}
+a:active {color: #bc2931;}
+
+a.blue, a.blue:visited {color:#0055d8  !important; text-decoration:underline;}
+a.red, a.red:visited {color:#a00000; font-size:12px;}
+a.redc, a.redc:visited {color:#a00000; font-size:13px;}
+a.redb, a.redb:visited {color:#a00000; font-size:18px;}
+a.grey, a.grey:visited {color:#999}

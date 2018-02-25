@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- SQL CREATE BY Zhenglh -->
+<mapper namespace="com.fc.flf.eagent.mapper.IStatUserInfoMapper">
+	<resultMap id="StatUserInfoMap" type="StatUserInfo">
+		<id property="userId" column="user_id"/>
+		<result property="skimHouseCnt" column="skim_house_cnt"/>
+		<result property="collectHouseCnt" column="collect_house_cnt"/>
+		<result property="saleHouseCnt" column="sale_house_cnt"/>
+		<result property="priceHouseCnt" column="price_house_cnt"/>
+		<result property="discussHouseCnt" column="discuss_house_cnt"/>
+		<result property="customerCnt" column="customer_cnt"/>
+		<result property="customerContactCnt" column="customer_contact_cnt"/>
+		<result property="customerEventCnt" column="customer_event_cnt"/>
+		<result property="customerLookCnt" column="customer_look_cnt"/>
+		<result property="customerHousegroupCnt" column="customer_housegroup_cnt"/>
+		<result property="customerDiscussCnt" column="customer_discuss_cnt"/>
+		<result property="customerBuyhouseCnt" column="customer_buyhouse_cnt"/>
+		<result property="friendCnt" column="friend_cnt"/>
+		<result property="recommendTofriendCnt" column="recommend_tofriend_cnt"/>
+		<result property="recommendTocustomerCnt" column="recommend_tocustomer_cnt"/>
+		
+	</resultMap>
+	
+	  <resultMap type="UserRecommendShare" id="UserRecommendShareMap">
+		<id column="recommend_id" property="recommendId"/>
+		<result column="recommend_type" property="recommendType"/>
+		<result column="recommend_content_id" property="recommendContentId"/>
+		<result column="recommend_content" property="recommendContent"/>
+		<result column="recommend_visitor_type" property="recommendVisitorType"/>
+		<result column="recommend_visitor" property="recommendVisitor"/>
+		<result column="execute_time" property="executeTime"/>
+		<result column="paymoney" property="paymoney"/>
+		<result column="user_id" property="userId"/>
+		<result column="recommend_time" property="recommendTime"/>	
+		<association  property="userInfo" column="user_id" javaType="UserInfo" >
+		    <id property="userId" column="user_id"/>
+			<result property="name" column="NAME"/>
+			<result property="photoPath" column="photo_path"/>
+			<result property="userDesc" column="user_desc"/>
+		</association>
+	</resultMap>
+	
+	<resultMap type="UserDynamic" id="UserDynamicMap">
+		<result column="id" property="id"/>
+		<result column="order_date" property="orderDate" />
+		<result column="data_name" property="dataName" />
+		<result column="type" property="type" />
+		<result column="photo_path" property="photoPath" />
+		<result column="user_name" property="userName" />
+	</resultMap>
+	
+	
+	<resultMap id="UserMsgMap" type="UserMsg">
+		<result property="id" column="id"/>
+		<result property="msgContent" column="msg_content"/>
+		<result property="receiveUserId" column="receive_user_id"/>
+		<result property="receiveUserType" column="receive_user_type"/>
+		<result property="msgType" column="msg_type"/>
+		<result property="isRead" column="is_read"/>
+		<result property="sendUserId" column="send_user_id"/>
+		<result property="sendUserType" column="send_user_type"/>
+		<result property="sendUserName" column="send_user_name"/>
+		<result property="sendTime" column="send_time"/>
+		<association  property="userInfo" column="user_id" javaType="UserInfo" >
+		    <id property="userId" column="user_id"/>
+			<result property="name" column="NAME"/>
+			<result property="photoPath" column="photo_path"/>
+			<result property="userDesc" column="user_desc"/>
+		</association>
+	</resultMap>
+	
+	<!-- 查询所有统计 根据userId -->
+	<select id="selectStatUserInfo" parameterType="int" resultMap="StatUserInfoMap">
+	SELECT  
+			user_id,
+			skim_house_cnt,
+			collect_house_cnt,
+			sale_house_cnt,
+			price_house_cnt,
+			discuss_house_cnt,
+			customer_cnt,
+			customer_contact_cnt,
+			customer_event_cnt,
+			customer_look_cnt,
+			customer_housegroup_cnt,
+			customer_discuss_cnt,
+			customer_buyhouse_cnt,
+			friend_cnt,
+			recommend_tofriend_cnt,
+			recommend_tocustomer_cnt
+	  FROM  
+			stat_user_info
+	 WHERE  user_id=#{userId}
+	 LIMIT  0,1
+	</select>
+	
+	<!-- 我的分享 -->
+	<select id="selectStatUserInfoByUserId" parameterType="map" resultMap="UserRecommendShareMap">
+		SELECT
+				urs.recommend_time,
+				urs.recommend_content,
+				urs.recommend_id,
+				urs.recommend_type,
+				urs.recommend_visitor_type,
+				urs.recommend_visitor,
+				ui.name,
+				(SELECT photo_path FROM user_info WHERE user_id = urs.user_id ) photo_path,
+				(SELECT NAME FROM user_info WHERE user_id = urs.user_id ) user_desc
+		  FROM  user_recommend_share urs,
+				user_info ui
+		 WHERE  urs.recommend_type = ui.user_id
+		   AND  urs.user_id = #{userId}
+		 LIMIT  ${limit}
+	</select>
+	
+	<!-- 我的分享 总记录数 -->
+	<select id="selectStatUserInfoCountByUserId" parameterType="int" resultType="int">
+	SELECT COUNT(urs.recommend_time)
+	  FROM user_recommend_share urs,user_info ui
+	 WHERE urs.recommend_type=ui.user_id
+	   AND urs.user_id=#{userId}
+	</select>
+	
+	<!-- 好友的分享 -->
+	<select id="selectStatUserInfoByFriendId" parameterType="map" resultMap="UserRecommendShareMap">
+		SELECT
+				urs.recommend_time,
+				urs.recommend_content,
+				urs.recommend_id,
+				urs.recommend_type,
+				urs.recommend_visitor_type,
+				urs.recommend_visitor,
+				ui.name,
+				(SELECT photo_path FROM user_info WHERE user_id = urs.user_id ) photo_path,
+				(SELECT NAME FROM user_info WHERE user_id = urs.user_id ) user_desc
+		  FROM	user_recommend_share urs,
+		  		user_info ui
+		 WHERE  urs.recommend_type = ui.user_id
+		   AND  urs.user_id  IN (SELECT	friend_id FROM user_friends uf WHERE uf.user_id = #{userId})
+		 LIMIT  ${limit}
+	</select>
+	
+	<!-- 好友的分享 总记录数 -->
+	<select id="selectStatUserInfoCountByFriendId" parameterType="int" resultType="int">
+	SELECT COUNT(urs.recommend_time)
+	  FROM user_recommend_share urs,user_info ui
+	 WHERE urs.recommend_type=ui.user_id
+	   AND urs.user_id IN (SELECT friend_id FROM user_friends uf WHERE uf.user_id=#{userId})
+	</select>
+	
+	<!-- 我的动态-->
+	<select id="getUserDynamic" parameterType="int" resultMap="UserDynamicMap">
+		(SELECT	uccr.record_create_date order_date,
+				uccr.talk_user data_name,
+				(SELECT photo_path FROM user_info WHERE user_id = uccr.user_id) photo_path,
+				(SELECT name FROM user_info WHERE user_id = uccr.user_id ) user_name,
+				uccr.record_id id,
+				1 TYPE
+		   FROM	user_customer_contact_record uccr
+		  WHERE uccr.user_id = #{userId}
+	   ORDER BY uccr.record_create_date DESC)
+	
+		UNION ALL
+	
+		(SELECT	vchg.collect_time order_date,
+				hgi.group_name data_name,
+				(SELECT photo_path FROM user_info WHERE user_id = vchg.visitor_id) photo_path,
+				(SELECT name FROM user_info WHERE user_id = vchg.visitor_id ) user_name,
+				vchg.collect_id id,
+				2 TYPE
+		   FROM	visitor_collect_house_group vchg,house_group_info hgi
+		  WHERE vchg.house_group_id = hgi.house_group_id
+		    AND vchg.visitor_id = #{userId}
+		    AND vchg.visitor_type = 0
+	   ORDER BY vchg.collect_time DESC)
+	
+		UNION ALL
+	
+		(SELECT	vch.collect_time order_date,
+				hi.house_name data_name,
+				(SELECT photo_path FROM user_info WHERE user_id = vch.visitor_id) photo_path,
+				(SELECT name FROM user_info WHERE user_id = vch.visitor_id ) user_name,
+				vch.collect_id id,
+				3 TYPE
+		   FROM	visitor_collect_house vch,house_info hi
+		  WHERE vch.house_id = hi.house_id
+		    AND vch.visitor_id = #{userId}
+	   ORDER BY vch.collect_time DESC)
+	
+		UNION ALL
+	
+		(SELECT	ussh.sale_date order_date,
+				hi.house_name data_name,
+				(SELECT photo_path FROM user_info WHERE user_id = ussh.user_id) photo_path,
+				(SELECT name FROM user_info WHERE user_id = ussh.user_id ) user_name,
+				ussh.id id,
+				4 TYPE
+		   FROM user_study_sale_house ussh,house_info hi
+		  WHERE ussh.house_id = hi.house_id
+		    AND ussh.user_id = #{userId}
+	   ORDER BY ussh.sale_date DESC)
+	   
+	   UNION ALL
+	
+		(SELECT	ussh.sale_date order_date,
+				hi.house_name data_name,
+				(SELECT photo_path FROM user_info WHERE user_id = ussh.user_id ) photo_path,
+				(SELECT name FROM user_info WHERE user_id = ussh.user_id ) user_name,
+				ussh.id id,
+				5 TYPE
+		   FROM	user_study_sale_house ussh,house_info hi
+		  WHERE ussh.house_id = hi.house_id
+		    AND ussh.user_id IN (SELECT friend_id FROM user_friends WHERE user_id = #{userId})
+		    AND ussh.is_sale = 1
+	   ORDER BY ussh.sale_date DESC)
+	   
+	</select>
+	
+	<!-- 好友的动态 -->
+	<select id="getFriendDynamic" parameterType="int" resultMap="UserDynamicMap">
+		(SELECT uccr.record_create_date order_date,
+				uccr.talk_user data_name,
+				(SELECT photo_path FROM user_info WHERE user_id = uccr.user_id ) photo_path,
+				(SELECT name FROM user_info WHERE user_id = uccr.user_id ) user_name,
+				uccr.record_id id,
+				1 TYPE
+		   FROM user_customer_contact_record uccr
+		  WHERE uccr.user_id IN (SELECT friend_id FROM user_friends WHERE user_id = #{userId})
+	   ORDER BY uccr.record_create_date DESC)
+	
+		UNION ALL
+	
+		(SELECT	vchg.collect_time order_date,
+				hgi.group_name data_name,
+				(SELECT photo_path FROM user_info WHERE user_id = vchg.visitor_id ) photo_path,
+				(SELECT name FROM user_info WHERE user_id = vchg.visitor_id ) user_name,
+				vchg.collect_id id,
+				2 TYPE
+		   FROM visitor_collect_house_group vchg,house_group_info hgi
+		  WHERE vchg.house_group_id = hgi.house_group_id
+		    AND vchg.visitor_id IN (SELECT friend_id FROM user_friends WHERE user_id = #{userId} )
+		    AND vchg.visitor_type = 0
+	   ORDER BY vchg.collect_time DESC)
+	
+		UNION ALL
+	
+		(SELECT	vch.collect_time order_date,
+				hi.house_name data_name,
+				(SELECT photo_path FROM user_info WHERE user_id = vch.visitor_id) photo_path,
+				(SELECT name FROM user_info WHERE user_id = vch.visitor_id ) user_name,
+				vch.collect_id id,
+				3 TYPE
+		   FROM	visitor_collect_house vch,house_info hi
+		  WHERE vch.house_id = hi.house_id
+		    AND vch.visitor_id IN (SELECT friend_id FROM user_friends WHERE user_id = #{userId} )
+	   ORDER BY vch.collect_time DESC)
+	
+		UNION ALL
+	
+		(SELECT	ussh.sale_date order_date,
+				hi.house_name data_name,
+				(SELECT photo_path FROM user_info WHERE user_id = ussh.user_id ) photo_path,
+				(SELECT name FROM user_info WHERE user_id = ussh.user_id ) user_name,
+				ussh.id id,
+				4 TYPE
+		   FROM	user_study_sale_house ussh,house_info hi
+		  WHERE ussh.house_id = hi.house_id
+		    AND ussh.user_id IN (SELECT friend_id FROM user_friends WHERE user_id = #{userId})
+	   ORDER BY ussh.sale_date DESC)
+	   
+	   UNION ALL
+	
+		(SELECT	ussh.sale_date order_date,
+				hi.house_name data_name,
+				(SELECT photo_path FROM user_info WHERE user_id = ussh.user_id ) photo_path,
+				(SELECT name FROM user_info WHERE user_id = ussh.user_id ) user_name,
+				ussh.id id,
+				5 TYPE
+		   FROM	user_study_sale_house ussh,house_info hi
+		  WHERE ussh.house_id = hi.house_id
+		    AND ussh.user_id IN (SELECT friend_id FROM user_friends WHERE user_id = #{userId})
+		    AND ussh.is_sale = 1
+	   ORDER BY ussh.sale_date DESC)
+	   
+	</select>
+	
+	<!-- 删除分享中的认售/学习楼盘 -->
+	<delete id="delSaleHouseById" parameterType="int">
+		DELETE FROM user_study_sale_house WHERE id=#{id}
+	</delete>
+	
+	<!-- 删除分享中的收藏房源 -->
+	<delete id="delCollectHouseById" parameterType="int">
+		DELETE FROM visitor_collect_house WHERE collect_id=#{id}
+	</delete>
+	
+	<!-- 删除分享中的收藏房团  -->
+	<delete id="delCollectHouseGroupById" parameterType="int">
+		DELETE FROM visitor_collect_house_group WHERE collect_id=#{id}
+	</delete>
+	
+	<!-- 客户约会记录 删除 -->
+	<delete id="delContactRecordById" parameterType="int">
+		DELETE FROM user_customer_contact_record WHERE record_id=#{id}
+	</delete>
+	<!-- 删除分享中的 -->
+	<delete id="delRecommendShareById" parameterType="int">
+		DELETE FROM user_recommend_share WHERE recommend_id=#{id}
+	</delete>
+	
+	<select id="getMySendMsg" parameterType="int" resultMap="UserMsgMap">
+		SELECT 
+				um.id,
+				um.msg_content,
+				um.receive_user_id,
+				um.receive_user_type,
+				um.msg_type,
+				um.is_read,
+				um.send_user_id,
+				um.send_user_type,
+				um.send_user_name,
+				um.send_time
+		  FROM  user_msg 
+		 WHERE  msg_type=1
+		   AND  send_user_id=#{userId}
+		 LIMIT  0,5
+	</select>
+	
+	<select id="getMyFriendsSendMsg" parameterType="int" resultMap="UserMsgMap">
+	SELECT
+			um.id,
+			um.msg_content,
+			um.receive_user_id,
+			um.receive_user_type,
+			um.msg_type,
+			um.is_read,
+			um.send_user_id,
+			um.send_user_type,
+			um.send_user_name,
+			um.send_time,
+			ui.name,
+			(SELECT	photo_path FROM	user_info WHERE user_id = um.send_user_id) photo_path,
+			(SELECT	NAME FROM user_info	WHERE user_id = um.send_user_id) user_desc
+	  FROM
+			user_msg um,
+			user_info ui
+	 WHERE um.send_user_id = ui.user_id
+	   AND msg_type = 1
+	   AND receive_user_id = #{userId}
+	   AND send_user_id IN
+	(SELECT	a.*	FROM
+		(	 (SELECT uf.user_id	FROM user_friends uf WHERE uf.friend_id = #{userId})
+		UNION
+			 (SELECT uf.friend_id user_id FROM user_friends uf WHERE uf.user_id = #{userId})
+		)
+	a)
+	LIMIT  0,5
+	</select>
+<!-- SQL CREATE BY Zhenglh -->
+</mapper>

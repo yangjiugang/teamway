@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.flf.portal.mapper.HousePriceMapper">
+
+	<resultMap type="HousePrice" id="HousePriceMap">
+		<id property="priceId" column="price_id"/>
+		<result property="houseId" column="house_id"/>
+		<result property="housePrice" column="house_price"/>
+		<result property="saleDate" column="sale_date"/>
+		<result property="visitorType" column="visitor_type"/>
+		<result property="visitorId" column="visitor_id"/>
+		<result property="visitorName" column="visitor_name"/>
+		<association  property="houseInfo" column="house_id" javaType="HouseInfo" >
+		    <id property="houseId" column="house_id"/>
+			<result property="houseName" column="house_name"/>
+		</association>
+	</resultMap>
+	
+	<resultMap type="HouseInfoPriceByStat" id="PriceByStatMap">
+		<result property="month" column="month"/>
+		<result property="avgPrice" column="avgPrice"/>
+	</resultMap>
+	<resultMap type="HouseInfoPriceTotal" id="HouseInfoPriceTotalMap">
+		<result property="minPrice" column="minPrice"/>
+		<result property="maxPrice" column="maxPrice"/>
+		<result property="avgPrice" column="avgPrice"/>
+		<result property="avgCount" column="avgCount"/>
+	</resultMap>
+    
+    <!-- Code By Zhenglh Start-->
+    <select id="findHousePriceById" parameterType="int" resultMap="HousePriceMap">  
+        SELECT price_id,house_id,house_price,sale_date,visitor_type,visitor_id,visitor_name
+		  FROM house_price
+ 		 WHERE house_id=#{houseId}
+    </select>
+    
+    <insert id="saveHousePrice" parameterType="HousePrice">
+		INSERT INTO house_price(
+			house_id,
+			house_price,
+			sale_date,
+			visitor_type,
+			visitor_id,
+			visitor_name,
+			visitor_host_ip,
+			visitor_city
+		)
+		VALUES(
+			#{houseId},
+			#{housePrice},
+			#{saleDate},
+			#{visitorType},
+			#{visitorId},
+			#{visitorName},
+			#{visitorHostIp},
+			#{visitorCity}
+		)
+    </insert>   
+   
+    <select id="groupByDate" parameterType="map" resultMap="PriceByStatMap">
+    	SELECT DATE_FORMAT(sale_date,'%m') AS month,
+			   AVG(house_price) AS avgPrice
+		  FROM house_price
+		 WHERE DATE_FORMAT(sale_date,'%Y')='2012' AND house_id=#{houseId} AND visitor_type=#{visitorType}
+	  GROUP BY month
+    </select>
+    
+    <select id="getDateStatCount" parameterType="map" resultMap="PriceByStatMap">
+    	SELECT 
+    		   DATE_FORMAT(sale_date,'%m') AS MONTH 
+    	  FROM house_price 
+    	 WHERE DATE_FORMAT(sale_date,'%Y')=#{year} 
+    	   AND house_id=#{houseId}
+      GROUP BY MONTH
+    </select>
+    
+    <select id="avgPriceByVisitorType" parameterType="map" resultMap="PriceByStatMap">
+    	SELECT 1 AS MONTH,AVG(house_price) AS avgPrice FROM house_price 
+    	 WHERE house_id=#{houseId} AND visitor_type=#{visitorType}
+    </select>
+    
+    <select id="avgPriceByNowMonth" parameterType="int" resultMap="PriceByStatMap">
+    	SELECT 
+			  1 AS MONTH,
+			  AVG(house_price) AS avgPrice,
+			  SUM(house_id) 
+		 FROM house_price hp,
+		  (SELECT house_id id,MONTH(sale_date) mon_date,YEAR(sale_date) year_date 
+		     FROM house_price 
+		    WHERE house_id = #{houseId} 
+		 ORDER BY sale_date DESC 
+		    LIMIT 0, 1) AS mon 
+		    WHERE hp.house_id = mon.id 
+		      AND house_id = #{houseId}
+		      AND MONTH(hp.sale_date) = mon.mon_date 
+		      AND YEAR(sale_date) = mon.year_date 
+    </select>
+    
+    <select id="getPriceTotal" parameterType="int" resultMap="HouseInfoPriceTotalMap">
+		 SELECT 
+				MIN(house_price) AS minPrice,
+				MAX(house_price) AS maxPrice,
+				AVG(house_price) AS avgPrice,
+				COUNT(house_price) AS avgCount
+		   FROM house_price 
+		  WHERE house_id=#{houseId}
+    </select>
+    
+    <select id="selectUserIsSaveHouseInfo" parameterType="HousePrice" resultType="int">
+    	SELECT COUNT(price_id) FROM house_price WHERE house_id=#{houseId} AND visitor_id=#{visitorId}
+    </select>
+   <!-- Code By Zhenglh End-->
+   
+   <!-- Code By gaoqifang Start-->
+   <!-- 根据经纪人ID查找对应客户的喊价信息数 -->
+   <select id="selectCusPriceCountByUserId" parameterType="int" resultType="int">
+   	     SELECT COUNT(hp.price_id)
+		   FROM house_price hp,customer_info_detail cid 
+		  WHERE hp.visitor_id=cid.customer_id 
+		    AND cid.created_user=#{userId}
+   </select>
+   
+   <!-- 根据经纪人ID查找对应客户的喊价信息 -->
+   <select id="selectCusPriceByUserId" resultMap="HousePriceMap">
+   	     SELECT hp.price_id,hp.house_id,hp.house_price,hp.sale_date,hp.visitor_id,hp.visitor_name,hi.house_name
+		   FROM house_price hp,customer_info_detail cid ,house_info hi
+		  WHERE hp.visitor_id=cid.customer_id 
+		    AND cid.created_user=#{userId}
+		    AND hp.house_id=hi.house_id
+	   ORDER BY hp.sale_date DESC
+  	      LIMIT ${limit}
+   </select> 
+   
+   <!-- 根据经纪人priceId查找喊价信息 -->
+   <select id="selectCusPriceByPriceId" resultMap="HousePriceMap" parameterType="int">
+   	     SELECT hp.price_id,hp.house_id,hp.house_price,hp.sale_date,hp.visitor_id,hp.visitor_name,hi.house_name
+		   FROM house_price hp,house_info hi
+		  WHERE hp.price_id=#{housePriceId}
+		    AND hp.house_id=hi.house_id
+   </select>
+   
+   <!-- 根据经纪人ID查找对应好友的喊价信息数 -->
+   <select id="selectFriPriceCountByUserId" parameterType="int" resultType="int">
+   	     SELECT COUNT(hp.price_id)
+		   FROM house_price hp,user_friends uf 
+		  WHERE hp.visitor_id=uf.friend_id 
+		    AND uf.user_id=#{userId}
+   </select>
+    
+   <!-- 根据经纪人ID查找对应好友的喊价信息 -->
+   <select id="selectFriPriceByUserId" resultMap="HousePriceMap">
+   	     SELECT hp.price_id,hp.house_id,hp.house_price,hp.sale_date,hp.visitor_id,hp.visitor_name,hi.house_name
+		   FROM house_price hp,user_friends uf,house_info hi
+		  WHERE hp.visitor_id=uf.friend_id
+		    AND uf.user_id=#{userId}
+		    AND hp.house_id=hi.house_id
+	   ORDER BY hp.sale_date DESC
+  	      LIMIT ${limit}
+   </select>
+   <!-- Code By gaoqifang End-->  
+</mapper>  

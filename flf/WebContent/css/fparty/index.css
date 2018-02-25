@@ -1,0 +1,96 @@
+@charset "utf-8";
+/* CSS Document */
+
+.INformation{ width:495px; border-bottom:#d1d3d4 1px solid; margin:30px auto 0 auto; height:25px; z-index:-20;}
+.INformation li{ width:60px; float:left; height:25px; background-color:#dba5a6; margin-left:1px; line-height:25px; color:#FFF; text-align:center; z-index:100; margin-top:1px; _margin-top:2px;}
+.INformation li a{ color:#FFF;}
+.INformation li a:hover{ background-color:#eaeaeb; display:block; color:#b80408; border:#d1d3d4 1px solid; border-bottom:none;}
+#INformation1{ margin-left:15px;_margin-left:10px;}
+
+#INformationCenter{ width:495px; margin:auto;}
+#INformationCenter li{ width:480px; margin:auto;}
+#INformationCenter li span{ display:block; margin:10px 0;}
+#INformationCenter li .tittle{ height:26px; line-height:26px;}
+#INformationCenter li .tittle img{ float:left; width:51px; height:26px; margin-left:3px;}
+#INformationCenter li .tittle h3{ float:left; font-size:12px; color:#005eac; font-weight:normal; margin-left:10px; width:380px;}
+#INformationCenter li .tittle div img{ width:9px; height:6px; float:left; margin-top:10px;}
+#INformationCenter li .tittle h3 font{ font-size:12px; color:#888; margin:0 5px;}
+.down{  background-image:url(../images/zhankai(black).jpg); width:9px; height:6px; float:left; display:block;}
+#INformationCenter #center{ line-height:22px;}
+#INformationCenter #center p{ width:380px; margin-left:65px;}
+#INformationCenter #center div{ width:450px; margin:0 auto; overflow:hidden;}
+#INformationCenter #center font,#center font a,#center p a{ color:#005eac;}
+
+/*我的资料*/
+#Out{ margin-top:40px; margin-left:5px; clear:both;}
+#Out form{ display:block; margin-right:20px; float:right;}
+#Out input{margin-right:10px;}
+.ProfileTittle{ width:500px; border-bottom:#DCDDDE 1px solid; color:#BB0E13; text-indent:15px; line-height:25px; font-size:14px;}
+.ProfileTittle img{ margin-right:10px; float:right; margin-top:10px;}
+.Content1{width:300px; float:left;}
+.Content{ margin-top:10px;}
+.Content li{ line-height:25px;}
+.Content li font{ display:block; width:75px; text-align:right; float:left; margin-right:10px;}
+
+
+
+/****20120131****/
+.indexflhxx31{ width:480px; border-bottom:#d1d3d4 1px solid; margin:30px auto 0 auto; height:25px; z-index:-20; padding-left:15px;}
+.indexflhxx31 li{ float:left; height:25px; background-color:#dba5a6; margin-left:1px; line-height:25px; color:#FFF; text-align:center; z-index:100; margin-top:1px; _margin-top:2px;}
+.indexflhxx31 li a{ color:#FFF;}
+.indexflhxx31 li a:hover{ background-color:#eaeaeb; display:block; color:#b80408; border:#d1d3d4 1px solid; border-bottom:none;}
+
+.flhxx312{ width:495px; margin:auto;}
+.flhxx312 div{ width:480px; margin:auto;}
+.flhxx312 div span{ display:block; margin:10px 0;}
+.flhxx312 div .tittle{ height:26px; line-height:26px;}
+.flhxx312 div .tittle img{ float:left; width:51px; height:26px; margin-left:3px;}
+.flhxx312 div .tittle h3{ float:left; font-size:12px; color:#005eac; font-weight:normal; margin-left:10px; width:380px;}
+.flhxx312 div .tittle div img{ width:9px; height:6px; float:left; margin-top:10px;}
+.flhxx312 div .tittle h3 font{ font-size:12px; color:#888; margin:0 5px;}
+.down{  background-image:url(../images/zhankai(black).jpg); width:9px; height:6px; float:left; display:block;}
+.flhxx312 .center{ line-height:22px;}
+.flhxx312 .center p{ width:380px; margin-left:65px;}
+.flhxx312 .center div{ width:450px; margin:0 auto; overflow:hidden;}
+.flhxx312 .center font,.center font a,.center p a{ color:#005eac;}
+
+
+/*报名看房*/
+.kanfang_from{ width:600px; margin:30px auto; overflow:hidden;}
+.kanfang_from li{ width:250px; margin:10px 0 5px 25px; float:left;}
+.kanfang_from li input,.kanfang_text{ border: 1px solid #36A3E0; color: #9BC7E0; height: 22px;line-height: 22px;margin-left: 5px;vertical-align: middle; width: 166px; background-color:#eaeaeb;}
+.kanfang_from li label{ width:80px; text-align:right; color: #9BC7E0; }
+.kanfang_text{ background-image:none; margin:0px; width:180px; height:18px;}
+.kanfangBut{ background:url(../../images/Y01SOSO.gif) left center no-repeat; width:46px; height:20px;margin-left:5px; border:none;}
+
+.Rightleft1{width:800px;margin-left:8px; display:inline; float:left;}
+.fangy{ width:600px; margin:0 0 0 5px; float:left; display:inline; padding:0 5px 20px 5px;}
+.fangy-c{ width:600px; border-bottom:1px dashed #ccc; margin:25px 0 0 0; float:left; padding:0 0 10px 0;}
+.fangy-c dl{ width:265px; line-height:20px; float:left;}
+.fangy-c .ico{ border:1px solid #ccc; padding:1px; float:left; display:inline; margin:0 10px 0 0px ; display:inline; color:#FFF; width:193px; height:123px;}
+.fangy-c dl dt{ float:left; width:215px; color:#878787;}
+.fangy-c dl dt span{ font-weight:bold; color:#494949;}
+.fangy-c dl dd a, .fangy-c dl dd a:hover{ color:#005CA8; margin:0 8px 0 0; float:right; height:18px; border-bottom:#005CA8 1px solid;}
+.fangy-c dl dd{ margin:7px 0 0 0; float:left; color:#878787; width:270px;}
+.fangy-c dl dd span{ background-color:#E107CD; display:block; float:left; padding:0 5px; color:#FFFFFF; font-size:13px;}
+.jiange-z{ margin:30px 0 0 0; float:left;}
+.tltle-wenzi {line-height:30px; margin-top:20px; display:block; float:left; font-size:14px;  color:#b80408;  margin-left:5px;  margin-right:3px; _margin-left:3px}
+.title-line { width:145px; margin:20px 0 0 0; border-bottom:#d1d3d4 solid 1px;  display:block; float:left; height:25px;}
+.title-line form{ float:right; margin-right:120px;}
+/*end报名看房*/
+
+/*报名旅游线路*/
+.lvyou{clear:both; margin-left:15px; margin-top:50px; overflow:hidden;}
+.lvyou_t font{ float:left;font-size:14px;  color:#b80408; height:30px; line-height:30px;}
+.lvyou_t span{ display:block; float:left; height:25px; border-bottom:#d1d3d4 solid 1px; width:600px;}
+.lvyou_t span form{ float:right; margin-right:77px;}
+
+.lvyou ul{ overflow:hidden; clear:both;}
+.lvyou li{ width:690px; margin:20px 0; clear:both;}
+.lvyou li span{ display:block; float:left; width:250px; line-height:25px; margin-left:20px;}
+.lvyou li span font{ font-size:12px; font-weight:900; color:#b80408;}
+.lvyou li .xuanze{width:50px; color:#005EAC;}
+.lvyou li .xuanze a{color:#005EAC;line-height:25px; border-bottom:#005EAC 1px solid;}
+/*end报名旅游线路*/
+
+

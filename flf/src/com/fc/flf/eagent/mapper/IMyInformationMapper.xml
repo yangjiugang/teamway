@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- Liwj -->
+<mapper namespace="com.fc.flf.eagent.mapper.IMyInformationMapper">
+	<resultMap type="UserInfo" id="UserInfoMap">
+		<id property="userId" column="user_id"/>
+		<result property="name" column="name"/>
+		<result property="birth" column="birth"/>
+		<result property="sex" column="sex"/>
+		<result property="photoPath" column="photo_path"/>
+		<result property="areaId" column="area_id"/>
+		<result property="userCity" column="user_city"/>
+		<result property="bhri" column="bhri"/>
+		<result property="trustrank" column="trustrank"/>
+		<result property="userSkills" column="user_skills"/>
+		<result property="firstWorkDate" column="first_work_date"/>
+		<result property="userDesc" column="user_desc"/>
+	</resultMap>
+	
+	<resultMap type="UserInfoDetail" id="UserInfoDetailMap">
+		<id property="userId" column="user_id"/>
+		<result property="iDcard" column="IDcard"/>
+		<result property="telphone" column="telphone"/>
+		<result property="cellphone" column="cellphone"/>
+		<result property="qQ" column="QQ"/>
+		<result property="mSN" column="MSN"/>
+		<result property="weibo" column="weibo"/>
+		<result property="citizenshipId" column="citizenship_id"/>
+		<result property="citizenship" column="citizenship"/>
+		<result property="nationId" column="nation_id"/>
+		<result property="nation" column="nation"/>
+		<result property="maritalStatus" column="marital_status"/>
+		<result property="height" column="height"/>
+		<result property="weight" column="weight"/>
+		<result property="career" column="career"/>
+		<result property="salary" column="salary"/>
+		<result property="highestDegree" column="highest_degree"/>
+		<result property="graduateSchool" column="graduate_school"/>
+		<result property="profession" column="profession"/>
+		<result property="registeredAddress" column="registered_address"/>
+		<result property="emergencyPerson" column="emergency_person"/>
+		<result property="emergencyPhone" column="emergency_phone"/>
+		<result property="hobbies" column="hobbies"/>
+		<result property="blog" column="blog"/>
+		<result property="homeAddress" column="home_address"/>
+		<result property="birthPlace" column="birth_place"/>
+	</resultMap>
+	
+	<resultMap type="UserEduInfo" id="UserEduInfoMap">
+		<id property="eduId" column="edu_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="beginDate" column="begin_date"/>
+		<result property="endDate" column="end_date"/>
+		<result property="school" column="school"/>
+		<result property="profession" column="profession"/>
+		<result property="graduate" column="graduate"/>
+		<result property="degree" column="degree"/>
+	</resultMap>
+	
+	<resultMap type="UserTrainingExperience" id="UserTrainingExperienceMap">
+		<id property="trainingId" column="training_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="beginDate" column="begin_date"/>
+		<result property="endDate" column="end_date"/>
+		<result property="trainingCompany" column="training_company"/>
+		<result property="trainingAddress" column="training_address"/>
+		<result property="profession" column="profession"/>
+		<result property="havePassport" column="have_passport"/>
+		<result property="title" column="title"/>
+		<result property="trainingDesc" column="training_desc"/>
+	</resultMap>
+	
+	<resultMap type="UserWorkExperience" id="UserWorkExperienceMap">
+		<id property="workId" column="work_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="beginDate" column="begin_date"/>
+		<result property="endDate" column="end_date"/>
+		<result property="workCompany" column="work_company"/>
+		<result property="jobDuty" column="job_duty"/>
+		<result property="reference" column="reference"/>
+		<result property="contactPhone" column="contact_phone"/>
+		<result property="workDesc" column="work_desc"/>
+	</resultMap>
+	
+	<resultMap type="UserFamilyInfo" id="UserFamilyInfoMap">
+		<id property="id" column="id"/>
+		<result property="userId" column="user_id"/>
+		<result property="memberName" column="member_name"/>
+		<result property="relationship" column="relationship"/>
+		<result property="birth" column="birth"/>
+		<result property="workCompany" column="work_company"/>
+		<result property="duty" column="duty"/>
+		<result property="contactphone" column="contactphone"/>
+	</resultMap>
+	
+	<!-- under code by Liwj Start-->
+	<!-- function : 查看数据库是否有UserInfo记录 -->
+	<select id="countUserInfoById" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM user_info WHERE user_id = #{id}
+	</select>
+	
+	<!-- function : 查看数据库是否有UserInfoDetail记录 -->
+	<select id="countUserInfoDetailById" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM user_info_detail WHERE user_id = #{id}
+	</select>
+	
+	<!-- function : 查看数据库是否有UserEduInfo记录 -->
+	<select id="countUserEduInfoById" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM user_edu_info WHERE user_id = #{id}
+	</select>
+	
+	<!-- function : 查看数据库是否有UserTrainingExperience记录-->
+	<select id="countUserTrainingExperience" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM user_training_experience WHERE user_id = #{id}
+	</select>
+	
+	<!-- function : 查看数据库是否有UserWorkExperience记录 -->
+	<select id="countUserWorkExperience" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM user_work_experience WHERE user_id = #{id}
+	</select>
+	
+	<!-- function: 查看数据库是否有UserFamilyInfo记录 -->
+	<select id="countUserFamilyInfo" parameterType="UserFamilyInfo" resultType="int">
+		SELECT COUNT(*) FROM user_family_info WHERE user_id = #{userId} AND id = #{id} 
+	</select>
+	
+	<!-- function :新增一条 UserInfo记录 -->
+	<insert id="insertUserInfo" parameterType="UserInfo">
+   INSERT INTO user_info ui(user_id,ui.name,birth,sex,photo_path,area_id,user_city,bhri,trustrank,user_skills,first_work_date,user_desc) 
+		VALUES(#{userId},#{name},#{birth},#{sex},#{photoPath},1,#{userCity},0,#{trustrank},#{userSkills},#{firstWorkDate},#{userDesc});
+	</insert>
+	
+	<!-- function : 新增一条UserInfoDetail记录 -->
+	<insert id="insertUserInfoDetail" parameterType="UserInfoDetail">
+   INSERT INTO user_info_detail(user_id,IDcard,telphone,cellphone,birth_place,QQ,MSN,weibo,blog,citizenship_id,citizenship,nation_id,nation,
+									 marital_status,height,weight,career,salary,highest_degree,graduate_school,profession,registered_address,
+									 home_address,emergency_person,emergency_phone,hobbies) 
+		VALUES (#{userId},#{iDcard},#{telphone},#{cellphone},#{birthPlace},#{qQ},#{mSN},#{weibo},#{blog},NULL,#{citizenship},NULL,#{nation},#{maritalStatus},
+				#{height},#{weight},#{career},#{salary},#{highestDegree},#{graduateSchool},#{profession},#{registeredAddress},#{homeAddress},#{emergencyPerson},
+				#{emergencyPhone},#{hobbies});
+	</insert>
+	
+	<!-- function : 新增一条UserEduInfo 记录 -->
+	<insert id="insertUserEduInfo" parameterType="UserEduInfo">
+	INSERT INTO user_edu_info(edu_id,user_id,begin_date,end_date,school,profession,graduate,degree) 
+	    VALUES ( NULL,#{userId},#{beginDate},#{endDate},#{school},#{profession},#{graduate},#{degree}); 
+	</insert>
+	
+	<!-- function : 新增一条 UserTrainingExperience记录-->
+	<insert id="insertUserTrainingExperience" parameterType="UserTrainingExperience">
+   INSERT INTO user_training_experience(training_id,user_id,begin_date,end_date,training_company,training_address,profession,have_passport,title,
+											 training_desc) 
+		VALUES ( NULL,#{userId},#{beginDate},#{endDate},#{trainingCompany},#{trainingAddress},#{profession},#{havePassport},#{title},#{trainingDesc}); 
+	</insert>
+	
+	<!-- function : 新增一条UserWorkExperience记录 -->
+	<insert id="insertUserWorkExperience" parameterType="UserWorkExperience">
+   INSERT INTO user_work_experience(work_id,user_id,begin_date,end_date,work_company,job_duty,reference,contact_phone,work_desc) 
+		VALUES ( NULL,#{userId},#{beginDate},#{endDate},#{workCompany},#{jobDuty},#{reference},#{contactPhone},#{workDesc}); 
+	</insert>
+	<!-- function : 查找易介宝UserInfo -->
+	<select id="getUserInfo" parameterType="int" resultType="com.fc.flf.common.domain.UserInfo" resultMap="UserInfoMap">
+		SELECT ui.user_id,ui.name,birth,sex,photo_path,user_city,user_skills,first_work_date,user_desc 
+		  FROM user_info ui 
+		 WHERE user_id = #{id}
+	</select>
+	
+	<!-- function : 查找易介宝 userInfoDetail -->
+	<select id="getUserInfoDetail" parameterType="int" resultType="com.fc.flf.common.domain.UserInfoDetail" resultMap="UserInfoDetailMap">
+		SELECT uid.user_id,uid.telphone,uid.cellphone,uid.QQ,uid.MSN,uid.weibo,uid.citizenship,uid.nation,uid.marital_status,uid.height,
+			   uid.weight,uid.career,uid.salary,uid.highest_degree,uid.graduate_school,uid.profession,uid.registered_address,uid.emergency_person,
+			   uid.emergency_phone,uid.hobbies,IDcard,home_address,birth_place
+	      FROM user_info_detail uid 
+	     WHERE uid.user_id = #{id}
+	</select>
+	
+	<!-- function : 查找易介宝 userEduInfo -->
+	<select id="getUserEduInfo" parameterType="int" resultType="com.fc.flf.common.domain.UserEduInfo" resultMap="UserEduInfoMap">
+		SELECT begin_date,end_date,uei.school,uei.profession,graduate,degree 
+		  FROM user_edu_info uei 
+		 WHERE user_id = #{id}
+	</select>
+	
+	<!-- function : 查找易介宝邮箱 -->
+	<select id="getEmail" parameterType="int" resultType="String">
+		SELECT email FROM fc_sys_visitor WHERE visitor_id = #{id}
+	</select>
+	
+	<!-- function : 查找培训经历 -->
+	<select id="getUserTrainingExperience" parameterType="int" resultType="com.fc.flf.common.domain.UserTrainingExperience" resultMap="UserTrainingExperienceMap">
+		SELECT begin_date,end_date,training_company,training_address,profession,have_passport,title,training_desc FROM user_training_experience WHERE user_id = #{id}
+	</select>
+	
+	<!-- function : 查找工作经历 -->
+	<select id="getUserWorkExperience" parameterType="int" resultType="com.fc.flf.common.domain.UserWorkExperience" resultMap="UserWorkExperienceMap">
+		SELECT begin_date,end_date,work_company,job_duty,reference,contact_phone,work_desc FROM user_work_experience WHERE user_id = #{id}
+	</select>
+	
+	<!-- function : 查找家庭信息 -->
+	<select id="getUserFamilyInfo" parameterType="int" resultType="com.fc.flf.common.domain.UserFamilyInfo" resultMap="UserFamilyInfoMap">
+		SELECT id,member_name,relationship,birth,work_company,duty,contactphone FROM user_family_info WHERE user_id = #{id}
+	</select>
+	<!-- function : 基本资料 UserInfoPartOneUserInfoDetail-->
+	<update id="updateUserInfoPartOneUserInfoDetail" parameterType="UserInfoDetail">
+		UPDATE user_info_detail 
+		   SET nation = #{nation},marital_status = #{maritalStatus},height = #{height},weight = #{weight},
+			   salary = #{salary},highest_degree = #{highestDegree},profession = #{profession},career = #{career},birth_place = #{birthPlace}
+	     WHERE user_id = #{userId}
+	</update>
+	<!-- function : 基本资料 UserInfoPartOneUserInfo -->
+	<update id="updateUserInfoPartOneUserInfo" parameterType="UserInfo">
+		UPDATE user_info ui 
+		   SET ui.name = #{name},sex = #{sex},user_desc = #{userDesc},first_work_date =#{firstWorkDate} 
+		 WHERE  user_id = #{userId}
+	</update>
+	<!-- function : 证件及照片  UserInfoDetail-->
+	<update id="updateUserInfoPartTwoUserInfoDetail" parameterType="UserInfoDetail">
+		UPDATE user_info_detail SET IDcard = #{iDcard} WHERE user_id = #{userId}
+	</update>
+	
+	<!-- function : 联系方式  UserInfoDetail -->
+	<update id="updateUserInfoPartThreeUserInfoDetail" parameterType="UserInfoDetail">
+		UPDATE user_info_detail 
+		   SET telphone = #{telphone},cellphone = #{cellphone},QQ = #{qQ},MSN = #{mSN},blog = #{blog},weibo = #{weibo},
+			   emergency_person =#{emergencyPerson} ,emergency_phone =#{emergencyPhone},home_address = #{homeAddress},registered_address = #{registeredAddress}
+	     WHERE user_id =#{userId} 
+	</update>
+	
+	<!-- function : 联系方式 UserInfo -->
+	<update id="updateUserInfoPartThreeUserInfo" parameterType="UserInfo">
+		UPDATE user_info ui 
+		   SET user_city = #{userCity}
+		 WHERE  user_id = #{userId}
+	</update>
+	
+	<!-- function : 教育  UserEduInfo-->
+	<update id="updateUserInfoPartFourUserEduInfo" parameterType="UserEduInfo">
+		UPDATE user_edu_info 
+		   SET begin_date = #{beginDate},end_date = #{endDate},school = #{school},profession = #{profession},graduate = #{graduate}, degree = #{degree}
+		 WHERE user_id = #{userId}
+	</update>
+	
+	<!-- function : 培训经历 UserTrainingExperience -->
+	<update id="updateUserInfoPartFiveUserTrainingExperience" parameterType="UserTrainingExperience">
+		UPDATE user_training_experience 
+		   SET begin_date = #{beginDate},end_date = #{endDate},training_company = #{trainingCompany},training_address = #{trainingAddress},
+		   	   profession = #{profession},have_passport = #{havePassport},title = #{title},training_desc = #{trainingDesc} 
+		 WHERE user_id = #{userId}
+	</update>
+	
+	<!-- function : 工作经历UserWorkExperience -->
+	<update id="updateUserInfoPartSixUserWorkExperience" parameterType="UserWorkExperience">
+		UPDATE user_work_experience 
+		   SET begin_date = #{beginDate},end_date = #{endDate},work_company = #{workCompany},job_duty = #{jobDuty},reference = #{reference},
+		   	   contact_phone = #{contactPhone},work_desc = #{workDesc} 
+		 WHERE user_id= #{userId}
+	</update>
+	
+	<update id="updateUserFamilyInfo" parameterType="UserFamilyInfo">
+		UPDATE user_family_info 
+		   SET member_name = #{memberName},relationship = #{relationship},birth = #{birth},work_company = #{workCompany},duty = #{duty},contactphone = #{contactphone}
+		 WHERE user_id = #{userId} AND id = #{id}
+	</update>
+	
+	<!-- function : 新增家庭关系 -->
+	<insert id="insertUserFamilyInfo" parameterType="UserFamilyInfo">
+   INSERT INTO user_family_info(id,user_id,member_name,relationship,birth,work_company,duty,contactphone) 
+		VALUES ( NULL,#{userId},#{memberName},#{relationship},#{birth},#{workCompany},#{duty},#{contactphone}); 		
+	</insert>
+	
+	<!-- function : 更新兴趣爱好 -->
+	<update id="updateHobbies" parameterType="UserInfoDetail">
+		UPDATE user_info_detail SET hobbies = #{hobbies} WHERE user_id = #{userId}
+	</update>
+	<!-- top code by Liwj End-->
+</mapper>

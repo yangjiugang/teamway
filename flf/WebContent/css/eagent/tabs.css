@@ -1,0 +1,5 @@
+.tabul{ font-size:14px; color:#fff; height:25px; }
+.tabul ul{ margin-left:20px; padding:0;}
+.tabul li{ height:25px; float:left; display:inline; line-height:25px; text-align:center;cursor:pointer; padding:0 8px;background:#DA9EA0; border-right:1px solid #EAEAEB;}
+.tabul li.checked{color:#bb0e13;background:#EAEAEC;}
+.tabul li.mouseOver{color:#fff; background:#BB0E13;}

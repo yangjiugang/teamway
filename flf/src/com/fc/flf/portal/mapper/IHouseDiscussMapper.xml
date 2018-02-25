@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.portal.mapper.IHouseDiscussMapper">
+	
+	<resultMap id="HouseDiscussMap" type="HouseDiscuss">
+		<id property="discussId" column="discuss_id"/>
+		<result property="houseId" column="house_id"/>
+		<result property="visitorType" column="visitor_type"/>
+		<result property="visitorId" column="visitor_id"/>
+		<result property="visitorName" column="visitor_name"/>
+		<result property="anonymityFlag" column="anonymity_flag"/>
+		<result property="createDate" column="create_date"/>
+		<result property="houseGrade" column="house_grade"/>
+		<result property="visitorHostIp" column="visitor_host_ip"/>
+		<result property="visitorCity" column="visitor_city"/>
+		<result property="column12" column="Column_12"/>
+		<result property="content" column="content"/>
+		<association  property="housInfo" column="house_id" javaType="HouseInfo" >
+		    <id property="houseId" column="house_id"/>
+			<result property="houseName" column="house_name"/>
+		</association>
+	</resultMap>
+	
+	
+	<!-- SQL CREATE BY Zhenglh -->
+	
+	<select id="queryHouseDiscuss" resultMap="HouseDiscussMap" parameterType="map">
+		SELECT discuss_id,house_id,visitor_type,visitor_id,visitor_name,anonymity_flag,create_date,house_grade,visitor_host_ip,visitor_city,Column_12,content
+		  FROM house_discuss
+		 WHERE house_id=#{houseId}
+	  ORDER BY discuss_id DESC
+		 LIMIT ${limit}
+	</select>
+	
+	<select id="queryCountDiscuss" resultType="int" parameterType="int">
+		SELECT COUNT(house_id)
+		  FROM house_discuss
+		 WHERE house_id=#{houseId}
+	</select>
+	
+	<select id="queryHouseDiscussByType" resultMap="HouseDiscussMap" parameterType="map">
+		SELECT discuss_id,house_id,visitor_type,visitor_id,visitor_name,anonymity_flag,create_date,house_grade,visitor_host_ip,visitor_city,Column_12,content
+		  FROM house_discuss
+		 WHERE house_id=#{houseId}
+		   AND visitor_type=#{visitorType}
+	  ORDER BY discuss_id DESC
+		 LIMIT ${limit}
+	</select>
+	
+	<select id="queryCountDiscussByType" resultType="int" parameterType="map">
+		SELECT COUNT(house_id)
+		  FROM house_discuss
+		 WHERE house_id=#{houseId}
+		   AND visitor_type=#{visitorType}
+	</select>
+	
+	<insert id="saveDiscussByContent" parameterType="HouseDiscuss">
+		INSERT INTO house_discuss (house_id,visitor_type,visitor_id,visitor_name,anonymity_flag,create_date,house_grade,visitor_host_ip,visitor_city,Column_12,content) 
+		VALUES(#{houseId},#{visitorType},#{visitorId},#{visitorName},#{anonymityFlag},#{createDate},#{houseGrade},#{visitorHostIp},#{visitorCity},#{column12},#{content})
+	</insert>
+	
+	<select id="queryHouseDiscussByUser" resultMap="HouseDiscussMap" parameterType="map">
+		SELECT hd.discuss_id,
+			   hd.house_id,
+			   hd.visitor_type,
+		  	   hd.visitor_id,
+			   hd.visitor_name,
+			   hd.anonymity_flag,
+			   hd.create_date,
+			   hd.house_grade,
+			   hd.visitor_host_ip,
+			   hd.visitor_city,
+			   hd.Column_12,
+			   hd.content,
+			   hi.house_id,
+			   hi.house_name
+		  FROM house_discuss hd,house_info hi 
+		 WHERE hd.house_id=hi.house_id 
+		   AND visitor_id=#{visitorId}
+	  ORDER BY discuss_id DESC
+		 LIMIT ${limit}
+	</select>
+	
+	<select id="queryCountDiscussByUser" resultType="int" parameterType="int">
+		SELECT COUNT(discuss_id)
+		  FROM house_discuss
+		 WHERE visitor_id=#{visitorId}
+	</select>
+	<!-- SQL CREATE BY Zhenglh -->
+	
+	<!-- code by gaoqifang start-->
+	<select id="selectDiscussByUserId" resultMap="HouseDiscussMap" parameterType="int" >
+		SELECT hd.discuss_id,hd.house_id,hd.visitor_type,hd.visitor_id,hd.visitor_name,hd.content,
+			   hd.create_date,hi.house_name
+		  FROM house_discuss hd,customer_info_detail cid,house_info hi
+		 WHERE cid.created_user=#{userId}
+		   AND hd.visitor_id=cid.cus_id
+		   AND hi.house_id=hd.house_id
+	  ORDER BY hd.create_date
+  	     LIMIT ${limit}
+	</select>
+	
+	<select id="selectCountHouseDisByUserId" resultType="int" parameterType="int">
+		SELECT COUNT(hd.discuss_id)
+		  FROM house_discuss hd,customer_info_detail cid
+		 WHERE cid.created_user=#{userId}
+		   AND hd.visitor_id=cid.cus_id
+	</select>
+	
+	<select id="selectDiscussById" resultMap="HouseDiscussMap" parameterType="int">
+		SELECT hd.discuss_id,hd.house_id,hd.visitor_type,hd.visitor_id,hd.visitor_name,hd.content,
+			   hd.create_date,hi.house_name
+		  FROM house_discuss hd,house_info hi
+		 WHERE hd.discuss_id=#{discussId}
+		   AND hd.house_id = hi.house_id
+	</select>
+	
+	<delete id="deleteHouseDisById" parameterType="int">
+		DELETE
+		  FROM house_discuss
+		 WHERE discuss_id=#{discussId}
+	</delete>
+	<!-- code by gaoqifang end-->
+</mapper>

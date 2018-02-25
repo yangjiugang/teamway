@@ -1,0 +1,45 @@
+@charset "utf-8";
+/* CSS Document */
+
+.Outboder{border-left:#d1d1d2 1px solid; border-right:#d1d1d2 1px solid; background-color:#ededed; width:985px; overflow:hidden; position:relative;}
+.Outboder span,#yingcang .out1 span{ width:65px; float:left; color:#0566ad; font-size:12px; font-weight:bold; letter-spacing:1px; display:block; margin:10px 10px 0 8px; _margin:10px 0 0 5px; text-align:right;}
+.Outboder div,#yingcang .out1 div{ width:866px; float:left; border-bottom:#bfd2e0 1px solid;}
+.Outboder div ul,#yingcang .out1 div ul{ width:800px; float:left; margin-bottom:5px; margin:5px 0 0-10px; _margin:7px 0 5px -20px;}
+.Outboder div ul li ,#yingcang .out1 li{float:left; margin:5px 0 0 13px; height:20px;}
+.Outboder div ul li a,#yingcang .out1 a,.Outboder div span a{ color:#0566ad;}
+.Outboder div ul li a:hover,#yingcang .out1 li a:hover{ color:#FFF; background-color:#c60514; padding:2px 5px; display:block; text-align:center; text-decoration:none;}
+.Outboder div span{ display:block; width:30px; position:absolute; bottom:5px; right:30px; text-align:center; _right:50px;}
+.Outboder div span a:hover,.out1 div span a:hover{width:30px;color:#FFF; display:block; background-color:#c60514; }
+.selected {color:#FFF; display:block; background-color:#c60514; }
+#yingcang{ display:none;border-left:#d1d1d2 1px solid; border-right:#d1d1d2 1px solid; background-color:#ededed; width:985px; overflow:hidden; clear:both; position:relative;}
+#yingcang .out1{border:none; overflow:hidden; width:980px; clear:both;}
+#yingcang .out1 div span{display:block; width:30px; position:absolute; text-align:center; right:30px; _right:50px;}
+#yingcang .out1 div span a:hover{color:#FFF;}
+
+.seachFoot{ background-image:url(../../images/searchFoot.jpg); width:987px; height:52px; position:relative;}
+.seachFoot .MFtext{ width:359px; height:19px; background-color:#ededed; position:absolute; border:#0566ad 1px solid; top:15px; left:80px; color:#d6d6d6; font-size:12px; text-indent:10px; line-height:21px;}
+.seachFoot .MFbut{ position:absolute; top:15px; left:444px; height:21px;}
+.seachFoot #expand,#retracting{ width:55px; height:19px; position:absolute; bottom:2px; right:35px;}
+.seachFoot #expand{background-image:url(../../images/expand.jpg);}
+.seachFoot #retracting{ background-image:url(../../images/retracting.jpg);display:none;}
+
+.NewExhibition{ margin-left:0px; overflow:hidden;}
+
+.pailie{ clear:both; margin:15px 0 0 0; overflow:hidden; height:22px; line-height:22px;}
+.pailie span{width:130px; float:left;display:block;position:relative;}
+.pailie input{border:#0566ad 1px solid; color:#7297b2; font-family:"宋体"; font-size:12px; width:130px; height:18px; background-image:url(../../images/selectBg1.gif); background-repeat:no-repeat; vertical-align:middle; line-height:18px; }
+.pailie span .Menu {width:130px;display:none;background: #FFF; border:#0566ad 1px solid; position:absolute; top:18px; left:0; z-index:9999; _top:21px; _left:2px;}
+.pailie span .Menu ul{width:98%;overflow:hidden;z-index:1; margin-bottom:5px;}
+.pailie span .Menu ul li{width:98%;height:20px;line-height:20px;text-indent:5px; font-size:12px; color:#8b8bb8;
+border-bottom:1px dashed #ccc; cursor:pointer;}
+.pailie ul{ width:100px; float:left; margin-left:15px;}
+.pailie ul li{ width:20px; height:20px; float:left;border:#000 1px solid; text-align:center; margin-left:5px; line-height:20px;}
+.pltext{width:170px; float:left; margin-left:20px; _margin-top:2px;}
+
+
+/*重构收索框*/
+
+
+
+/*End重构收索框*/
+

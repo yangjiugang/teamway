@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.eagent.mapper.IUserFriendsMapper">
+	<resultMap id="UserFriendsMap" type="UserFriends">
+		<result property="id" column="id"/>
+		<result property="friendId" column="friend_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="friendName" column="friend_name"/>
+		<result property="groupId" column="group_id"/>
+		<result property="groupName" column="group_name"/>
+		<result property="column4" column="Column_4"/>
+		
+		<association property="userInfo" column="friend_id"
+			javaType="UserInfo">
+			<id property="userId" column="user_id"/>
+			<result property="name" column="name"/>
+			<result property="birth" column="birth"/>
+			<result property="sex" column="sex"/>
+			<result property="photoPath" column="photo_path"/>
+			<result property="areaId" column="area_id"/>
+			<result property="userCity" column="user_city"/>
+			<result property="bhri" column="bhri"/>
+			<result property="trustrank" column="trustrank"/>
+			<result property="userSkills" column="user_skills"/>
+			<result property="firstWorkDate" column="first_work_date"/>
+			<result property="userDesc" column="user_desc"/>
+		</association>
+		
+		<association property="userInfoDetail" column="friend_id"
+			javaType="UserInfoDetail">
+			<id property="userId" column="user_id"/>
+			<result property="iDcard" column="IDcard"/>
+			<result property="telphone" column="telphone"/>
+			<result property="cellphone" column="cellphone"/>
+			<result property="qQ" column="QQ"/>
+			<result property="mSN" column="MSN"/>
+			<result property="weibo" column="weibo"/>
+			<result property="citizenshipId" column="citizenship_id"/>
+			<result property="citizenship" column="citizenship"/>
+			<result property="nationId" column="nation_id"/>
+			<result property="nation" column="nation"/>
+			<result property="maritalStatus" column="marital_status"/>
+			<result property="height" column="height"/>
+			<result property="weight" column="weight"/>
+			<result property="career" column="career"/>
+			<result property="salary" column="salary"/>
+			<result property="highestDegree" column="highest_degree"/>
+			<result property="graduateSchool" column="graduate_school"/>
+			<result property="profession" column="profession"/>
+			<result property="registeredAddress" column="registered_address"/>
+			<result property="emergencyPerson" column="emergency_person"/>
+			<result property="emergencyPhone" column="emergency_phone"/>
+			<result property="hobbies" column="hobbies"/>
+		</association>
+	</resultMap>
+	
+	<!-- SQL CREATE BY Zhenglh -->
+		
+	<select id="selectFriendsByUserIdToPage" resultMap="UserFriendsMap" parameterType="map">
+		SELECT
+				uf.id,
+				uf.friend_id,
+				uf.user_id,
+				uf.friend_name,
+				uf.group_id,
+				uf.group_name,
+				uf.Column_4,
+				ui.user_id,
+				ui.name,
+				ui.birth,
+				ui.sex,
+				ui.photo_path,
+				ui.area_id,
+				ui.user_city,
+				ui.bhri,
+				ui.trustrank,
+				ui.user_skills,
+				ui.first_work_date,
+				ui.user_desc,
+				uid.user_id,
+				uid.IDcard,
+				uid.telphone,
+				uid.cellphone,
+				uid.QQ,
+				uid.MSN,
+				uid.weibo,
+				uid.citizenship_id,
+				uid.citizenship,
+				uid.nation_id,
+				uid.nation,
+				uid.marital_status,
+				uid.height,
+				uid.weight,
+				uid.career,
+				uid.salary,
+				uid.highest_degree,
+				uid.graduate_school,
+				uid.profession,
+				uid.registered_address,
+				uid.emergency_person,
+				uid.emergency_phone,
+				uid.hobbies
+		  FROM  user_friends uf,
+		        user_info ui,
+		        user_info_detail uid
+		 WHERE  uf.user_id=ui.user_id
+		   AND  uid.user_id=ui.user_id
+		   AND  uf.user_id=#{userId}
+		<if test="sex != null ">
+		   AND  ui.sex=#{sex}
+		</if>
+		<if test="city != null">
+		   AND  ui.user_city=#{city}
+		</if>
+		 LIMIT  ${limit}
+	</select>
+	
+	<select id="selectFriendsByUserIdBeforeSum" resultMap="UserFriendsMap" parameterType="map">
+		SELECT	ui.user_id,ui.name,uid.cellphone,ui.first_work_date,ui.sex,ui.user_city,ui.photo_path,uid.hobbies,uid.registered_address,ui.user_skills,ui.bhri
+		  FROM (
+		 (SELECT uf.user_id 
+		     FROM user_friends uf
+		    WHERE uf.friend_id = #{userId} )
+		UNION
+		 (SELECT uf.friend_id user_id
+			FROM user_friends uf
+		   WHERE uf.user_id  = #{userId} )
+		   ) a,
+			user_info ui,
+			fc_sys_visitor fsv,
+			user_info_detail uid
+	    WHERE a.user_id = ui.user_id
+		  AND a.user_id = uid.user_id
+		  AND a.user_id = fsv.visitor_id
+		<if test="sex != null ">
+		   AND  ui.sex=#{sex}
+		</if>
+		<if test="city != null">
+		   AND  ui.user_city=#{city}
+		</if>
+		 LIMIT  ${limit}
+	</select>
+	
+	<select id="selectFriendsCountByUserIdBeforeSum" resultType="int" parameterType="map">
+		SELECT COUNT(ui.user_id)
+		  FROM (
+		 (SELECT uf.user_id 
+		     FROM user_friends uf
+		    WHERE uf.friend_id = #{userId})
+		UNION
+		 (SELECT uf.friend_id user_id
+			FROM user_friends uf
+		   WHERE uf.user_id = #{userId})) a,
+			user_info ui,
+			fc_sys_visitor fsv,
+			user_info_detail uid
+	    WHERE a.user_id = ui.user_id
+		  AND a.user_id = uid.user_id
+		  AND a.user_id = fsv.visitor_id
+		<if test="sex != null">
+		  AND  ui.sex=#{sex}
+		</if>
+		 <if test="city != null">
+		  AND  ui.user_city=#{city}
+		</if>
+	</select>
+	
+	<select id="selectFriendsCountByUserId" resultType="int" parameterType="map">
+		SELECT  COUNT(uf.id)
+		  FROM  user_friends uf,
+		        user_info ui,
+		        user_info_detail uid
+		 WHERE  uf.user_id=ui.user_id
+		   AND  uid.user_id=ui.user_id
+		   AND  uf.user_id=#{userId}
+		<if test="sex != null">
+		   AND  ui.sex=#{sex}
+		</if>
+		 <if test="city != null">
+		   AND  ui.user_city=#{city}
+		</if>
+	</select>
+	
+	<select id="selectFriendsCountByFriendId" resultType="int" parameterType="map">
+		SELECT	COUNT(uf.id)
+		  FROM  user_friends uf,
+		        user_info ui,
+		        user_info_detail uid
+		 WHERE  uf.user_id=ui.user_id
+		   AND  uid.user_id=ui.user_id
+		   AND  uf.friend_id=#{userId}
+		<if test="sex != null">
+		   AND  ui.sex=#{sex}
+		</if>
+		<if test="city != null">
+		   AND  ui.user_city=#{city}
+		</if>
+	</select>
+	
+	<select id="selectFriendsByFriendIdToPage" resultMap="UserFriendsMap" parameterType="map">
+		SELECT
+				uf.id,
+				uf.friend_id,
+				uf.user_id,
+				uf.friend_name,
+				uf.group_id,
+				uf.group_name,
+				uf.Column_4,
+				ui.user_id,
+				ui.name,
+				ui.birth,
+				ui.sex,
+				ui.photo_path,
+				ui.area_id,
+				ui.user_city,
+				ui.bhri,
+				ui.trustrank,
+				ui.user_skills,
+				ui.first_work_date,
+				ui.user_desc,
+				uid.user_id,
+				uid.IDcard,
+				uid.telphone,
+				uid.cellphone,
+				uid.QQ,
+				uid.MSN,
+				uid.weibo,
+				uid.citizenship_id,
+				uid.citizenship,
+				uid.nation_id,
+				uid.nation,
+				uid.marital_status,
+				uid.height,
+				uid.weight,
+				uid.career,
+				uid.salary,
+				uid.highest_degree,
+				uid.graduate_school,
+				uid.profession,
+				uid.registered_address,
+				uid.emergency_person,
+				uid.emergency_phone,
+				uid.hobbies
+		  FROM  user_friends uf,
+		        user_info ui,
+		        user_info_detail uid
+		 WHERE  uf.user_id=ui.user_id
+		   AND  uid.user_id=ui.user_id
+		   AND  uf.friend_id=#{userId}
+		<if test="sex != null">
+		   AND  ui.sex=#{sex}
+		</if>
+		<if test="city != null">
+		   AND  ui.user_city=#{city}
+		</if>
+		 LIMIT  ${limit}
+	</select>
+	
+	<select id="findUserFriends" resultMap="UserFriendsMap" parameterType="map">
+		  SELECT ui.user_id,ui.name,ui.first_work_date,ui.sex,ui.user_city,ui.photo_path,uid.hobbies,uid.cellphone
+			FROM  user_friends uf,user_info ui,user_info_detail uid,fc_sys_visitor fsv
+		   WHERE  uf.user_id=ui.user_id
+			 AND fsv.visitor_id=ui.user_id
+			 AND  uid.user_id=ui.user_id
+		<if test="isOnline != null and isOnline !='' ">
+		     AND fsv.is_online=${isOnline}
+		</if>
+		<if test="userCity != null and userCity !='' ">
+		     AND ui.user_city='${userCity}'
+		</if>
+		<if test="registeredAddress != null and registeredAddress !='' ">
+		     AND uid.registered_address=${registeredAddress}
+		</if>
+		<if test="sex != null and sex !='' ">
+		     AND ui.sex=${sex}
+		</if>
+		<if test="keyWord !='' and keyWord!='请输入关键词' and keyWord !=null">
+		     AND (ui.name LIKE '%${keyWord}%'
+		      OR ui.user_desc LIKE '%${keyWord}%')
+		</if>
+		 LIMIT  ${limit}
+	</select>
+	
+	<select id="findUserFriendsCount" resultType="int" parameterType="map">
+		  SELECT COUNT(ui.user_id)
+			FROM  user_friends uf,user_info ui,user_info_detail uid,fc_sys_visitor fsv
+		   WHERE  uf.user_id=ui.user_id
+			 AND fsv.visitor_id=ui.user_id
+			 AND  uid.user_id=ui.user_id
+		<if test="isOnline != null and isOnline !='' ">
+		     AND fsv.is_online=${isOnline}
+		</if>
+		<if test="userCity != null and userCity !='' ">
+		     AND ui.user_city='${userCity}'
+		</if>
+		<if test="registeredAddress != null and registeredAddress !='' ">
+		     AND uid.registered_address=${registeredAddress}
+		</if>
+		<if test="sex != null and sex !='' ">
+		     AND ui.sex=${sex}
+		</if>
+		<if test="keyWord !='' and keyWord!='请输入关键词' and keyWord !=null">
+		     AND (ui.name LIKE '%${keyWord}%'
+		      OR ui.user_desc LIKE '%${keyWord}%')
+		</if>
+	</select>
+	
+	<!-- SQL CREATE BY Zhenglh -->
+</mapper>

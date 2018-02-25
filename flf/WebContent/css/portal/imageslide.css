@@ -1,0 +1,37 @@
+.flashLeft{ width:708px; height:264px; float:left; position:relative;}
+.flash_box{ position:absolute; bottom:0; z-index:999;background-image:url(../images/black.png); width:708px; height:45px; background-image:url(../../images/black.png); width:708px; 
+
+height:45px; _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, src="../images/black.png"); _background:none;}
+.slides_box{
+    padding: 0px;
+    margin: 0px;
+    overflow: hidden;
+    position: absolute;
+}
+.flashLeft ul li{
+    padding: 0px;
+    margin: 0px;
+    float: left;
+}
+.flashLeft ul{
+    padding: 0px;
+    margin: 0px;
+    position: absolute;
+    list-style: none;
+}
+.flash_box span{width:25px; height:25px; float:left; margin:10px 0 0 2px; display:block;}
+.one{ width:25px; height:25px; background:url(../../images/carousel_circle_12.png); _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, 
+
+src="images/b1.png"); _background:none;}
+.two{ width:25px; height:25px; background:url(../../images/carousel_circle_21.png); _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, 
+
+src="images/b2.png"); _background:none;}
+.three{ width:25px; height:25px; background:url(../../images/carousel_circle_31.png); _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, 
+
+src="images/b3.png"); _background:none;}
+.four{ width:25px; height:25px; background:url(../../images/carousel_circle_41.png); _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, 
+
+src="images/b4.png"); _background:none;}
+.five{ width:25px; height:25px; background:url(../../images/carousel_circle_51.png); _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, 
+
+src="images/carousel_circle_52.png"); _background:none;}

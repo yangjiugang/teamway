@@ -1,0 +1,60 @@
+// JavaScript Document
+$(function(){
+//左边下	
+		$("#FLHli1").click(function(){
+			down1("#FLHli01","#FLHli1","#FLHul1");
+			});
+		$("#FLHli2").click(function(){
+			down1("#FLHli02","#FLHli2","#FLHul2");
+			});	
+		$("#FLHli3").click(function(){
+			down1("#FLHli03","#FLHli3","#FLHul3");
+			});		
+//右边下
+		$("#Activitiesdown").click(function(){
+			down2("#Activitiesup","#Activitiesdown",".ActivitiesContent");
+			});	
+		$("#hebdomaddown").click(function(){
+			down2("#hebdomadup","#hebdomaddown",".hebdomadContent");
+			});							
+//左边上					
+		$("#FLHli01").click(function(){
+			up1("#FLHli01","#FLHli1","#FLHul1");	
+			});
+		$("#FLHli02").click(function(){
+			up1("#FLHli02","#FLHli2","#FLHul2");		
+			});
+		$("#FLHli03").click(function(){
+			up1("#FLHli03","#FLHli3","#FLHul3");		
+			});
+//右边上		
+		$("#Activitiesup").click(function(){
+			up2("#Activitiesup","#Activitiesdown",".ActivitiesContent");
+			});	
+		$("#hebdomadup").click(function(){
+			up2("#hebdomadup","#hebdomaddown",".hebdomadContent");
+			});		
+	}	
+);
+//默认隐藏
+function down1(up,down,center){
+	        $(center).slideDown("slow");
+			$(down).css({display:"none"});
+			$(up).css({display:"block"});
+		}
+function up1(up,down,center){
+	       $(center).slideUp("slow");
+		   $(up).css({display:"none"});
+		   $(down).css({display:"block"});
+		}
+//默认显示
+function down2(up,down,center){
+	        $(center).slideUp("slow");
+			$(down).css({display:"none"});
+			$(up).css({display:"block"});
+		}
+function up2(up,down,center){
+	       $(center).slideDown("slow");
+		   $(up).css({display:"none"});
+		   $(down).css({display:"block"});
+		}					

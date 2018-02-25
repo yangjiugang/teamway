@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.fparty.mapper.IUserRecommendShareMapper">
+
+   <resultMap type="UserRecommendShare" id="UserRecommendShareMap">
+
+		<id property="recommendId" column="recommend_id"/>
+		<result property="recommendType" column="recommend_type"/>
+		<result property="recommendContentId" column="recommend_content_id"/>
+		<result property="recommendContent" column="recommend_content"/>
+		<result property="recommendVisitorType" column="recommend_visitor_type"/>
+		<result property="recommendVisitor" column="recommend_visitor"/>
+		<result property="recommendVisitorName" column="recommend_visitor_name"/>
+		<result property="executeTime" column="execute_time"/>
+		<result property="paymoney" column="paymoney"/>
+		<result property="userId" column="user_id"/>
+		<result property="recommendTime" column="recommend_time"/>
+
+		<association  property="userInfo" column="user_id" javaType="UserInfo" >
+		    <id property="userId" column="user_id"/>
+			<result property="name" column="NAME"/>
+		</association>
+	</resultMap>
+	
+	<!-- code by gaoqifang start -->
+	<select id="selectRecommendByUserId" resultMap="UserRecommendShareMap" >
+		SELECT urs.recommend_id,urs.recommend_type,urs.recommend_content_id,urs.recommend_visitor,
+			   urs.execute_time,urs.paymoney,urs.user_id,urs.recommend_time,urs.recommend_content,ui.NAME
+		  FROM user_recommend_share urs,user_info ui
+		 WHERE urs.recommend_visitor =#{userId}
+		   AND urs.user_id=ui.user_id
+	  ORDER BY urs.execute_time
+  	     LIMIT ${limit}
+	</select>
+	
+	<select id="selectCountRecommendByUserId" resultType="int" parameterType="int">
+		SELECT COUNT(recommend_id)
+		  FROM user_recommend_share
+		 WHERE recommend_visitor =#{userId}
+	</select>
+	
+	<select id="selectRecommendById" resultMap="UserRecommendShareMap" parameterType="int">
+		SELECT urs.recommend_id,urs.recommend_type,urs.recommend_content_id,urs.recommend_visitor,
+			   urs.execute_time,urs.paymoney,urs.user_id,urs.recommend_time,urs.recommend_content,ui.NAME
+		  FROM user_recommend_share urs,user_info ui
+		 WHERE urs.recommend_id =#{recommendId}
+		   AND urs.user_id=ui.user_id
+	</select>
+	
+	<delete id="deleteRecomById" parameterType="int">
+		DELETE
+		  FROM user_recommend_share
+		 WHERE recommend_id=#{recommendId}
+	</delete>
+	<!-- code by gaoqifang end -->
+	<!-- gonghongjun start -->
+	<!-- 根据经纪人的id号 查找经纪人的所有推荐分享 -->
+	<select id="findAllRecommendByUserId" parameterType="map" resultMap="UserRecommendShareMap" >
+		SELECT recommend_id,recommend_type,recommend_content_id,recommend_content,recommend_visitor_type,
+			   recommend_visitor,recommend_visitor_name,execute_time,paymoney,user_id,recommend_time
+		  FROM user_recommend_share
+		 WHERE user_id =#{userId}
+	  ORDER BY recommend_id DESC
+  	     LIMIT ${limit}
+	</select>
+	<!-- 根据经纪人的id号 查找经纪人的所有推荐分享总条数 -->
+	<select id="findAllRecommendByUserIdCount" parameterType="int" resultType="int">
+	   SELECT COUNT(1)
+		 FROM user_recommend_share urs
+		WHERE urs.user_id =#{userId}
+	</select>
+	<!-- gonghongjun end -->
+	
+	
+	
+</mapper>

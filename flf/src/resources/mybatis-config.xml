@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<!-- changes from the defaults for testing -->
+		<setting name="cacheEnabled" value="false" />
+		<setting name="useGeneratedKeys" value="true" />
+		<setting name="defaultExecutorType" value="REUSE" />
+	</settings>
+
+	<typeAliases>
+	   <!-- gonghj visitorCollectHose start -->
+	   <typeAlias type="com.fc.flf.common.domain.VisitorCollectHouse" alias="VisitorCollectHouse"/>
+	     <typeAlias type="com.fc.flf.common.domain.UserRecommendShare" alias="UserRecommendShare"/>	
+	     <typeAlias type="com.fc.flf.common.domain.VisitorSkimHouseGroup" alias="VisitorSkimHouseGroup"/>
+	     <typeAlias type="com.fc.flf.common.domain.VisitorCollectHouseGroup" alias="VisitorCollectHouseGroup"/>		     	
+		<!-- gonghj visitorCollectHose end -->		
+		<!-- liwj  start -->		
+		<typeAlias type="com.fc.flf.common.domain.FcSysVisitor" alias="FcSysVisitor"/>	
+		<!-- liwj  end-->
+		<!-- zhenglh HouseInfo start-->
+		<typeAlias alias="HouseInfo" type="com.fc.flf.common.domain.HouseInfo"/>
+		<typeAlias alias="HouseInfoDetail" type="com.fc.flf.common.domain.HouseInfoDetail"/>
+		<typeAlias alias="HouseEstimate" type="com.fc.flf.common.domain.HouseEstimate"/>
+		<typeAlias alias="HousePrice" type="com.fc.flf.common.domain.HousePrice"/>
+		<typeAlias alias="HousePicInfo" type="com.fc.flf.common.domain.HousePicInfo"/>
+		<typeAlias alias="HouseNews" type="com.fc.flf.common.domain.HouseNews"/>
+		<typeAlias alias="HouseStructureInfo" type="com.fc.flf.common.domain.HouseStructureInfo"/>
+		<typeAlias alias="UserStudySaleHouse" type="com.fc.flf.common.domain.UserStudySaleHouse"/>
+		<typeAlias alias="HouseInfoPriceByStat" type="com.fc.flf.common.domain.HouseInfoPriceByStat"/>
+		<typeAlias alias="HouseInfoPriceTotal" type="com.fc.flf.common.domain.HouseInfoPriceTotal"/>
+		<typeAlias alias="UserInfo" type="com.fc.flf.common.domain.UserInfo"/>
+		<typeAlias alias="CustomerSkimUser" type="com.fc.flf.common.domain.CustomerSkimUser"/>
+		<typeAlias alias="UserPhotos" type="com.fc.flf.common.domain.UserPhotos"/>
+		<typeAlias alias="UserFriends" type="com.fc.flf.common.domain.UserFriends"/>
+		<typeAlias alias="ClubStudyData" type="com.fc.flf.common.domain.ClubStudyData"/>
+		<typeAlias alias="ClubStudyDataAttachment" type="com.fc.flf.common.domain.ClubStudyDataAttachment"/>
+		<typeAlias alias="ClubStudyDataInfo" type="com.fc.flf.common.domain.ClubStudyDataInfo"/>
+		<typeAlias alias="StatUserInfo" type="com.fc.flf.common.domain.StatUserInfo"/>
+		<typeAlias alias="UserDynamic" type="com.fc.flf.common.domain.UserDynamic"/>
+		<!-- zhenglh HouseInfo end-->
+		<!-- qinqx userCoustomerContact start -->
+		<typeAlias alias="customerContact" type="com.fc.flf.common.domain.UserCustomerContactRecord"/>
+		<typeAlias alias="userCostFee" type="com.fc.flf.common.domain.UserCostFee"/>
+		<typeAlias alias="HouseSaleControlInfo" type="com.fc.flf.common.domain.HouseSaleControlInfo"/>
+		<!-- qinqx userCoustomerContact end -->
+		<!-- gaoqf FcSysAd start -->
+		<typeAlias alias="FcSysAd" type="com.fc.flf.common.domain.FcSysAd"/>
+		<typeAlias alias="CustomerInfo" type="com.fc.flf.common.domain.CustomerInfo"/>
+		<typeAlias alias="FcSysMsg" type="com.fc.flf.common.domain.FcSysMsg"/>
+		<typeAlias alias="CustomerMention" type="com.fc.flf.common.domain.CustomerMention"/>
+		<!-- gaoqf FcSysAd end -->	
+		
+	 	<!-- liwj hotline Start-->
+		<typeAlias alias="HouseGroupCustomer" type="com.fc.flf.common.domain.HouseGroupCustomer"/>
+		<typeAlias alias="HouseGroupInfo" type="com.fc.flf.common.domain.HouseGroupInfo"/>
+		<typeAlias alias="HousePicInfo" type="com.fc.flf.common.domain.HousePicInfo"/>
+		<typeAlias alias="CustomerInfoDetail" type="com.fc.flf.common.domain.CustomerInfoDetail"/>		
+		<typeAlias alias="HouseGroupSchedule" type="com.fc.flf.common.domain.HouseGroupSchedule"/>
+		<typeAlias alias="HouseGroupScheduleEvent" type="com.fc.flf.common.domain.HouseGroupScheduleEvent"/>
+		<typeAlias alias="HouseGroupScheduleHouse" type="com.fc.flf.common.domain.HouseGroupScheduleHouse"/>
+		<typeAlias alias="FcSysArea" type="com.fc.flf.common.domain.FcSysArea"/>
+		<typeAlias alias="UserEduInfo" type="com.fc.flf.common.domain.UserEduInfo"/>
+		<typeAlias alias="UserTrainingExperience" type="com.fc.flf.common.domain.UserTrainingExperience"/>
+		<typeAlias alias="UserWorkExperience" type="com.fc.flf.common.domain.UserWorkExperience"/>		
+		<typeAlias alias="UserFamilyInfo" type="com.fc.flf.common.domain.UserFamilyInfo"/>
+		<!-- liwj hotline End-->
+		
+		<!-- FengH UserInfoDetail Start-->
+		<!-- 参加活动的客户信息 -->
+		<typeAlias alias="EventInfoCustomer" type="com.fc.flf.common.domain.EventInfoCustomer"/>
+		<!-- 网友评论 -->
+		<typeAlias alias="HouseDiscuss" type="com.fc.flf.common.domain.HouseDiscuss"/>
+		<!--  客户兴趣爱好  -->
+		<typeAlias alias="CustomerInterests" type="com.fc.flf.common.domain.CustomerInterests"/>
+		<!-- 客户与蜂蜜关联表 -->
+		<typeAlias alias="UserCustomerRelationship" type="com.fc.flf.common.domain.UserCustomerRelationship"/>
+		<!-- 用户详细信息 -->
+		<typeAlias alias="UserInfoDetail" type="com.fc.flf.common.domain.UserInfoDetail"/>
+		<!-- 客户家庭信息 -->
+		<typeAlias alias="CustomerFamilyInfo" type="com.fc.flf.common.domain.CustomerFamilyInfo"/>
+		<!-- 客户教育信息 -->
+		<typeAlias alias="CustomerEduInfo" type="com.fc.flf.common.domain.CustomerEduInfo"/>
+		<!-- 购房订单  -->
+		<typeAlias alias="EventBuyHouseOrder" type="com.fc.flf.common.domain.EventBuyHouseOrder"/>	
+		<!-- 留言信息 -->
+		<typeAlias alias="UserMsg" type="com.fc.flf.common.domain.UserMsg"/>
+		
+		<typeAlias alias="UserPhotoSet" type="com.fc.flf.common.domain.UserPhotoSet"/>
+		
+		<!-- FengH eventBuyHouseOrder end -->
+	
+		<!-- 交易进度 -->
+		<typeAlias alias="EventBuyHouseOrderExchange" type="com.fc.flf.common.domain.EventBuyHouseOrderExchange"/>
+		<!-- 活动信息 -->
+		<typeAlias alias="EventInfo" type="com.fc.flf.common.domain.EventInfo"/>
+		
+		<!-- 认售楼盘 -->
+		<typeAlias alias="UserStudySaleHouse" type="com.fc.flf.common.domain.UserStudySaleHouse"/>
+		
+		<typeAlias alias="UserSaleHouse" type="com.fc.flf.common.domain.UserSaleHouse"/>
+		<typeAlias alias="HomeShow" type="com.fc.flf.common.domain.HomeShow"/>
+		<typeAlias alias="VisitorSkimHouse" type="com.fc.flf.common.domain.VisitorSkimHouse"/>
+		<typeAlias alias="VisitorSkimUser" type="com.fc.flf.common.domain.VisitorSkimUser"/>
+		<typeAlias alias="UserDaily" type="com.fc.flf.common.domain.UserDaily"/>
+		
+		<!-- songp start -->
+		<typeAlias alias="FcSysVisitor" type="com.fc.flf.common.domain.FcSysVisitor"/>
+		<!-- songp end -->
+		
+	</typeAliases>
+</configuration>

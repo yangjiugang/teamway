@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.portal.mapper.UserStudySaleHouseMapper">
+	<resultMap id="UserStudySaleHouseMap" type="UserStudySaleHouse">
+		<result property="id" column="id"/>
+		<result property="houseId" column="house_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="studyStarttime" column="study_starttime"/>
+		<result property="studyEndtime" column="study_endtime"/>
+		<result property="studyPlace" column="study_place"/>
+		<result property="studyNotes" column="study_notes"/>
+		<result property="isSale" column="is_sale"/>
+		<result property="saleDate" column="sale_date"/>
+	</resultMap>
+	
+	<!-- Code By Zhenglh Start-->
+	<select id="getHouseSaleSum" parameterType="int" resultType="int">  
+		SELECT COUNT(id) FROM user_study_sale_house WHERE house_id=#{houseId}
+    </select>
+    <!-- Code By Zhenglh End-->
+    
+</mapper>

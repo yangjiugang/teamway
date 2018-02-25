@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.flf.portal.mapper.HouseNewsMapper">
+<!-- zhenglh Create And Update -->
+	<resultMap type="HouseNews" id="HouseNewsMap">
+		<id property="newsId" column="news_id"/>
+		<result property="houseId" column="house_id"/>
+		<result property="infoType" column="info_type"/>
+		<result property="infoTitle" column="info_title"/>
+		<result property="infoContent" column="info_content"/>
+		<result property="infoCreateDate" javaType="java.util.Date" column="info_create_date"/>
+		<result property="infoSkimCnt" column="info_skim_cnt"/>
+	</resultMap>
+	
+		<!-- Code By Zhenglh Start-->
+		<!-- Find List By Page Start-->
+	    <select id="getHouseNews" resultType="HouseNews" parameterType="map" resultMap="HouseNewsMap">
+	     	SELECT news_id,house_id,info_type,info_title,info_content,info_create_date,info_skim_cnt 
+	          FROM house_news 
+	    	 WHERE house_id=#{houseId} 
+	    	 LIMIT ${limit}
+	    </select>
+	    
+	    <select id="getHouseNewsCount" resultType="int" parameterType="int">
+	    	SELECT count(news_id) FROM house_news WHERE house_id=#{houseId}
+	    </select>
+	    
+	    <select id="getHouseNewsAboutType" resultType="HouseNews" parameterType="map" resultMap="HouseNewsMap">
+	    	SELECT news_id,house_id,info_type,info_title,info_content,info_create_date,info_skim_cnt 
+	    	  FROM house_news 
+	    	 WHERE house_id=#{houseId} 
+	    	   AND info_type=#{infoType} 
+	    	 LIMIT #{start},#{end}
+	    </select>
+	    <!-- find List By Page End-->
+	    
+	    <!-- Find Entity Start-->
+	    <select id="getNewsById" resultType="HouseNews" parameterType="int" resultMap="HouseNewsMap">
+	    	SELECT news_id,house_id,info_type,info_title,info_content,info_create_date,info_skim_cnt 
+	    	  FROM house_news 
+	    	 WHERE news_id=#{newsId}
+	    </select>
+	    <!-- Find Entity End-->
+    	<!-- Code By Zhenglh End-->
+    	
+    	<!-- Code By Lufoz Start-->
+    	<select id="getNewHouseNews" resultMap="HouseNewsMap">
+	     	SELECT news_id,info_title 
+	          FROM house_news 
+	    	ORDER BY info_create_date DESC
+	    	LIMIT 5
+	    </select>
+</mapper>  

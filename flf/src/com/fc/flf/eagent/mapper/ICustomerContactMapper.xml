@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.fc.flf.eagent.mapper.ICustomerContactMapper">
+
+	<resultMap type="customerContact" id="cusContact">
+	    <id  property="recordId" column="record_id"/>
+	    <result property="relationshipId" column="relationship_id"/>
+	    <result property="recordStartDate" column="record_start_date" javaType="Date"/>
+	    <result property="recordCreateDate" column="record_create_date" javaType="Date"/>
+	    <result property="recordEndDate" column="record_end_date" javaType="Date"/>
+	    <result property="communicationMethod" column="communication_method"/>
+	    <result property="address" column="address"/>
+	    <result property="cusId" column="cus_id"/>
+	    <result property="customerName" column="customer_name"/>
+	    <result property="userId" column="user_id"/>
+	    <result property="userName" column="user_name"/>
+	    <result property="talkUser" column="talk_user"/>
+	    <result property="content" column="content" javaType="int"/>
+	    <result property="lookIntention" column="look_intention" javaType="int"/>
+	    <result property="takeinGroupIntention" column="takein_group_intention" javaType="int" />
+	    <result property="takeinClubIntention" column="takein_club_intention" javaType="int"/>
+	    <result property="buyIntention" column="buy_intention" javaType="int"/>
+	</resultMap>
+	
+	<!-- 约会条件查询       add覃启轩-->
+	<select id="getQueryCondition" resultMap="cusContact" parameterType="Map" >
+		SELECT content,customer_name,user_name,record_create_date,record_start_date,record_end_date,address,communication_method,
+		       buy_intention,takein_group_intention,takein_club_intention,talk_user,record_id,cus_id
+		  FROM user_customer_contact_record
+		 WHERE record_start_date >= #{startDate}
+		   AND #{endDate} >= record_end_date
+		   AND (address LIKE '%${keyWord}%' OR user_name LIKE '%${keyWord}%' OR customer_name LIKE '%${keyWord}%' OR talk_user LIKE '%${keyWord}%' )
+	</select>
+	
+	<!-- 查询列表         add覃启轩
+	<select id="getQueryList" resultMap="cusContact">
+		SELECT content,customer_name,user_name,record_create_date,record_start_date,record_end_date,address,communication_method,
+		       buy_intention,takein_group_intention,takein_club_intention,talk_user
+		  FROM user_customer_contact_record
+	</select> -->
+	
+	<!-- 记录约会tab页 分页查询列表 (初始化约会页面)             add覃启轩-->
+	<select id="getQueryPageList" resultMap="cusContact" parameterType="Map">
+		SELECT content,customer_name,user_name,record_create_date,record_start_date,record_end_date,address,communication_method,
+		       buy_intention,takein_group_intention,takein_club_intention,talk_user,record_id,cus_id
+		  FROM user_customer_contact_record 
+		 LIMIT ${pageStr}
+	</select>
+	
+	<!-- 查询约会tab页 分页查询列表              add覃启轩-->
+	<select id="getCountPageQueryList" resultMap="cusContact" parameterType="Map">
+		SELECT content,customer_name,user_name,record_create_date,record_start_date,record_end_date,address,communication_method,
+		       buy_intention,takein_group_intention,takein_club_intention,talk_user,record_id,cus_id
+		  FROM user_customer_contact_record
+		 WHERE 1=1
+		 <if test="startDate != null and startDate !='' ">
+		   AND record_start_date BETWEEN #{startDate} AND  #{endDate}
+		 </if>
+		 <if test="endDate != null and startDate !='' ">
+		   AND record_end_date  BETWEEN #{startDate} and #{endDate}
+		 </if>
+		 <if test="keyWord != '请输入关键词' and keyWord != null">
+		   AND address LIKE '%${keyWord}%'
+		 </if>
+		 LIMIT ${pageStr}
+	</select>
+	
+	<!-- 查询约会tab页  总记录数              add覃启轩-->
+	<select id="getCountPageQueryCount" resultType="int" parameterType="Map">
+		SELECT COUNT(record_id)
+		  FROM user_customer_contact_record
+		 WHERE 1=1
+		 <if test="startDate != null and startDate !='' ">
+		   AND record_start_date BETWEEN #{startDate} AND  #{endDate}
+		 </if>
+		 <if test="endDate != null and startDate !='' ">
+		   AND record_end_date  BETWEEN #{startDate} and #{endDate}
+		 </if>
+		 <if test="keyWord != '请输入关键词' and keyWord != null">
+		   AND address LIKE '%${keyWord}%'
+		 </if>
+	</select>
+	
+	<!-- 新增约会                     add覃启轩 -->
+	<insert id="insertContact" parameterType="Map">
+		INSERT INTO user_customer_contact_record (relationship_id,record_create_date,record_start_date,record_end_date,communication_method,address,
+		                                          cus_id,customer_name,user_id,user_name,talk_user,content,takein_group_intention,takein_club_intention)
+	    VALUES('1',#{recordCreateDate},#{recordStartDate},#{recordEndDate},#{communicationMethod},#{address},
+		       #{cusId},#{customerName},#{userId},#{userName},#{talkUser},#{content},#{takeinGroupIntention},#{takeinClubIntention})
+	</insert>
+	
+	<!-- 删除约会   add覃启轩 -->
+	<delete id="deleteOrder" parameterType="Map">
+		DELETE FROM user_customer_contact_record
+		 WHERE record_id=${recordId}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.fc.flf.eagent.mapper.ICostFeeMapper">
+
+	<resultMap type="userCostFee" id="uCostFee">
+	    <id  property="costId" column="cost_id"/>
+	    <result property="userId" column="user_id"/>
+	    <result property="costTime" column="cost_time" javaType="Date"/>
+	    <result property="costItem" column="cost_item" javaType="int"/>
+	    <result property="costFee" column="cost_fee"/>
+	    <result property="costRemark" column="cost_remark" javaType="String"/>
+	    <result property="iCountFee" column="COUNT(1)"/>
+	</resultMap>
+	
+	<!-- 查询开销列表           add覃启轩 -->
+	<select id="getQueryList" resultType="userCostFee" parameterType="Map" resultMap="uCostFee">
+		SELECT cost_time,cost_fee,cost_item,cost_remark,cost_id
+		  FROM user_cost_fee 
+		 WHERE cost_time = #{curDate} 
+		   AND user_id = #{userId}
+		 LIMIT ${strLimit}
+	</select>
+	
+	<!-- 查询开销总数          add覃启轩 -->
+	<select id="getQueryListCount" resultType="int" parameterType="Map">
+		SELECT COUNT(cost_id)
+		  FROM user_cost_fee 
+		 WHERE cost_time = #{curDate} 
+		   AND user_id = #{userId}
+	</select>
+	
+	<!-- 添加开销记录         add覃启轩-->
+	<insert id="addCostFee" parameterType="Map">
+		INSERT INTO user_cost_fee (user_id, cost_time, cost_item, cost_fee, cost_remark)
+		VALUES (#{userId},#{date},#{inp_txt},#{fee},#{remark});
+	</insert>
+	
+	<!-- 查询历史开销记录总记录数        add覃启轩-->
+	<select id="getGroupHistoryCount" resultType="int" parameterType="Map">
+		SELECT COUNT(1) FROM (
+			SELECT SUM(cost_fee) cost_fee,cost_time,COUNT(cost_fee) iCountFee,cost_id
+			  FROM user_cost_fee u
+			 WHERE 1=1
+			   <if test="null != curTime and '' != curTime">
+			   	   AND cost_time = #{curTime}
+			   </if>
+			   <if test="null != startDate and '' != startDate">
+			       AND cost_time BETWEEN #{startDate} AND #{endDate}
+	  		   </if>
+			   <if test="null != startCostFee and '' != startCostFee">
+			       AND cost_fee BETWEEN #{startCostFee} AND #{endCostFee}
+	  		   </if>
+			   <if test="null != costRemark and '' != costRemark">
+	  		       AND cost_remark LIKE '%${costRemark}%'
+	  		   </if>
+	  		   <if test="null != costItem and '' != costItem">
+	  		   	   AND cost_item = #{costItem}
+	  		   </if>
+	  		   GROUP BY cost_time
+  		) user_cost_fee
+	</select>
+	
+	<!-- 查询历史开销记录        add覃启轩-->
+	<select id="getGroupHistory" resultMap="uCostFee" parameterType="Map">
+		SELECT SUM(cost_fee) cost_fee,cost_time,COUNT(cost_fee) iCountFee,cost_id
+		  FROM user_cost_fee u
+		 WHERE cost_time BETWEEN #{startDate} AND #{endDate}
+		   AND cost_item = #{costItem}
+		   AND cost_fee BETWEEN #{startCostFee} AND #{endCostFee}
+  		   AND cost_remark LIKE '%${costRemark}%'
+	  GROUP BY cost_time
+	  LIMIT  ${strLimit}
+	</select>
+	
+	<!-- 查询历史开销详细记录        add覃启轩 -->
+	<select id="getDetailHistory" resultMap="uCostFee" parameterType="Map">
+		SELECT cost_id,cost_item,cost_remark,cost_time,cost_fee FROM user_cost_fee u 
+		 WHERE cost_time = #{costTime} 
+		   AND cost_item = #{costItem} 
+		   AND cost_fee BETWEEN #{startCostFee} AND #{endCostFee}
+		   AND cost_remark LIKE '%${costRemark}%'
+	  ORDER BY cost_time DESC
+	</select>
+
+	<!-- 更新开销记录        add覃启轩 -->
+	<update id="updateCost" parameterType="Map">
+	 	UPDATE user_cost_fee 
+	 	   SET
+			<if test="costTime != null">
+				cost_time=#{costTime},
+			</if>
+			<if test="costItem != null">
+				cost_item=#{costItem},
+			</if>
+			<if test="costRemark != null">
+				cost_remark=#{costRemark},
+			</if>
+			<if test="costFee != null">
+				cost_fee=#{costFee}
+			</if>
+
+	  	WHERE cost_id = #{costId}
+	</update>
+	
+</mapper>

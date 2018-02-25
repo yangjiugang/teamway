@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.flf.portal.mapper.HouseEstimateMapper">
+	
+	
+	<resultMap type="HouseEstimate" id="HouseEstimateMap">
+		<id property="id" column="id"/>
+		<result property="houseId" column="house_id"/>
+		<result property="recommendationindex" column="recommendationindex"/>
+		<result property="livableIndex" column="livable_index"/>
+		<result property="airQuality" column="air_quality"/>
+		<result property="column6" column="column_6"/>
+	</resultMap>
+	
+	<!-- Code By Zhenglh Start-->
+	
+    <select id="findHouseEstimateById" parameterType="int" resultType="com.fc.flf.common.domain.HouseEstimate" resultMap="HouseEstimateMap">  
+        SELECT id,house_id,recommendationindex,livable_index,air_quality 
+ 		  FROM house_estimate 
+ 		 WHERE house_id=#{houseId}
+    </select>
+    
+    <!-- Code By Zhenglh End-->
+</mapper>  

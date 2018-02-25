@@ -1,0 +1,12 @@
+@charset "utf-8";
+/* CSS Document */
+ul{ list-style-type:none; padding:0; margin:0;}
+.flash{ padding:5px; overflow:hidden; width:990px; margin:auto; }
+.flash .flashLeft{ width:694px; height:264px; float:left; background-image:url(../../images/Flash.jpg); position:relative;}
+.flash .flashLeft ul{ position:absolute; bottom:10px; right:20px;}
+.flash .flashLeft li{ width:20px; float:left; height:20px; background-color:#093; margin-left:10px;}
+.flash .flashRight{ width:282px; height:264px; float:right; background-image:url(../../images/flashExplanation.jpg); position:relative; font-family:"宋体";}
+.flash .flashRight input{ position:absolute; top:185px; left:75px;}
+.flash .flashRight span{ display:block; position:absolute; top:235px; left:67px; font-size:14px; color:#353535; font-weight:bold;}
+.flash .flashRight span font{ color:#bb0e13;}
+

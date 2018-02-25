@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.eagent.mapper.IUserPhotoMapper">
+	<resultMap id="userPhotoSetMap" type="UserPhotoSet">
+		<id property="setId" column="set_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="setName" column="set_name"/>
+		<result property="setDesc" column="set_desc"/>
+		<association property="photos" javaType="UserPhotos" column="photo_id">
+			<id property="photoId" column="photo_id"/>
+			<result property="setId" column="set_id"/>
+			<result property="userId" column="user_id"/>
+			<result property="hostIp" column="host_ip"/>
+			<result property="photoPath" column="photo_path"/>
+		</association>
+	</resultMap>
+	
+	<resultMap id="userPhotosMap" type="UserPhotos">
+		<result property="photoId" column="photo_id"/>
+		<result property="setId" column="set_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="hostIp" column="host_ip"/>
+		<result property="photoPath" column="photo_path"/>
+	</resultMap>
+<!-- 新建相册  -->
+<insert id="newPhotoSet" parameterType="UserPhotoSet">
+	INSERT INTO user_photo_set(user_id,set_name,set_desc)
+		   VALUES(#{userId},#{setName},#{setDesc})	
+</insert>
+
+<!-- 上传新图片-->
+<insert id="newPhoto" parameterType="UserPhotos">
+	INSERT INTO user_photos(set_id,user_id,host_ip,photo_path)
+		   VALUES(#{setId},#{userId},#{hostIp},#{photoPath})
+</insert>
+
+<select id="querySetId" parameterType="String" resultType="int">
+	SELECT set_id FROM user_photo_set WHERE set_name=#{setName}
+</select>
+<!-- 查询相册信息 -->
+<select id="queryPhotoSet" resultMap="userPhotoSetMap">
+	SELECT set_id,user_id,set_name,set_desc
+	  FROM user_photo_set
+</select>
+<select id="queryTrue"  resultMap="userPhotoSetMap">
+	SELECT set_name 
+	  FROM user_photo_set 
+</select>
+
+<!-- 根据相册查看图片 -->
+<select id="queryPhotoForSet" resultMap="userPhotoSetMap" parameterType="java.util.Map">
+	SELECT up.photo_id,up.user_id,up.photo_path,up.host_ip,ups.set_desc 
+      FROM user_photos up,
+           user_photo_set ups
+     WHERE up.set_id = ups.set_id
+       AND up.user_id=ups.user_id
+   <if test="userId != null">
+       AND ups.user_id=#{userId}
+   </if>
+   <if test="setName != null">
+       AND ups.set_name=#{setName}
+   </if>
+</select>
+
+<!-- 查询最新插入的6张图片 -->
+<select id="querySixPhoto" resultMap="userPhotosMap" parameterType="int">
+	SELECT photo_id,set_id,user_id,host_ip,photo_path
+  	  FROM user_photos
+  	 WHERE user_id=#{userId}
+     ORDER BY photo_id DESC LIMIT 6
+</select>
+<select id="queryFivePhoto" resultMap="userPhotosMap" parameterType="int">
+	SELECT photo_id,set_id,user_id,host_ip,photo_path
+  	  FROM user_photos
+  	 WHERE user_id=#{userId}
+     ORDER BY photo_id DESC LIMIT 5
+</select>
+
+<!-- 查询具体的某张图片 -->
+<select id="thePhotoForID" resultMap="userPhotosMap" parameterType="int">
+	SELECT photo_id,set_id,user_id,host_ip,photo_path
+	  FROM user_photos
+	 WHERE photo_id=#{photoId}
+</select>
+
+<delete id="DeletePhoto" parameterType="int">
+	DELETE FROM user_photos WHERE photo_id = #{photoId}
+</delete>
+</mapper>

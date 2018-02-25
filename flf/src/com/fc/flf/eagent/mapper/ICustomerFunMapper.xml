@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.eagent.mapper.ICustomerFunMapper">
+
+	<resultMap id="customerInfoDetailMap" type="CustomerInfoDetail">
+		<id property="cusId" column="cus_id" />
+		<result property="customerId" column="customer_id" />
+		<result property="name" column="name" />
+		<result property="sex" column="sex" />
+		<result property="photoPath" column="photo_path" />
+		<result property="idType" column="id_type" />
+		<result property="iDNum" column="id_num" />
+		<result property="email" column="email"/>
+		<result property="birthday" column="birthday" />
+		<result property="telphone" column="telphone" />
+		<result property="cellphone" column="cellphone" />
+		<result property="qQ" column="QQ" />
+		<result property="mSN" column="MSN" />
+		<result property="blog" column="Blog" />
+		<result property="weibo" column="weibo" />
+		<result property="workPlace" column="work_place" />
+		<result property="address" column="address" />
+		<result property="registeredAddress" column="registered_address" />
+		<result property="citizenshipId" column="citizenship_id" />
+		<result property="citizenship" column="citizenship" />
+		<result property="nationId" column="nation_id" />
+		<result property="nation" column="nation" />
+		<result property="maritalStatus" column="marital_status" />
+		<result property="highestEdu" column="highest_edu" />
+		<result property="school" column="school" />
+		<result property="profession" column="profession" />
+		<result property="firstWorkDate" column="first_work_date" />
+		<result property="business" column="business" />
+		<result property="company" column="company" />
+		<result property="jobDuty" column="job_duty" />
+		<result property="income" column="income" />
+		<result property="createdUser" column="created_user" />
+		<result property="createdAt" column="created_at" />
+		<result property="updatedAt" column="updated_at" />
+		<result property="birthPlace" column="birth_place"/>
+		<result property="isExchange" column="is_exchange"/>
+		<result property="customerType" column="customer_type"/>
+		<result property="userPoints" column="user_points"/>
+		<association property="customerInterests" javaType="CustomerInfoDetail" 
+			column="id"	resultMap="customerInterestsMap">
+		</association>
+		<association property="customerEduInfo" javaType="CustomerEduInfo"
+		    column="edu_id" resultMap="com.fc.flf.eagent.mapper.ICustomerDefualtMapper.customerEduInfoMap">
+		</association>
+		<collection property="customerFamilyInfosList" 
+		    ofType="CustomerFamilyInfo"
+		    resultMap="com.fc.flf.eagent.mapper.ICustomerDefualtMapper.customerFamilyInfoMap">
+		</collection>	
+	</resultMap>
+
+	<resultMap id="customerInterestsMap" type="CustomerInterests">
+		<id property="id" column="id" />
+		<result property="cusId" column="cus_id" />
+		<result property="interests" column="interests" />
+		<result property="hobby" column="hobby" />
+		<result property="purchasingCondition" column="purchasing_condition" />
+		<result property="purchasingDirection" column="purchasing_direction" />
+		<result property="purchasingPrice" column="purchasing_price" />
+		<result property="purchasingPlan" column="purchasing_plan" />
+	</resultMap>
+
+	<resultMap id="userInfoDetailMap" type="UserInfoDetail">
+		<id property="userId" column="user_id" />
+		<result property="iDcard" column="IDcard" />
+		<result property="telphone" column="telphone" />
+		<result property="cellphone" column="cellphone" />
+		<result property="qQ" column="QQ" />
+		<result property="mSN" column="MSN" />
+		<result property="weibo" column="weibo" />
+		<result property="citizenshipId" column="citizenship_id" />
+		<result property="citizenship" column="citizenship" />
+		<result property="nationId" column="nation_id" />
+		<result property="nation" column="nation" />
+		<result property="maritalStatus" column="marital_status" />
+		<result property="height" column="height" />
+		<result property="weight" column="weight" />
+		<result property="career" column="career" />
+		<result property="salary" column="salary" />
+		<result property="highestDegree" column="highest_degree" />
+		<result property="graduateSchool" column="graduate_school" />
+		<result property="profession" column="profession" />
+		<result property="address" column="address" />
+		<result property="registeredAddress" column="registered_address" />
+		<result property="emergencyPerson" column="emergency_person" />
+		<result property="emergencyPhone" column="emergency_phone" />
+		<result property="hobbies" column="hobbies" />
+		<result property="skills" column="skills" />
+		<association property="customerInfoDetail" column="cusId" javaType="CustomerInfoDetail"
+					 resultMap="customerInfoDetailMap">
+		</association>
+		<association property="customerInterests" column="id" javaType="CustomerInterests" 
+		             resultMap="customerInterestsMap">
+		
+		</association>
+	</resultMap>
+
+	<!-- Start fengH -->
+		<!-- 查询所有客户 -->
+	<select id="queryCusInDeAll" resultMap="customerInfoDetailMap">
+		SELECT cus_id,customer_id,name,sex,photo_path,id_type,ID_num,birthday,telphone,
+		       cellphone,QQ,MSN,Blog,weibo,work_place,address,registered_address,
+		       citizenship_id,citizenship,nation_id,nation,marital_status,highest_edu,
+		       school,profession,first_work_date,business,company,job_duty,income,
+		       created_user,created_at,updated_at
+		  FROM customer_info_detail
+	</select>
+	<!-- 查询客户部分信息 -->
+	<select id="queryCusInDe" resultMap="customerInfoDetailMap">
+		SELECT cid.name,cid.sex,cid.photo_path,cid.birthday,cid.cellphone,ci.interests
+		  FROM customer_info_detail cid,customer_interests ci 
+		 WHERE cid.cus_id=ci.cus_id
+	</select>
+	
+	<!-- 添加新的客户 -->
+	<insert id="insertCusInfo" parameterType="CustomerInfoDetail">
+		INSERT INTO customer_info_detail(customer_id,NAME,sex,photo_path,id_type,ID_num,birthday,email,
+										 telphone,cellphone,QQ,MSN,Blog,weibo,birth_place,work_place,address,
+										 registered_address,citizenship_id,citizenship,nation_id,nation,
+										 marital_status,highest_edu,school,profession,first_work_date,business,
+										 company,job_duty,income,created_user,created_at,updated_at,is_exchange,customer_type,
+										 user_points)
+			                      VALUES(#{customerId},#{name},#{sex},#{photoPath},#{idType},#{iDNum},#{birthday},#{email},
+			                      	     #{telphone},#{cellphone},#{qQ},#{mSN},#{blog},#{weibo},#{birthPlace},#{workPlace},#{address},
+										 #{registeredAddress},#{citizenshipId},#{citizenship},#{nationId},#{nation},
+										 #{maritalStatus},#{highestEdu},#{school},#{profession},#{firstWorkDate},#{business},
+										 #{company},#{jobDuty},#{income},#{createdUser},#{createdAt},#{updatedAt},#{isExchange},#{customerType},
+										 #{userPoints})
+	</insert>
+	
+	<!-- 添加客户的家庭信息 -->
+	<insert id="insertFamInfo" parameterType="CustomerFamilyInfo">
+		INSERT INTO customer_family_info(cus_id,member_name,relationship,birthday,work_place,job_duty,contactphone)
+			  				      VALUES(#{cusId},#{memberName},#{relationship},#{birthday},#{workPlace},
+			   		                     #{jobDuty},#{contactphone}	)
+	</insert>
+
+	<!-- 添加客户的受教育信息 -->	
+	<insert id="insertEduInfo" parameterType="CustomerEduInfo">
+		INSERT INTO customer_edu_info(cus_id,begin_date,end_date,school,certifier,graduate,degree)
+			                   VALUES(#{cusId},#{beginDate},#{endDate},#{school},#{certifier},#{graduate},#{degree})
+	</insert>
+	
+	<!-- 添加客户的兴趣爱好 -->
+	<insert id="insertCusIntere" parameterType="CustomerInterests">
+		INSERT INTO customer_interests(cus_id,interests,hobby,purchasing_condition,purchasing_direction,
+		                               purchasing_price,purchasing_plan)
+		       					VALUES(#{cusId},#{interests},#{hobby},#{purchasingCondition},#{purchasingDirection},
+					                   #{purchasingPrice},#{purchasingPlan})
+	</insert>
+	
+	<!-- 查询客户的CusId -->
+	<select id="queryCusId" resultType="int" parameterType="CustomerInfoDetail">
+		SELECT cus_id FROM customer_info_detail WHERE name = #{name}
+	</select>
+	<!-- eng fengH -->
+	
+	<!-- 查询客户列表   覃启轩add     start -->
+	<select id="getCusTomerList" parameterType="Map" resultMap="customerInfoDetailMap">
+		SELECT d.cus_id,d.name,d.cellphone,d.customer_id,d.address,d.photo_path,d.customer_type
+		  FROM customer_info_detail d
+         WHERE created_user=#{userId}
+           <if test=" '' != cusTomerName and null != cusTomerName ">
+		   AND d.name LIKE '%${cusTomerName}%'
+		   </if>
+		 <if test=" '' != limitValue and null != limitValue ">
+		 LIMIT ${limitValue}
+		 </if>
+	</select>
+	<!-- 查询客户列表总记录 -->
+	<select id="getCusTomerListCount" resultType="int">
+		SELECT count(1) 
+		  FROM customer_info_detail d
+         WHERE created_user=#{userId}
+         <if test=" '' != cusTomerName and null != cusTomerName ">
+		   AND d.name LIKE '%${cusTomerName}%'
+		 </if>
+		 <if test=" '' != limitValue and null != limitValue ">
+		 LIMIT ${limitValue}
+		 </if>
+	</select>
+	<!-- end -->
+
+	<!-- code by gaoqifang start -->
+	<update id="updateCusInfoDetailIsExchange" >
+		UPDATE customer_info_detail
+		   SET is_exchange=#{isExchange}
+		 WHERE customer_id=#{customerId}
+		   AND created_user=#{createdUser}
+	</update>
+	<!-- code by gaoqifang start -->
+</mapper>

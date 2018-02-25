@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- Liwj -->
+<mapper namespace="com.fc.flf.eagent.mapper.IYjbRegisterMapper">      
+   <resultMap type="FcSysVisitor" id="RegisterMap">
+		<id column="visitor_id" property="visitorId"/>
+		<result column="visitor_name" property="visitorName"/>
+		<result column="visitor_password" property="visitorPassword"/>
+		<result column="first_name" property="firstName"/>
+		<result column="sex" property="sex"/>
+		<result column="email" property="email"/>
+		<result column="phone" property="phone"/>
+		<result column="visitor_status" property="visitorStatus"/>
+		<result column="visitor_type" property="visitorType"/>
+		<result column="login_time" property="loginTime"/>		
+		<result column="login_ip" property="loginIp"/>		
+		<result column="is_online" property="isOnline"/>		
+		<result column="register_time" property="registerTime"/>		
+		<result column="expried_date" property="expriedDate"/>		
+	</resultMap>	
+	
+	<!-- under code by Liwj Start-->
+	<!-- function : 注册房乐会-->	
+    <insert id="insert" parameterType="fcSysVisitor">
+        INSERT INTO fc_sys_visitor(visitor_name,visitor_password,first_name,sex,email,phone,visitor_status,
+        						   visitor_type,login_time,login_ip,is_online,register_time,expried_date)
+      		 VALUES(#{visitorName},#{visitorPassword},#{firstName},#{sex},#{email},#{phone},#{visitorStatus},
+      		   		#{visitorType},#{loginTime},INET_ATON(#{loginIp}),#{isOnline},#{registerTime},#{expriedDate})
+    </insert>
+    
+    <!-- function : 验证用户是否重复 -->
+    <select id="verify" resultType="int" parameterType="string">
+	   SELECT COUNT(*)
+	     FROM fc_sys_visitor 
+	    WHERE visitor_name=#{visitorName}
+	</select>
+
+	
+	<!-- function : 验证Email是否重复 -->
+    <select id="verifyEmail" resultType="int" parameterType="string">
+	   SELECT COUNT(*)
+	     FROM fc_sys_visitor 
+	    WHERE email=#{email}
+	</select>
+	
+	<!-- function : 验证phone是否重复 -->
+    <select id="verifyPhone" resultType="int" parameterType="string">
+	   SELECT COUNT(*)
+	     FROM fc_sys_visitor 
+	    WHERE phone=#{phone}
+	</select>
+	
+	<!-- function : 邮箱验证 更改状态 -->
+	<update id="updateVisitorStatus" parameterType="string">
+		UPDATE fc_sys_visitor SET visitor_status = 1 WHERE email = #{mail}
+	</update>
+</mapper>

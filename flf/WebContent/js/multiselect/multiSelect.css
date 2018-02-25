@@ -1,0 +1,19 @@
+.tanchu{margin:auto auto;position:absolute;display:none;}
+.tanchus{width:100%; margin:0 auto; height:52px;}
+.tanchu-tel{background:url(../../images/tel-03.png) no-repeat;height:52px;float:left;}
+.tanchu-tel img{float:left; height:52px;}
+.tanchu-tel span{float:right; color:#FFF; margin:18px 10px 6px 0; display:inline;}
+.tanchu-tel span:hover{cursor:pointer;}
+.tanchu-tel-right{background:url(../../images/tel-bg.png) no-repeat; height:52px; width:16px; float:right;}
+.tanchu-cos{float:left; border-left:1px solid #3CA6D4;background:url(../../images/right-bg.png) repeat-y right;}
+.tanchu-cos dl{line-height:30px;font-size:14px;float:left;color:#0055AC; background-color:#fff;}
+.tanchu-cos dt{width:20%; float:left; font-weight: bold; text-align:center; margin:6px 0 0 0;}
+.tanchu-cos dd{width:80%; float:left;}
+.tanchu-cos dd span{width:125px; float:left; text-align:center; margin:6px 4px 6px 0; overflow:hidden;}
+.tanchu-cos dd span:hover{cursor:pointer;}
+.tanchu-bottom{width:100%; float:left; margin:0;}
+.tanchu-bottom-left{width:17px; height:16px; float:left;}
+.tanchu-bottom-con{background:url(../../images/bottom-bg.png) repeat-x; float:left;height:16px;}
+.tanchu-bottom-right{width:16px; height:16px; float:left;}
+.movestyle{color:#B8030D;}
+.selectstyle{color:#FFF;background:#B8030D;}

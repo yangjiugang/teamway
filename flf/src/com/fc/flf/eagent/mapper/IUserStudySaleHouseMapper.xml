@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.eagent.mapper.IUserStudySaleHouseMapper">
+	
+<resultMap id="houseInfoMap" type="HouseInfo">
+		<id property="houseId" column="house_id"/>
+		<result property="houseNum" column="house_num"/>
+		<result property="tenementId" column="tenement_id"/>
+		<result property="developerId" column="developer_id"/>
+		<result property="houseDevelopersName" column="house_developers_name"/>
+		<result property="areaId" column="area_id"/>
+		<result property="houseName" column="house_name"/>
+		<result property="houseNameExtend" column="house_name_extend"/>
+		<result property="houseLogo" column="house_logo"/>
+		<result property="housePic" column="house_pic"/>
+		<result property="houseLocation" column="house_location"/>
+		<result property="houseProperties" column="house_properties"/>
+		<result property="housePrice" column="house_price"/>
+		<result property="houseMinArea" column="house_min_area"/>
+		<result property="houseMaxArea" column="house_max_area"/>
+		<result property="houseStructureType" column="house_structure_type"/>
+		<result property="houseDecorations" column="house_decorations"/>
+		<result property="houseBuildProcess" column="house_build_process"/>
+		<result property="houseSights" column="house_sights"/>
+		<result property="brokerageRate" column="brokerage_rate"/>
+		<result property="signDate" column="sign_date"/>
+		<result property="houseSaleEvent" column="house_sale_event"/>
+		<result property="houseBuildType" column="house_build_type"/>
+		<result property="businessRegion" column="business_region"/>
+		<result property="belongToRegion" column="belong_to_region"/>
+		<result property="metroIn15minBywalk" column="metro_in15min_bywalk"/>
+		<result property="busIn15minBywalk" column="bus_in15min_bywalk"/>
+		<result property="longDistanceBus" column="long_distance_bus"/>
+		<result property="wharf" column="wharf"/>
+		<result property="airportBus" column="airport_bus"/>
+		<result property="kindergartenIn15minBywalk" column="kindergarten_in15min_bywalk"/>
+		<result property="kindergartenIn20minBycar" column="kindergarten_in20min_bycar"/>
+		<result property="kindergartenIn15minBybus" column="kindergarten_in15min_bybus"/>
+		<result property="elementarySchoolIn15minBywalk" column="elementary_school_in15min_bywalk"/>
+		<result property="elementarySchoolIn20minBycar" column="elementary_school_in20min_bycar"/>
+		<result property="elementarySchoolIn15minBybus" column="elementary_school_in15min_bybus"/>
+		<result property="juniorHighSchoolIn15minBywalk" column="junior_high_school_in15min_bywalk"/>
+		<result property="juniorHighSchoolIn20minBycar" column="junior_high_school_in20min_bycar"/>
+		<result property="juniorHighSchoolIn15minBybus" column="junior_high_school_in15min_bybus"/>
+		<result property="clubHospitalIn15minBywalk" column="club_hospital_in15min_bywalk"/>
+		<result property="clubHospitalIn20minBycar" column="club_hospital_in20min_bycar"/>
+		<result property="clubHospitalIn15minBybus" column="club_hospital_in15min_bybus"/>
+		<result property="aaaHospitalIn15minBywalk" column="aaa_hospital_in15min_bywalk"/>
+		<result property="aaaHospitalIn20minBycar" column="aaa_hospital_in20min_bycar"/>
+		<result property="aaaHospitalIn15minBybus" column="aaa_hospital_in15min_bybus"/>
+		<result property="hospitalIn15minBywalk" column="hospital_in15min_bywalk"/>
+		<result property="hospitalIn15minBycar" column="hospital_in15min_bycar"/>
+		<result property="hospitalIn15minBybus" column="hospital_in15min_bybus"/>
+		<result property="marketIn15minBywalk" column="market_in15min_bywalk"/>
+		<result property="supermarketIn15minBywalk" column="supermarket_in15min_bywalk"/>
+		<result property="restaurantIn15minBywalk" column="restaurant_in15min_bywalk"/>
+		<result property="shoppingIn15minBywalk" column="shopping_in15min_bywalk"/>
+		<result property="hopscaIn15minBywalk" column="hopsca_in15min_bywalk"/>
+		<result property="cbdIn15minBywalk" column="cbd_in15min_bywalk"/>
+		<result property="marketIn5minBywalk" column="market_in5min_bywalk"/>
+		<result property="supermarketIn5minBywalk" column="supermarket_in5min_bywalk"/>
+		<result property="restaurantIn5minBywalk" column="restaurant_in5min_bywalk"/>
+		<result property="shoppingIn5minBywalk" column="shopping_in5min_bywalk"/>
+		<result property="hopscaIn5minBywalk" column="hopsca_in5min_bywalk"/>
+		<result property="cbdIn5minBywalk" column="cbd_in5min_bywalk"/>
+		<result property="houseAttenttionCnt" column="house_attenttion_cnt"/>
+		<result property="houseCollectCnt" column="house_collect_cnt"/>
+		<result property="houseCommentCnt" column="house_comment_cnt"/>
+		<result property="userRecommendCnt" column="user_recommend_cnt"/>
+		<result property="createdUser" column="created_user"/>
+		<result property="createdAt" column="created_at"/>
+		<result property="updatedUser" column="updated_user"/>
+		<result property="updatedAt" column="updated_at"/>
+		<result property="houseDesc" column="house_desc"/>		
+		
+	   <association property="fcSysArea" column="area_id" javaType="FcSysArea">
+		   <result property="areaId" column="area_id"/>
+		   <result property="areaName" column="area_name"/>
+		</association>
+				
+		<association property="userStudySaleHouse" column="id" javaType="UserStudySaleHouse">
+		   <result property="houseId" column="house_id"/>
+		   <result property="userId" column="user_id"/>
+		   <result property="isSale" column="is_sale"/>
+		</association>
+		
+		<association property="houseSaleControlInfo" column="id" javaType="HouseSaleControlInfo">
+			<result property="homePrice" column="home_price"/>
+		
+		</association>
+		
+	</resultMap>
+	
+	<!-- ResultMap By Zhenglh -->
+	<resultMap id="HouseGroupInfoMap" type="HouseGroupInfo">
+		<result property="houseGroupId" column="house_group_id"/>
+		<result property="groupName" column="group_name"/>
+		<result property="groupLineDesc" column="group_line_desc"/>
+		<result property="groupStartDate" column="group_start_date"/>
+		<result property="groupDeadlineDate" column="group_deadline_date"/>
+		<result property="groupDuration" column="group_duration"/>
+		<result property="groupPrice" column="group_price"/>
+		<result property="groupHotline" column="group_hotline"/>
+		<result property="housePurpose" column="house_purpose"/>
+		<result property="houseProperties" column="house_properties"/>
+		<result property="lineProperties" column="line_properties"/>
+		<result property="attentionCnt" column="attention_cnt"/>
+		<result property="joinCnt" column="join_cnt"/>
+		<result property="groupDesc" column="group_desc"/>
+	</resultMap>
+	<!-- ResultMap By Zhenglh -->
+	
+	<!-- gonghongjun start  -->
+	
+	<!--认售的房源   -->
+	<select id="saleHousesList" parameterType="map" resultMap="houseInfoMap">
+	    SELECT hi.house_id,hi.house_name,hi.house_price,hi.house_logo,hi.house_pic,hi.house_comment_cnt,hi.house_attenttion_cnt,
+		       hi.house_structure_type,hi.business_region,hi.house_sights,hi.house_properties,hi.house_developers_name,
+		       hi.developer_id,fsa.area_id,fsa.area_name,ussh.is_sale,ussh.user_id
+		  FROM user_study_sale_house ussh,
+		       house_info hi,
+		       fc_sys_area fsa
+		 WHERE ussh.house_id=hi.house_id    
+		   AND fsa.area_id=hi.area_id
+		   AND ussh.is_sale=1  
+		   AND ussh.user_id=#{userId}
+	  ORDER BY hi.house_id DESC
+	     LIMIT ${limit}	
+	</select>
+	
+	<!--认售的房源 的总条数 -->
+	<select id="saleHousesCount" resultType="int" parameterType="int">
+	    SELECT count(hi.house_id)
+		  FROM user_study_sale_house ussh,
+		       house_info hi,
+		       fc_sys_area fsa
+		 WHERE ussh.house_id=hi.house_id    
+		   AND fsa.area_id=hi.area_id
+		   AND ussh.is_sale=1  
+		   AND ussh.user_id=#{userId}
+	</select>
+	
+	<!-- 学习过的房源 -->
+	<select id="studyHousesList" parameterType="map" resultMap="houseInfoMap">
+	    SELECT hi.house_id,hi.house_name,hi.house_price,hi.house_logo,hi.house_pic,hi.house_comment_cnt,hi.house_attenttion_cnt,
+		       hi.house_structure_type,hi.business_region,hi.house_sights,hi.house_properties,hi.house_developers_name,
+		       hi.developer_id,fsa.area_id,fsa.area_name,ussh.is_sale,ussh.user_id
+		  FROM user_study_sale_house ussh,
+		       house_info hi,
+		       fc_sys_area fsa
+		 WHERE ussh.house_id=hi.house_id    
+		   AND fsa.area_id=hi.area_id
+		   AND ussh.user_id=#{userId}
+	  ORDER BY hi.house_id DESC
+	     LIMIT ${limit}	
+	</select>
+	
+	<!-- 学习过的房源de总条数 -->
+	<select id="studyHousesCount" resultType="int" parameterType="int">
+	    SELECT count(hi.house_id)
+		  FROM user_study_sale_house ussh,
+		       house_info hi,
+		       fc_sys_area fsa
+		 WHERE ussh.house_id=hi.house_id    
+		   AND fsa.area_id=hi.area_id
+		   AND ussh.user_id=#{userId}
+	</select>
+	
+	<!-- 经纪人的客户关注的房源 -->
+	<select id="customerSkimHousesList" parameterType="map" resultMap="houseInfoMap">
+         SELECT DISTINCT hi.house_id,hi.house_name,hi.house_price,hi.house_logo,hi.house_pic,hi.house_comment_cnt,hi.house_attenttion_cnt,
+		        hi.house_structure_type,hi.business_region,hi.house_sights,hi.house_properties,hi.house_developers_name,
+		        hi.developer_id,fsa.area_id,fsa.area_name
+		   FROM user_info ui,
+		        user_customer_relationship ucr,
+		        visitor_skim_house vsh,
+		        house_info hi,
+		        fc_sys_area fsa      
+		  WHERE ui.user_id=ucr.user_id
+		    AND hi.house_id=vsh.house_id
+		    AND fsa.area_id=hi.area_id   
+		    AND ucr.cus_id=vsh.visitor_id
+		    AND vsh.visitor_type=1
+		    AND ui.user_id=#{userId}
+	      LIMIT ${limit}	
+    </select>
+    
+    <!-- 经纪人的客户关注的房源 -->
+	<select id="customerSkimHousesCount" resultType="int" parameterType="int">
+         SELECT COUNT(DISTINCT hi.house_id)
+		   FROM user_info ui,
+		        user_customer_relationship ucr,
+		        visitor_skim_house vsh,
+		        house_info hi,
+		        fc_sys_area fsa      
+		  WHERE ui.user_id=ucr.user_id
+		    AND hi.house_id=vsh.house_id
+		    AND fsa.area_id=hi.area_id   
+		    AND ucr.cus_id=vsh.visitor_id
+		    AND vsh.visitor_type=1
+		    AND ui.user_id=#{userId}	   
+    </select>
+    
+    <!-- 经纪人的客户收藏的房源 -->
+	<select id="customerCollectHousesList" parameterType="map" resultMap="houseInfoMap">
+         SELECT DISTINCT hi.house_id,hi.house_name,hi.house_price,hi.house_logo,hi.house_pic,hi.house_comment_cnt,hi.house_attenttion_cnt,
+		        hi.house_structure_type,hi.business_region,hi.house_sights,hi.house_properties,hi.house_developers_name,
+		        hi.developer_id,fsa.area_id,fsa.area_name
+		   FROM user_info ui,
+		        user_customer_relationship ucr,
+		        visitor_collect_house vch,
+		        house_info hi,
+		        fc_sys_area fsa      
+		  WHERE ui.user_id=ucr.user_id
+		    AND hi.house_id=vch.house_id
+		    AND fsa.area_id=hi.area_id   
+		    AND ucr.cus_id=vch.visitor_id
+		    AND vch.visitor_type=1
+		    AND ui.user_id=#{userId}
+	      LIMIT ${limit}
+	</select>
+	
+    <!-- 经纪人的客户关注的房源 -->
+	<select id="customerCollectHousesCount" resultType="int" parameterType="int">
+         SELECT COUNT(DISTINCT hi.house_id)
+		   FROM user_info ui,
+		        user_customer_relationship ucr,
+		        visitor_collect_house vch,
+		        house_info hi,
+		        fc_sys_area fsa      
+		  WHERE ui.user_id=ucr.user_id
+		    AND hi.house_id=vch.house_id
+		    AND fsa.area_id=hi.area_id   
+		    AND ucr.cus_id=vch.visitor_id
+		    AND vch.visitor_type=1
+		    AND ui.user_id=#{userId}	
+	
+	</select>
+	<!-- gonghongjun end -->
+	
+	
+	<!-- 覃启轩 add SQL    start -->
+	<!--认售的房源   -->
+	<select id="getSaleHousesList" parameterType="map" resultMap="houseInfoMap">
+	    SELECT hi.house_id,hi.house_name,hi.house_price,hi.house_logo,hi.house_pic,hi.house_comment_cnt,hi.house_attenttion_cnt,
+		       hi.house_structure_type,hi.business_region,hi.house_sights,hi.house_properties,hi.house_developers_name,
+		       hi.developer_id,fsa.area_id,fsa.area_name,ussh.is_sale,ussh.user_id,hsci.home_price
+		  FROM user_study_sale_house ussh,
+		  	   house_sale_control_info hsci,
+		       house_info hi,
+		       fc_sys_area fsa
+		 WHERE ussh.house_id=hi.house_id    
+		   AND fsa.area_id=hi.area_id
+		   AND ussh.is_sale=1
+		   AND hi.house_id = hsci.house_id
+		   AND ussh.user_id=#{userId}
+		   <if test="null != houseName and '' != houseName ">
+		   AND hi.house_name like '%${houseName}%'
+		   </if>
+	  ORDER BY hi.house_id DESC
+	     LIMIT ${limit}
+	</select>
+	
+	<!--认售的房源 的总条数 -->
+	<select id="getSaleHousesCount" resultType="int" parameterType="Map">
+	    SELECT count(hi.house_id)
+		  FROM user_study_sale_house ussh,
+		       house_info hi,
+		       fc_sys_area fsa,
+		       house_sale_control_info hsci
+		 WHERE ussh.house_id=hi.house_id    
+		   AND fsa.area_id=hi.area_id
+		   AND ussh.is_sale=1
+		   AND hi.house_id = hsci.house_id
+		   AND ussh.user_id=#{userId}
+		   <if test="null != houseName and '' != houseName ">
+		   AND hi.house_name like '%${houseName}%'
+		   </if>
+	</select>
+	<!-- 覃启轩 add SQL    end -->
+	
+	<!-- SQL CREATE BY Zhenglh -->
+		<!-- 经纪人关注的楼盘 -->
+		<select id="getUserSkimHouse" resultMap="houseInfoMap" parameterType="map">
+			SELECT 
+				   hi.house_id,
+				   hi.house_name,
+				   hi.house_properties,
+				   hi.house_price,
+				   hi.house_min_area,
+				   hi.house_max_area,
+				   vsh.checkin_time created_at,
+				   (SELECT 
+				     COUNT(house_id) 
+				   FROM
+				     house_price 
+				   WHERE visitor_id = #{userId} 
+				     AND house_id = hi.house_id) wharf,
+				   (SELECT content 
+				      FROM house_discuss 
+				     WHERE house_id = hi.house_id 
+				       AND visitor_id = #{userId}
+				  ORDER BY create_date DESC 
+				     LIMIT 0, 1) house_desc 
+			  FROM
+				   visitor_skim_house vsh,
+				   house_info hi 
+			 WHERE vsh.house_id = hi.house_id 
+			   AND vsh.visitor_id = #{userId} 
+			   AND vsh.visitor_type = 0
+			 LIMIT ${limit}
+		</select>
+		
+		<!-- 经纪人关注楼盘 总记录数 -->
+		<select id="getUserSkimHouseCount" resultType="int" parameterType="int">
+			SELECT COUNT(hi.house_id)
+			  FROM visitor_skim_house vsh,house_info hi 
+			 WHERE vsh.house_id = hi.house_id 
+			   AND vsh.visitor_id = #{userId} 
+			   AND vsh.visitor_type = 0
+		</select>
+		
+		<!--认售的房源   -->
+	<select id="getUserSaleHouses" parameterType="map" resultMap="houseInfoMap">
+	    SELECT 
+			   hi.house_id,
+			   hi.house_name,
+			   hi.house_properties,
+			   hi.house_price,
+			   hi.house_min_area,
+			   hi.house_max_area,
+			   ussh.study_starttime created_at,
+			   (SELECT COUNT(house_id) 
+			      FROM house_price 
+		 	     WHERE visitor_id = #{userId} 
+			       AND house_id = hi.house_id) wharf,
+			   (SELECT content 
+				      FROM house_discuss 
+				     WHERE house_id = hi.house_id 
+				       AND visitor_id = #{userId}
+				  ORDER BY create_date DESC 
+				     LIMIT 0, 1) house_desc
+		  FROM
+			   user_study_sale_house ussh,
+			   house_info hi 
+		 WHERE ussh.house_id = hi.house_id 
+		   AND ussh.user_id = #{userId}
+	    LIMIT  ${limit}	
+	</select>
+	
+	<!--认售的房源 的总条数 -->
+	<select id="getUserSaleHousesCount" resultType="int" parameterType="int">
+	    SELECT COUNT(hi.house_id)
+		  FROM user_study_sale_house ussh,house_info hi 
+		 WHERE ussh.house_id = hi.house_id 
+		   AND ussh.user_id = #{userId}
+	</select>
+	
+	
+	<select id="getUserPriceHouse" parameterType="map" resultMap="houseInfoMap">
+		SELECT 
+			  hi.house_id,
+			  hi.house_name,
+			  hi.house_price,
+			  hi.house_min_area,
+			  hi.house_max_area,
+			  hp.sale_date created_at,
+			  (SELECT COUNT(house_id) 
+			     FROM house_price 
+			    WHERE visitor_id = #{userId} 
+			      AND house_id = hi.house_id) wharf,
+			  (SELECT content 
+			     FROM house_discuss 
+			    WHERE house_id = hi.house_id 
+			      AND visitor_id = #{userId} 
+			 ORDER BY create_date DESC 
+			    LIMIT 0, 1) house_desc 
+			FROM
+			  house_price hp,
+			  house_info hi 
+			WHERE hp.house_id = hi.house_id 
+			  AND hp.visitor_id = #{userId} 
+			ORDER BY hp.sale_date DESC 
+			LIMIT  ${limit}
+	</select>
+	
+	<select id="getUserPriceHouseCount" parameterType="int" resultType="int">
+		SELECT COUNT(hi.house_id)
+			FROM house_price hp,
+			     house_info hi 
+			WHERE hp.house_id = hi.house_id 
+			  AND hp.visitor_id = #{userId}
+	</select>
+	
+	<select id="getUserFriendHouse" parameterType="map" resultMap="houseInfoMap">
+	   SELECT 
+			  hi.house_id,
+			  hi.house_name,
+			  hi.house_price,
+			  hi.house_min_area,
+			  hi.house_max_area,
+			  urs.execute_time created_at,
+			  (SELECT COUNT(house_id) 
+			     FROM house_price 
+			    WHERE visitor_id = #{userId}
+			      AND house_id = hi.house_id) wharf,
+			  (SELECT content
+			     FROM house_discuss 
+			    WHERE house_id = hi.house_id 
+			      AND visitor_id = #{userId} 
+			 ORDER BY create_date DESC 
+			    LIMIT 0, 1) house_desc
+		 FROM
+			  user_recommend_share urs,
+			  user_friends uf,
+			  house_info hi
+		WHERE uf.user_id = #{userId}
+		  AND uf.friend_id = urs.recommend_visitor 
+		  AND urs.recommend_content_id = hi.house_id 
+		  AND recommend_visitor_type = 0 
+		  AND recommend_type = 2
+		LIMIT ${limit}
+	</select>
+	
+	<select id="getUserFriendHouseCount" parameterType="int" resultType="int">
+		SELECT COUNT(hi.house_id)
+		  FROM user_recommend_share urs,
+			   user_friends uf,
+			   house_info hi
+		 WHERE uf.user_id = #{userId}
+		   AND uf.friend_id = urs.recommend_visitor
+		   AND urs.recommend_content_id = hi.house_id
+		   AND recommend_visitor_type = 0
+		   AND recommend_type = 2 
+	</select>
+	
+	<select id="getUserCustomerHouse" parameterType="map" resultMap="houseInfoMap">
+	   SELECT 
+			  hi.house_id,
+			  hi.house_name,
+			  hi.house_price,
+			  hi.house_min_area,
+			  hi.house_max_area,
+			  urs.execute_time created_at,
+			  (SELECT COUNT(house_id) 
+			     FROM house_price 
+			    WHERE visitor_id = #{userId}
+			      AND house_id = hi.house_id) wharf,
+			  (SELECT content
+			     FROM house_discuss 
+			    WHERE house_id = hi.house_id 
+			      AND visitor_id = #{userId} 
+			 ORDER BY create_date DESC 
+			    LIMIT 0, 1) house_desc
+		 FROM
+			  user_recommend_share urs,
+			  user_friends uf,
+			  house_info hi
+		WHERE uf.user_id = #{userId}
+		  AND uf.friend_id = urs.recommend_visitor 
+		  AND urs.recommend_content_id = hi.house_id 
+		  AND recommend_visitor_type = 1 
+		  AND recommend_type = 2
+		LIMIT ${limit}
+	</select>
+	
+	<select id="getUserCustomerHouseCount" parameterType="int" resultType="int">
+		SELECT COUNT(hi.house_id)
+		  FROM user_recommend_share urs,
+			   user_friends uf,
+			   house_info hi
+		 WHERE uf.user_id = #{userId}
+		   AND uf.friend_id = urs.recommend_visitor
+		   AND urs.recommend_content_id = hi.house_id
+		   AND recommend_visitor_type = 1
+		   AND recommend_type = 2 
+	</select>
+	
+	<select id="getUserCustomerHouseGroup" parameterType="map" resultMap="HouseGroupInfoMap">
+		SELECT
+			  hgi.group_name,
+			  hgi.line_properties,
+			  hgi.group_duration,
+			  hgi.group_start_date,
+			  hgi.group_price,
+			  hgi.house_group_id
+		 FROM
+			  user_recommend_share urs,
+			  user_friends uf,
+			  house_group_info hgi
+		WHERE uf.user_id = #{userId}
+		  AND uf.friend_id = urs.recommend_visitor
+		  AND urs.recommend_content_id = hgi.house_group_id
+		  AND recommend_visitor_type = 1
+		  AND recommend_type = 3
+		LIMIT ${limit}
+	</select>
+	
+	<select id="getUserCustomerHouseGroupCount" parameterType="int" resultType="int">
+	SELECT COUNT(hgi.house_group_id)
+	  FROM user_recommend_share urs,
+		   user_friends uf,
+		   house_group_info hgi
+	 WHERE uf.user_id = #{userId}
+	   AND uf.friend_id = urs.recommend_visitor
+	   AND urs.recommend_content_id = hgi.house_group_id
+	   AND recommend_visitor_type = 1
+	   AND recommend_type = 3
+	</select>
+	
+	<!-- SQL CREATE BY Zhenglh -->
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

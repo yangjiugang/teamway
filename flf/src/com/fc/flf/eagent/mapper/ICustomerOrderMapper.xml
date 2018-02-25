@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.eagent.mapper.ICustomerOrderMapper">
+
+	
+	<select id="findOrderByUserId" resultMap="com.fc.flf.eagent.mapper.ICustomerDefualtMapper.eventBuyHouseOrderMap">
+		SELECT order_id,order_num,order_name,customer_name,order_date,order_money,order_status,'3' type 
+		  FROM event_buy_house_order 
+		 WHERE user_id = #{userId} 
+	  ORDER BY order_date DESC
+		 LIMIT ${limitValue}
+	</select>
+	
+	<select id="getMyBuyHouseCount" resultType="int">
+		SELECT count(1) FROM event_buy_house_order WHERE user_id = #{userId} 
+	</select>
+	
+	<select id="findViewHouseOrder" resultMap="com.fc.flf.eagent.mapper.ICustomerDefualtMapper.eventInfoMap">
+		SELECT ei.event_num,ei.event_title,ei.event_start_time,ei.event_end_time,'-' orderMoney,eic.customer_name customerName
+		  FROM event_info_customer eic,
+			   event_info ei,
+		       customer_info_detail cid
+		 WHERE eic.event_id = ei.event_id
+		   AND eic.cus_id = cid.cus_id
+	       AND cid.created_user = #{userId}
+	       AND ei.event_type = #{type}
+	     LIMIT ${limitValue}
+	</select>
+	
+	<select id="findViewHouseOrderCount" resultType="int">
+		SELECT count(1)
+		  FROM event_info_customer eic,
+			   event_info ei,
+		       customer_info_detail cid
+		 WHERE eic.event_id = ei.event_id
+		   AND eic.cus_id = cid.cus_id
+	       AND cid.created_user = #{userId}
+	       AND ei.event_type = #{type}
+	</select>
+	
+	<select id="findHouseGroupByUserId" resultMap="com.fc.flf.fparty.mapper.IVisitorCollectHouseGroupMapper.houseGroupInfoMap">
+		SELECT hgi.house_group_id,hgi.group_name,hgc.customer_name customerName,hgi.group_start_date,hgi.group_deadline_date,'-' orderMoeny
+		FROM
+			house_group_customer hgc,
+			house_group_info hgi,
+			customer_info_detail cid
+		WHERE
+			hgc.cus_id = cid.cus_id 
+		AND	hgi.house_group_id = hgc.house_group_id
+		AND cid.created_user = #{userId}
+	  LIMIT ${limitValue}
+	</select>
+	
+	<select id="findHouseGroupCount" resultType="int">
+		SELECT count(1)
+		FROM
+			house_group_customer hgc,
+			house_group_info hgi,
+			customer_info_detail cid
+		WHERE
+			hgc.cus_id = cid.cus_id 
+		AND	hgi.house_group_id = hgc.house_group_id
+		AND cid.created_user = #{userId}
+	</select>
+	
+</mapper>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.fparty.mapper.ICustomerInfoMapper">   
+   <resultMap id="customerInfoMap" type="CustomerInfo">
+		<id property="customerId" column="customer_id"/>
+		<result property="name" column="name"/>
+		<!-- <result property="sex" column="sex"/> -->
+		<result property="photoPath" column="photo_path"/>
+		<result property="idType" column="id_type"/>
+		<result property="idNum" column="ID_num"/>
+		<result property="birthday" column="birthday"/>
+		<!-- <result property="email" column="email"/> -->
+		<result property="telphone" column="telphone"/>
+		<!-- <result property="cellphone" column="cellphone"/> -->
+		<result property="qQ" column="QQ"/>
+		<result property="mSN" column="MSN"/>
+		<result property="blog" column="Blog"/>
+		<result property="weibo" column="weibo"/>
+		<result property="workPlace" column="work_place"/>
+		<result property="address" column="address"/>
+		<result property="registeredAddress" column="registered_address"/>
+		<result property="citizenshipId" column="citizenship_id"/>
+		<result property="citizenship" column="citizenship"/>
+		<result property="nationId" column="nation_id"/>
+		<result property="nation" column="nation"/>
+		<result property="maritalStatus" column="marital_status"/>
+		<result property="highestEdu" column="highest_edu"/>
+		<result property="school" column="school"/>
+		<result property="profession" column="profession"/>
+		<result property="firstWorkDate" column="first_work_date"/>
+		<result property="business" column="business"/>
+		<result property="company" column="company"/>
+		<result property="jobDuty" column="job_duty"/>
+		<result property="income" column="income"/>
+		<result property="createdUser" column="created_user"/>
+		<result property="createdAt" column="created_at"/>
+		<result property="updatedUser" column="updated_user"/>
+		<result property="updatedAt" column="updated_at"/>
+		
+		<association  property="fcSysVisitor" column="visitor_id" javaType="FcSysVisitor" >
+		    <id property="visitorId" column="visitor_id"/>
+			<result property="visitorName" column="visitor_name"/>
+			<result property="visitorPassword" column="visitor_password"/>
+			<result property="firstName" column="first_name"/>
+			<result property="sex" column="sex"/>
+			<result property="email" column="email"/>
+			<result property="phone" column="phone"/>
+			<result property="visitorStatus" column="visitor_status"/>
+			<result property="visitorType" column="visitor_type"/>
+			<result property="loginTime" column="login_time"/>
+			<result property="loginIp" column="login_ip"/>
+			<result property="isOnline" column="is_online"/>
+			<result property="registerTime" column="register_time"/>
+			<result property="expriedDate" column="expried_date"/>		
+		</association>
+	</resultMap>
+	
+	<resultMap type="FcSysVisitor" id="FcSysVisitorPart">
+		<id column="visitor_id" property="visitorId"/>
+		<result column="email" property="email"/>
+		<result column="phone" property="phone"/>
+		<result column="sex" property="sex"/>
+	</resultMap>
+	
+	<resultMap id="customerInfoDetailMap" type="CustomerInfoDetail">
+		<id property="cusId" column="cus_id"/>
+		<result property="customerId" column="customer_id"/>
+		<result property="name" column="name"/>
+		<result property="sex" column="sex"/>
+		<result property="photoPath" column="photo_path"/>
+		<result property="idType" column="id_type"/>
+		<result property="idNum" column="ID_num"/>
+		<result property="birthday" column="birthday"/>
+		<result property="email" column="email"/>
+		<result property="telphone" column="telphone"/>
+		<result property="cellphone" column="cellphone"/>
+		<result property="qQ" column="QQ"/>
+		<result property="mSN" column="MSN"/>
+		<result property="blog" column="Blog"/>
+		<result property="weibo" column="weibo"/>
+		<result property="workPlace" column="work_place"/>
+		<result property="address" column="address"/>
+		<result property="registeredAddress" column="registered_address"/>
+		<result property="citizenshipId" column="citizenship_id"/>
+		<result property="citizenship" column="citizenship"/>
+		<result property="nationId" column="nation_id"/>
+		<result property="nation" column="nation"/>
+		<result property="maritalStatus" column="marital_status"/>
+		<result property="highestEdu" column="highest_edu"/>
+		<result property="school" column="school"/>
+		<result property="profession" column="profession"/>
+		<result property="firstWorkDate" column="first_work_date"/>
+		<result property="business" column="business"/>
+		<result property="company" column="company"/>
+		<result property="jobDuty" column="job_duty"/>
+		<result property="income" column="income"/>
+		<result property="createdUser" column="created_user"/>
+		<result property="createdAt" column="created_at"/>
+		<result property="updatedUser" column="updated_user"/>
+		<result property="updatedAt" column="updated_at"/>
+	</resultMap>
+	
+	<resultMap id="userInfoMap" type="UserInfo">
+		<id property="userId" column="user_id"/>
+		<result property="name" column="name"/>
+		<result property="birth" column="birth"/>
+		<result property="sex" column="sex"/>
+		<result property="photoPath" column="photo_path"/>
+		<result property="areaId" column="area_id"/>
+		<result property="userCity" column="user_city"/>
+		<result property="bhri" column="bhri"/>
+		<result property="trustrank" column="trustrank"/>
+		<result property="userSkills" column="user_skills"/>
+		<result property="firstWorkDate" column="first_work_date"/>
+		<result property="userDesc" column="user_desc"/>
+	</resultMap>
+	
+	
+	<!-- code by gaoqifang start -->	
+	<!--  查找Customer信息 -->
+	<select id="selectCustomerInfo" resultMap="customerInfoMap" parameterType="int">
+	    SELECT  fsv.visitor_name,ci.name,fsv.sex,ci.birthday,fsv.phone,ci.customer_id,
+	            fsv.email,ci.id_type,ci.ID_num,ci.business,ci.job_duty,ci.income
+		  FROM  customer_info ci,
+                fc_sys_visitor fsv 
+         WHERE  ci.customer_id = fsv.visitor_id 
+           AND  ci.customer_id = #{customerId}
+	</select>
+	
+	<!--  更新Customer部分信息 -->
+	<update id="updateCustomerInfoPartOne" parameterType="com.fc.flf.common.domain.CustomerInfo">
+		UPDATE customer_info ci,fc_sys_visitor fsv
+		<set>
+			<if test="name != null">ci.name=#{name},</if>
+			<if test="fcSysVisitor.sex != -1">fsv.sex=#{fcSysVisitor.sex},</if>
+			<if test="birthday != null">ci.birthday=#{birthday},</if>
+		</set>
+		WHERE ci.customer_id=#{customerId}
+		  AND ci.customer_id=fsv.visitor_id
+	</update>
+	
+	<!--  更新Customer部分信息 -->
+	<update id="updateCustomerInfoPartTwo" parameterType="com.fc.flf.common.domain.CustomerInfo">
+		UPDATE customer_info ci
+		<set>
+			<if test="idType != -1">ci.id_Type=#{idType},</if>
+			<if test="idNum != null">ci.ID_num=#{idNum},</if>
+			<if test="business != null">ci.business=#{business},</if>
+			<if test="jobDuty != null">ci.job_duty=#{jobDuty},</if>
+			<if test="income != -1">ci.income=#{income},</if>
+		</set>
+		WHERE ci.customer_id=#{customerId}
+	</update>
+	
+	<update id="updateFcSysVisitorInfo" parameterType="com.fc.flf.common.domain.FcSysVisitor">
+		UPDATE  fc_sys_visitor 
+		   SET  email = #{email},
+		        phone = #{phone}
+		 WHERE  visitor_id = #{visitorId}
+	</update> 
+   <!-- code by gaoqifang end -->
+   
+   	<!-- code by gonghongjun start  -->
+    <!-- 查找customer的详细信息  -->
+    <select id="customerInfoDetail" parameterType="int" resultMap="customerInfoDetailMap">
+     SELECT cid.cus_id,cid.customer_id,cid.name,cid.sex,cid.photo_path,cid.id_type,cid.ID_num,cid.birthday,cid.email,cid.telphone,cid.cellphone,cid.QQ,
+			cid.MSN,cid.Blog,cid.weibo,cid.work_place,cid.address,cid.registered_address,cid.citizenship_id,cid.citizenship,cid.nation_id,
+			cid.nation,cid.marital_status,cid.highest_edu,cid.school,cid.profession,cid.first_work_date,cid.business,cid.company,
+			cid.job_duty,cid.income,cid.created_user,cid.created_at,cid.updated_user,cid.updated_at
+       FROM customer_info_detail cid,
+	        customer_info ci
+      WHERE cid.customer_id=ci.customer_id
+        AND ci.customer_id=#{customerId}    
+    </select>
+    
+    <!-- 查找customer的详细信息  -->
+    <select id="listCustomerInfoDetail" parameterType="int" resultMap="customerInfoDetailMap">
+     SELECT cid.cus_id,cid.customer_id,cid.name,cid.sex,cid.photo_path,cid.id_type,cid.ID_num,cid.birthday,cid.email,cid.telphone,cid.cellphone,cid.QQ,
+			cid.MSN,cid.Blog,cid.weibo,cid.work_place,cid.address,cid.registered_address,cid.citizenship_id,cid.citizenship,cid.nation_id,
+			cid.nation,cid.marital_status,cid.highest_edu,cid.school,cid.profession,cid.first_work_date,cid.business,cid.company,
+			cid.job_duty,cid.income,cid.created_user,cid.created_at,cid.updated_user,cid.updated_at
+       FROM customer_info_detail cid,
+	        customer_info ci
+      WHERE cid.customer_id=ci.customer_id
+        AND ci.customer_id=#{customerId}    
+    </select>
+    
+    <!-- 根据客户的id号（customerInfo.customerId）查找经纪人的信息（userInfo） -->
+    <select id="findUserInfo" parameterType="int" resultMap="userInfoMap">
+     SELECT ui.user_id,ui.name,ui.birth,ui.sex,ui.photo_path,ui.area_id,ui.user_city,
+            ui.bhri,ui.trustrank,ui.user_skills,ui.first_work_date,ui.user_desc
+       FROM user_info ui,
+            customer_info ci,
+            customer_info_detail cid
+      WHERE ci.customer_id=cid.customer_id      
+        AND cid.created_user=ui.user_id
+        AND ci.customer_id=#{customerId}    
+    </select>
+    
+    <!-- code by gonghongjun end  -->
+</mapper>

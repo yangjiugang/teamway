@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.fc.flf.eagent.mapper.IUserDailyMapper">
+
+	<resultMap type="UserDaily" id="UserDailyMap">
+	    <id  property="id" column="id"/>
+	    <result property="userId" column="user_id"/>
+	    <result property="dailyTitle" column="daily_title" />
+	    <result property="dailyTime" column="daily_time" javaType="Date" />
+	    <result property="dailyContent" column="daily_content"/>
+	</resultMap>
+	
+	<!-- code by huangshan start -->
+	<!-- 保存日志 -->
+	<insert id="saveDaily" parameterType="UserDaily">
+		INSERT INTO user_daily(user_id,daily_title,daily_time,daily_content) 
+		VALUES(#{userId},#{dailyTitle},#{dailyTime},#{dailyContent});
+	</insert>
+	<!-- 查询User日志 -->
+	<select id="findDailyByUserId" resultMap="UserDailyMap">
+		SELECT id,user_id,daily_title,daily_time,daily_content
+		  FROM user_daily
+		 WHERE user_id = #{userId}
+	  ORDER BY daily_time DESC
+	     LIMIT ${limitValue}
+	</select>
+	<!-- 查询User日志记录数-->
+	<select id="getCount" resultType="int">
+		SELECT count(1) FROM user_daily WHERE user_id = #{userId}
+	</select>
+	<!-- 查询好友的日志 -->
+	<select id="findFriendDaily" resultMap="UserDailyMap">
+		SELECT ud.* FROM user_daily ud  
+		WHERE ud.user_id 
+		   IN ( SELECT uf.friend_id FROM user_friends uf WHERE uf.user_id = #{userId})
+	 ORDER BY daily_time DESC
+	 	LIMIT ${limitValue}
+	</select>
+	<!-- 查询好友的日志记录数 -->
+	<select id="getFriendDailyCount" resultType="int">
+		SELECT count(1) FROM user_daily ud  
+		WHERE ud.user_id 
+		   IN ( SELECT uf.friend_id FROM user_friends uf WHERE uf.user_id = #{userId})
+	</select>
+	
+	<!-- 房乐会客户查询蜂蜜的日志 -->
+	<select id="findDailyByCusId" resultMap="UserDailyMap">
+		SELECT id,user_id,daily_title,daily_time,daily_content
+		  FROM user_daily ud,
+		  	   customer_info_detail cid
+		 WHERE ud.user_id = cid.created_user
+		   AND cid.cus_id = #{cusId}
+		 LIMIT ${limitValue}  
+	</select>
+	
+	<!-- 房乐会客户查询蜂蜜的日志记录 -->
+	<select id="findDailyCountByCusId" resultType="int">
+		SELECT count(1) FROM user_daily ud, customer_info_detail cid
+		 WHERE ud.user_id = cid.created_user
+		   AND cid.cus_id = #{cusId}
+	</select>
+	
+	<delete id="delDaily" parameterType="int">
+		DELETE FROM user_daily WHERE id = #{id}
+	</delete>
+	
+	<update id="updateDaily" parameterType="UserDaily">
+		UPDATE user_daily SET daily_title=#{dailyTitle},daily_content=#{dailyContent} 
+		 WHERE id = #{id}
+	</update>
+	
+	<!-- code by huangshan end -->
+	
+</mapper>

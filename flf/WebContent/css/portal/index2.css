@@ -1,0 +1,40 @@
+.conterh{ width:990px;  margin:0 auto; clear:both; overflow:hidden;}
+.conterh h1{
+	background-image: url(../../images/Housing_Bg.jpg);
+	background-repeat: repeat-x;
+	background-position: top;
+	height:32px; padding:0 0 0 12px; line-height:35px; 
+}
+.conterh-c{ width:970px; margin:30px auto; color:#666; overflow:hidden;}
+.conterh-l{ width:160px; margin:0 10px 0 0px; float:left; display:inline; border:#DCDDDE 1px solid;}
+.conterh-l span{ width:160px; height:77px; display:block; background-image:url(../../images/jyrd.gif); margin-bottom:1px;}
+.conterh-l span h3{ font-family:'微软雅黑','黑体'; display:block; font-weight:normal; color:#000; float:right; text-align:center; line-height:18px;}
+.name01{ font-size:20px; margin-top:30px; width:85px;}
+.name02{ font-size:30px; width:115px;}
+.conterh-l li{ line-height:34px; font-size:13px; font-weight:bold; width:150px; margin:auto;}
+.conterh-l li a{ color:#005EAC;}
+.conterh-co{ border:1px solid #ccc; padding:1px; float:left; margin:0 10px 0 0; background:#FFFFFF; width:540px; height:248px;}
+.conterh-co img{width:540px; height:248px;}
+.conterh-r{ float:left; width:240px;}
+
+.conterh-r li{ line-height:25px; width:240px; clear:both;}
+.conterh-r li font{ color:#000; font-weight:bold; font-size:12px; display:block; float:left;}
+.conterh-r li h3{ color:#ad050a; font-size:13px; float:left;}
+.font2 span{ color:#ad050a; font-weight:bold;}
+.conterh-r p{ line-height:20px; text-indent:15px;}
+.conterh-r p a{ color:#ad050a;}
+#imgfont{ margin:15px 0 5px 0; display:block;}
+
+
+.banner{ width:990px; margin:10px auto;}
+.banner-a{ width:932px; margin:10px auto; text-align:center; color:#666px; line-height:25px;}
+
+
+/*重构index.css*/
+.SelectOut{margin-top:20px; margin-bottom:20px;}
+.SelectOut .selectRight { width:790px;}
+.SelectOut .selectRight li{ float:left; border-left:#0566aa 1px solid; text-align:center; margin:6px auto; font-size:14px; width:195px; font-weight:bold;}
+.SelectOut .selectRight li a{ color:#0566aa;}
+
+.ZMFlashmiddle{ width:738px; float:left; margin-left:0px;}
+/*End重构index.css*/

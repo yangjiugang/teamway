@@ -1,0 +1,4 @@
+.dialogMsg{width:458px;height:458px;background-image:url(../images/tanchuang1.png);padding:1px;margin:auto;position:absolute;}
+.dialogMsg font{ font-size:12px;color:#f1bce0;display:block; margin:30px;}
+.dialogMsg div h3{font-weight:normal;}
+.dialogMsg div{width:290px;margin:130px auto 0 auto;overflow:hidden;text-align:center;line-height:25px;color:#FFF;}

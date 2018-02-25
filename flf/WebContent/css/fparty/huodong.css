@@ -1,0 +1,51 @@
+@charset "utf-8";
+/* CSS Document */
+
+/***活动模块***/
+.huodong{width:767px; overflow:hidden; margin-top:30px; margin-left:18px;}
+.huodong_tab{width:767px; font-size:14px; color:#fff; height:25px; clear:both; overflow:hidden;}
+.huodong_tab_left{ float:left; width:23px; height:24px; border-bottom:1px solid #D2D4D3;}
+.huodong_tab ul{ float: left;margin:0;padding:0;}
+.huodong_tab li{ height:25px; float:left; display:inline; line-height:25px; text-align:center;cursor:pointer; padding:0 8px;background:#DA9EA0; border-right:1px solid #EAEAEC;}
+.huodong_tab li.on_zzjs{color:#bb0e13; border-top:1px solid #D1D2D4; border-left:1px solid #D1D2D4; border-right:1px solid #D1D2D4; background:#EAEAEC;}
+.huodong_tab_right{ float:right;height:24px; line-height:24px; text-align:right; color:#6D6E71; font-size:12px; padding-right:15px;}
+.huodong_tab_right font{ color:#BB0E13; font-size:12px;}
+.huodong_tab_right a{ text-align:right; color:#005EAC; text-decoration:underline;}
+.huodong_tab_right a:hover{ text-align:right; color:#BB0E13;text-decoration:none;}
+.huodong_status{ width:797px; height:24px; clear:both; overflow:hidden; color:#fff; font-size:14px;}
+.huodong_status li{ float:left; height:24px; line-height:24px; text-align:center; border-right:1px solid #EAEAEA; background:#B9B9B9;}
+.huodonglist{ width:797px;}
+.huodong_list{ width:797px; clear:both; overflow:hidden; color:#005EAC; background:url(../images/dian.gif) left bottom repeat-x;}
+.huodong_list li{ float:left; padding:20px 19px 15px 13px; line-height:1.6em;}
+/***End活动模块***/
+
+/***交易***/
+.jiaoyi_list{ width:797px; clear:both; overflow:hidden; color:#bb0e13; background:url(../images/dian.gif) left bottom repeat-x;}
+.jiaoyi_list li{ float:left; padding:20px 19px 15px 13px; line-height:1.6em; text-align:center;}
+/***End交易***/
+
+/***评论***/
+.pinglun_list{ width:797px; clear:both; overflow:hidden; color:#005EAC; background:url(../images/dian.gif) left bottom repeat-x;}
+.pinglun_list li{ float:left; padding:20px 19px 15px 13px; line-height:1.6em;}
+.pinglun_list a{color:#005EAC; text-decoration:underline;}
+.pinglun_list a:hover{color:#BB0E13;text-decoration:none;}
+/***End评论***/
+
+/***楼盘***/
+.loupan{ width:767px; clear:both; overflow:hidden; background:url(../images/dian.gif) left bottom repeat-x; padding:15px 0;}
+.loupanImg{ float:left; width:193px; height:123px; background:#fff; border:1px solid #C9C7C8; padding:1px;}
+.loupanliteral{ float:left; width:250px; line-height:1.8em; padding-top:17px; margin:0 0 0 7px;}
+.loupanliteral b{ color:#4c4c4c; font-size:13px;}
+.loupanliteral span{color:#ad050a; font-weight:bold; font-size:13px;}
+.loupanliteral dd{ padding-top:15px;}
+.loupanliteral dd span{ padding:3px 6px; background:#EE01B1; color:#fff;}
+.loupanxlogo{ float:left; width:105px; text-align:center; line-height:2em;}
+.loupanxlogo img{padding:1px; background:#fff; border:1px solid #C9C7C8;}
+.loupanxlogo span{ font-weight:bold; color:#BA060F;}
+.loupanRight{ float:left; width:75px; line-height:1.8em; padding-top:33px; color:#BD0E15; margin-left:80px;}
+.loupanRight a{ color:#005EAC; text-decoration:underline;}
+.loupanRight a:hover{ color:#000; text-decoration:none;}
+.loupan_tab_right{ float:left; width:204px; height:14px;color:#000; font-size:12px; border-bottom:1px solid #D1D3D4; padding:10px 0 0 4px; text-align:right;}
+/***End楼盘***/
+
+.Y04tong{ width:760px;line-height:24px;border-bottom:1px solid #ccc; padding-left:5px; color:#C0091D;}

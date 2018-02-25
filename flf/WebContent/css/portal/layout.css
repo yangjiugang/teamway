@@ -1,0 +1,71 @@
+@charset "utf-8";
+
+*{ margin:0; padding:0;}
+ul{ list-style-type:none;}
+a{ text-decoration:none;}
+body{ background-color:#eaeaeb;font-size:12px;}
+h1,h2,h3,h4,h5,h6,p,ul{ margin:0; padding:0;}
+img{ border:0;}
+.middle{ width:990px; margin:auto;}
+.dian{ height:1px; background-image:url(../../images/dian.gif); clear:both; line-height:0; font-size:0; overflow:hidden;}
+
+/*头部*/
+.head{ background-color:#FFF; font-family:"宋体";}
+.head a{ color:#000;}
+.loginBarOut{ border-bottom:#dee3e5 1px solid;}
+.loginBar{ width:990px; margin:auto; height:25px; vertical-align:middle; line-height:25px;}
+.loginBar font{ color:#bb0e13; font-size:12px; line-height:25px; height:25px;}
+.loginBar .left{ display:block; float:left; width:320px; line-height:25px; height:25px;}
+
+.loginBar .right{ display:block; float:right; width:290px; line-height:25px; height:25px;}
+.loginBar .right .cc{ padding-left:35px; line-height:25px; background:url(../../images/wangdian1.jpg) left no-repeat; overflow:hidden; float:left;  margin-right:3px;}
+
+
+.logoNav{ width:990px; margin:auto; position:relative; height:70px;}
+.logoNav .logo{ width:267px; height:77px; float:left; background-image:url(../../images/logo.png); _filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, src="images/logo.png"); _background:none; position:absolute; top:8px;}
+.logoNav ul{ width:410px; float:left; font-size:14px; font-weight:bold; position:absolute; bottom:5px; left:286px; _bottom:3px;}
+.logoNav ul li{ width:81px; float:left; text-align:center;}
+.logoNav li a:hover{ color:#bb0e13;}
+.logoNav li a font{ color:#bb0e13; font-size:14px;}
+.logoNav span{ width:200px; position:absolute; bottom:7px; right:20px;display:block; _bottom:6px;}
+.logoNav span div{width:80px; overflow:hidden; line-height:20px; position:absolute; bottom:-2px; _bottom:-5px;}
+.logoNav span div .font1{float:left; width:50px;}
+.logoNav span div .font2{font-size:18px; color:#bb0e13; clear:both; display:block;}
+/*.logoNav span font{ width:48px; float:left; display:block; margin-top:15px; font-size:12px;}
+.logoNav span img{float:right; margin-top:8px;}*/
+
+.searchOut{ background-color:#bbb; height:33px; clear:both;}
+.searchOut div{ width:990px; margin:auto; position:relative; height:33px;}
+.searchOut div .input1{ width:375px; _width:380px;}
+.searchOut div .inputText{ width:333px; height:22px; border:0; float:left; margin-top:6px; font-size:12px; padding-top:1px; padding-left:5px; color:#ccc; background-image:url(../../images/text_bg.jpg); vertical-align:middle; line-height:22px;}
+.searchOut div .inputBut{margin:6px 0 0 5px; _margin:6px 0 0 3px;}
+.searchOut div span{ display:block; width:248px; position:absolute; right:0; bottom:10px; _bottom:8px;}
+.searchOut div span a{ color:#FFF;}
+/*End头部*/
+
+/*尾部*/
+.footBorder{clear:both; overflow:hidden;}
+.foot{ width:990px; margin:50px auto 0 auto; overflow:hidden; font-family:"新宋体"; color:#a2a2a2; clear:both;}
+.footCenter{ width:80px; float:left; margin:55px 0 55px 30px; display:inline;}
+.foot h3{width:80px; font-size:14px; font-weight:normal; margin:0 auto;}
+.foot h3 span{ width:5px; height:15px; background-color:#c60514; display:block; float:left; margin-right:5px;}
+.footFont li{ font-size:12px; width:55px; margin:5px auto;}
+.footFont li a{ color:#a2a2a2;}
+
+.FootInformation{ width:100%; border-top:#a6a6a6 5px solid; clear:both; margin-bottom:30px;}
+.FootInformation div{ width:990px; margin:40px auto; overflow:hidden; font-size:13px;}
+.FootInformation div ul{width:800px; margin:auto; overflow:hidden;}
+.FootInformation div li{ width:85px; float:left; border-right:#626262 1px dashed; text-align:center;}
+.FootInformation div li a{ color:#626262;}
+.FootInformation div span{ display:block; width:600px; margin:10px auto; line-height:25px; color:#626262; text-align:center; letter-spacing:1px; clear:both;}
+/*End尾部*/
+
+/*分页*/
+#fenye{ clear:both; margin:20px auto;}
+#fenye ul{ width:400px; float:left; margin:0;}
+#fenye ul li{ border:#000 1px solid; text-align:center; margin:0; line-height:20px; float:left; width:20px; height:20px; margin-left:7px; }
+#fenye ul li a{ color:#000;}
+/*#fenye ul li a:hover{background-color:#da9c9d; display:block; border:#b82b33 1px solid;}*/
+#fenye span{ width:200px; float:right; display:block; color:#b6b6b6; position:relative;}
+#fenye .Gotext{ border:#a7a9ac 1px solid; width:30px;}
+/*End分页*/

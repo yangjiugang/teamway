@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.eagent.mapper.IUserMsgMapper">
+	<resultMap id="userMsgMap" type="UserMsg">
+		<result property="id" column="id"/>
+		<result property="msgContent" column="msg_content"/>
+		<result property="receiveUserId" column="receive_user_id"/>
+		<result property="receiveUserType" column="receive_user_type"/>
+		<result property="msgType" column="msg_type"/>
+		<result property="isRead" column="is_read"/>
+		<result property="sendUserId" column="send_user_id"/>
+		<result property="sendUserName" column="send_user_name"/>
+		<result property="sendUserType" column="send_user_type"/>
+		<result property="sendTime" column="send_time"/>
+	</resultMap>
+
+
+	<!-- Start gaoqifang -->
+	<!-- 根据蜂蜜查询对应客户 -->
+	<select id="selectMsgCount" resultType="int" parameterType="int">
+		SELECT  COUNT(um.id) 
+		  FROM  user_msg um,
+  				customer_info_detail cid 
+		 WHERE  um.send_user_id = cid.created_user
+  		   AND  cid.customer_id = #{customerId}
+  		   AND  um.receive_user_id = #{customerId}
+  		   AND  cid.is_exchange = 0
+	</select>
+	
+	<!-- 根据消息类型查找消息 -->
+	<select id="selectMsgByMsgType" resultMap="userMsgMap">
+		SELECT  um.id, um.msg_content,um.receive_user_id,um.receive_user_type,um.send_user_name,
+				um.msg_type,um.is_read,um.send_user_id,um.send_user_type,um.send_time
+		  FROM  user_msg um
+		 WHERE  um.receive_user_id = #{customerId} 
+  		   AND  um.msg_type = #{msgType}
+  	  ORDER BY  um.send_time DESC
+  	     LIMIT  ${limit}
+	</select>
+	
+	<!-- 根据id查找消息 -->
+	<select id="selectMsgById" resultMap="userMsgMap" parameterType="int">
+	    SELECT  um.id, um.msg_content,um.receive_user_id,um.receive_user_type,um.send_user_name,
+				um.msg_type,um.is_read,um.send_user_id,um.send_user_type,um.send_time
+		  FROM  user_msg um
+		 WHERE  um.id = #{id} 
+	</select>
+	
+	<!-- 根据消息类型查找消息数 -->
+	<select id="selectMsgCountByMsgType" resultType="int">
+		SELECT  COUNT(um.id)
+		  FROM  user_msg um
+		 WHERE  um.receive_user_id = #{customerId} 
+  		   AND  um.msg_type = #{msgType}
+	</select>
+
+	<!-- 查找蜂蜜对客户的留言 -->
+	<select id="selectMsgSendByFeng" resultMap="userMsgMap" >
+		SELECT  um.id, um.msg_content,um.receive_user_id,um.receive_user_type,um.send_user_name,
+				um.msg_type,um.is_read,um.send_user_id,um.send_user_type,um.send_time
+		  FROM  user_msg um,
+  				customer_info_detail cid 
+		 WHERE  um.send_user_id = cid.created_user
+  		   AND  cid.customer_id = #{customerId}
+  		   AND  um.receive_user_id = #{customerId}
+  		   AND  cid.is_exchange = 0
+  	  ORDER BY  um.send_time DESC
+  	     LIMIT  ${limit}
+	</select>
+	
+	<!-- 根据id删除消息 -->
+	<delete id="deleteMsg" parameterType="int">
+		DELETE  
+		  FROM  user_msg
+		 WHERE  id = #{id}
+	</delete>
+	
+	<!-- 添加消息 -->
+	<insert id="inertUserMsg" parameterType="UserMsg">
+		INSERT  
+		  INTO  user_msg(msg_content,receive_user_id,receive_user_type,msg_type,
+		  				 send_user_id,send_user_type,send_user_name,send_time)
+		VALUES  (#{msgContent},#{receiveUserId},#{receiveUserType},#{msgType},
+				#{sendUserId},#{sendUserType},#{sendUserName},#{sendTime})
+	</insert>
+	
+	<!-- 根据消息类型、发信人类型查找消息 -->
+	<select id="selectMsgByMsgTypeAndSenderType" resultMap="userMsgMap">
+		SELECT  um.id, um.msg_content,um.receive_user_id,um.receive_user_type,um.send_user_name,
+				um.msg_type,um.is_read,um.send_user_id,um.send_user_type,um.send_time
+		  FROM  user_msg um
+		 WHERE  um.receive_user_id = #{userId} 
+  		   AND  um.msg_type = #{msgType}
+  		   AND  um.send_user_type = #{senderType}
+  	  ORDER BY  um.send_time DESC
+  	     LIMIT  ${limit}
+	</select>
+	
+	<!-- 根据消息类型、发信人类型查找消息数 -->
+	<select id="selectMsgCountByMsgTypeAndSenderType" resultType="int">
+		SELECT  COUNT(um.id)
+		  FROM  user_msg um
+		 WHERE  um.receive_user_id = #{userId} 
+  		   AND  um.msg_type = #{msgType}
+  		   AND  um.send_user_type = #{senderType}
+	</select>
+	
+	<!-- 根据userId查找客户点名，客户投诉，客户消息数 -->
+	<select id="selectMsgMetionComplaintCount" resultType="int">
+		SELECT  COUNT(id) 
+		  FROM (   
+				(SELECT  um.id id
+				   FROM user_msg um 
+				  WHERE um.receive_user_id = #{userId} 
+  					AND um.receive_user_type = 0 
+  					AND um.msg_type IN (1,3,4) 
+  					AND um.send_user_type = 1)
+ 				  UNION ALL 
+				(SELECT cm.mention_id id
+				   FROM customer_mention cm, customer_info ci 
+				  WHERE cm.user_id = #{userId} 
+  					AND cm.customer_id = ci.customer_id)
+  				) c
+	</select>
+	
+	<!-- 根据userId查找客户点名，客户投诉，客户消息 -->
+	<select id="selectMsgMetionComplaint" resultMap="userMsgMap">
+	   (SELECT  um.id ,um.receive_user_id,um.msg_type,um.is_read,um.send_user_id,
+	   			um.send_time,um.msg_content,um.send_user_name
+		  FROM  user_msg um
+		 WHERE  um.receive_user_id = #{userId}
+		   AND  um.receive_user_type = 0 
+  		   AND  um.msg_type IN (1,3,4)
+  		   AND  um.send_user_type = 1)
+ 	 UNION ALL 
+ 	   (SELECT  cm.mention_id,cm.user_id,10 msg_type,cm.is_check,cm.customer_id,
+ 	   		    cm.mention_time,'' msg_content,ci.name
+		  FROM  customer_mention cm,
+		        customer_info ci
+		 WHERE  cm.user_id = #{userId}
+		   AND  cm.customer_id = ci.customer_id)
+	  ORDER BY  send_time DESC
+  	     LIMIT  ${limit}
+	</select>
+	
+	<update id="updateUserMsgReadById">
+		UPDATE  user_msg
+		   SET	is_read=#{read}
+		 WHERE  id=#{userMsgId}
+	</update>
+	
+	
+		
+	<!-- SQL CREATE BY Zhenglh -->
+	
+	<insert id="saveUserMsg" parameterType="UserMsg" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO User_msg(id,msg_content,receive_user_id,receive_user_type,msg_type,is_read,send_user_id,send_user_type,send_user_name,send_time)
+		VALUES(#{id},#{msgContent},#{receiveUserId},#{receiveUserType},#{msgType},#{isRead},#{sendUserId},#{sendUserType},#{sendUserName},#{sendTime})
+	</insert>
+	
+	<!-- SQL CREATE BY Zhenglh -->
+	
+
+</mapper>

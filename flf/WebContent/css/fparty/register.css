@@ -1,0 +1,40 @@
+@charset "utf-8";
+/* CSS Document */
+
+.registerOut{width:700px; margin:50px 0 0 50px;}
+.registerOut div{ border-bottom:#DCDDDE 1px solid; width:530px; padding:20px 0; float:left; overflow:hidden;}
+.registerOut div span{ display:block; width:430px; margin:5px auto;  line-height:35px; float:left;}
+.registerOut div span p{ padding-left:120px; height:18px; line-height:18px;}
+.registerOut div label{ width:110px; display:block; text-align:right; float:left;}
+.registerOut div img{}
+.registerOut div font{ color:#BB0E13; display:block; width:10px; float:left; text-align:center;}
+.registerOut div input{width:220px; height:25px; line-height:25px; border:1px solid #b5b5b6; background:#EAEAEB; margin-top:-3px;}
+.registerOut div textarea{ width:400px; height:50px; background-color:#eaeaeb; border:#DCDDDE 1px solid; float:left;}
+.registerOut div a{ color:#2895FC; text-decoration:underline;}
+#registerFont{ width:653px; font-size:14px; border-bottom:#DCDDDE 1px solid;line-height:25px; text-indent:15px;}
+
+#sexn,#sexnv{ width:20px; height:15px; border:none; margin-left:10px;}
+.textTS{ margin-left:120px;}
+
+.inputbg{ background-image:url(../../images/registerBg.jpg);}
+
+#verify{ height:50px;}
+#verify input{ width:80px; float:left;}
+#verify span{ display:block; width:140px; float:left; margin:0 0 0 5px;}
+
+#article{ display:block; margin-top:30px; width:400px; margin-left:61px;}
+#article input{ margin-top:20px; border:none;}
+
+.red{ color:#F00; font-weight:normal;}
+
+
+/*找回密码*/
+.zhuce-zhao{ width:700px; margin:10px 0 40px 0; float:left;}
+.zhuce-zhao ul{ width:430px; margin:10px auto;}
+.zhuce-zhao li{ float:left; margin-right:3px;}
+.zhuce-zhao li span{ color:#000;}
+
+.zhuce-yan{ width:340px; background-color:#E9F2F9; margin:20px 0 0 142px; height:60px; float:left;}
+.zhuce-yan ul{margin:22px 0 0 118px;}
+.zhuce-yan li{ float:left; color:#005EAC;}
+.zhuce-yan-t{ width:340px; margin:20px 0 0 142px; height:60px; float:left;}

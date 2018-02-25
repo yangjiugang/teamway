@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.flf.portal.mapper.HouseInfoDetailMapper">
+	
+	<resultMap type="HouseInfoDetail" id="HouseInfoDetailMap">
+		<id property="houseId" column="house_id"/>
+		<result property="houseAddress" column="house_address"/>
+		<result property="tenementCompany" column="tenement_company"/>
+		<result property="tenementAddress" column="tenement_address"/>
+		<result property="houseSaleTelphone" column="house_sale_telphone"/>
+		<result property="houseSaleAddress" column="house_sale_address"/>
+		<result property="houseTenementPrice" column="house_tenement_price"/>
+		<result property="houseOpenDate" column="house_open_date"/>
+		<result property="houseCheckinDade" column="house_checkin_dade"/>
+		<result property="houseFloor" column="house_floor"/>
+		<result property="houseTotal" column="house_total"/>
+		<result property="houseRightYear" column="house_right_year"/>
+		<result property="houseStrucureArea" column="house_strucure_area"/>
+		<result property="houseFloorSpace" column="house_floor_space"/>
+		<result property="roadArea" column="road_area"/>
+		<result property="houseCapacityRate" column="house_capacity_rate"/>
+		<result property="houseAfforestationRate" column="house_afforestation_rate"/>
+		<result property="houseForCarUp" column="house_for_car_up"/>
+		
+		<result property="houseForCarDown" column="house_for_car_down"/>
+		<result property="houseSaleLicense" column="house_sale_license"/>
+		<result property="houseSaleStatus" column="house_sale_status"/>
+		<result property="createUserId" column="create_user_id"/>
+		<result property="createDate" column="create_date"/>
+		<result property="houseKeyword1" column="house_keyword1"/>
+		<result property="houseKeyword2" column="house_keyword2"/>
+		<result property="houseKeyword3" column="house_keyword3"/>
+		<result property="houseKeyword4" column="house_keyword4"/>
+		<result property="houseKeyword5" column="house_keyword5"/>
+	</resultMap>
+	
+	<!-- Code By Zhenglh Start-->
+    <select id="findHouseInfoDetailById" parameterType="int" resultType="HouseInfoDetail" resultMap="HouseInfoDetailMap">  
+		SELECT
+			house_id,
+			house_address,
+			tenement_company,
+			tenement_address,
+			house_sale_telphone,
+			house_sale_address,
+			house_tenement_price,
+			house_open_date,
+			house_checkin_dade,
+			house_floor,
+			house_total,
+			house_right_year,
+			house_strucure_area,
+			house_floor_space,
+			road_area,
+			house_capacity_rate,
+			house_afforestation_rate,
+			house_for_car_up,
+			house_for_car_down,
+			house_sale_license,
+			house_sale_status,
+			house_keyword1,
+			create_user_id,
+			create_date,
+			house_keyword2,
+			house_keyword3,
+			house_keyword4,
+			house_keyword5
+		FROM house_info_detail   
+ 	   WHERE house_id=#{houseId}
+    </select>
+    <!-- Code By Zhenglh End-->
+</mapper>  

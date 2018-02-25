@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.eagent.mapper.IClubStudyDataMapper">
+
+	<resultMap id="ClubStudyDataMap" type="ClubStudyData">
+		<result property="dataId" column="data_id"/>
+		<result property="dataType" column="data_type"/>
+		<result property="dataFormat" column="data_format"/>
+		<result property="dataTitle" column="data_title"/>
+		<result property="uploadUserType" column="upload_user_type"/>
+		<result property="uploadUserId" column="upload_user_id"/>
+		<result property="uploadDateAt" column="upload_date_at"/>
+		
+		<association property="clubStudyDataInfo" column="data_id"
+			javaType="ClubStudyDataInfo">
+			<result property="dataId" column="data_id"/>
+			<result property="contentText" column="content_text"/>
+		</association>
+		
+		<association property="clubStudyDataAttachment" column="data_id"
+			javaType="ClubStudyDataAttachment">
+			<id property="attachmentId" column="attachment_id"/>
+			<result property="dataId" column="data_id"/>
+			<result property="attachmentHost" column="attachment_host"/>
+			<result property="attachmentPath" column="attachment_path"/>
+		</association>
+	</resultMap>
+	
+	<resultMap id="ClubStudyDataInfoMap" type="ClubStudyDataInfo">
+		<id property="dataId" column="data_id"/>
+		<result property="contentText" column="content_text"/>
+	</resultMap>
+	
+	<!-- SQL CREATE BY Zhenglh -->
+		
+		<select id="selectClubStudyDataByTypeToPage" resultMap="ClubStudyDataMap" parameterType="map">
+			 SELECT csd.data_id,
+			 		csd.data_type,
+			 		csd.data_format,
+			 		csd.data_title,
+			 		csd.upload_date_at
+			   FROM club_study_data csd,
+			   		club_study_data_attachment csda,
+			   		club_study_data_info csdi
+			  WHERE csd.data_id=csda.data_id
+   				AND csda.data_id=csdi.data_id 
+			  	AND csd.data_type=#{type}
+			    AND csd.data_format=#{format}
+			  LIMIT #{start},#{end}
+		</select>
+		
+		<select id="selectClubStudyDataCountByType" resultType="int" parameterType="map">
+			 SELECT COUNT(csd.data_id)
+			   FROM club_study_data csd,
+			   		club_study_data_attachment csda,
+			   		club_study_data_info csdi
+			  WHERE csd.data_id=csda.data_id
+   				AND csda.data_id=csdi.data_id 
+			  	AND csd.data_type=#{type}
+			    AND csd.data_format=#{format}
+		</select>
+		
+		<select id="selectClubStudyDataInfoById" resultMap="ClubStudyDataInfoMap" parameterType="map">
+			SELECT data_id,content_text FROM club_study_data_info 
+			 WHERE data_id=#{dataId}
+		</select>
+		
+	<!-- SQL CREATE BY Zhenglh -->
+</mapper>

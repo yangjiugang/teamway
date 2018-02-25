@@ -1,0 +1,14 @@
+@charset "utf-8";
+/* CSS Document */
+*{ margin:0; padding:0; list-style:none; }
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td,button,img{margin:0; padding:0; border:0;list-style:none;}
+body{font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#626262; background-color:#eaeaeb;}
+button{border:0; text-align:center; cursor:pointer;}
+label{cursor:pointer;}
+/* link */
+a{ color:#626262; text-decoration: none;}
+a:link{ color:#626262; text-decoration: none;}
+a:hover{ color:#BA0611; text-decoration:none;}
+.dian{ height:1px; background-image:url(../images/dian.gif); clear:both; line-height:0; font-size:0; overflow:hidden;}
+
+.Y01homeSOSOinput{border:#0566ad 1px solid; color:#8b8bb8; font-family:"宋体"; font-size:12px; width:164px; height:20px; background-image:url(../images/selectBg.gif); background-repeat:no-repeat; vertical-align:middle; line-height:18px;  cursor:pointer;}

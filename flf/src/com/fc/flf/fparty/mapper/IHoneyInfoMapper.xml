@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<!-- Liwj -->
+<mapper namespace="com.fc.flf.fparty.mapper.IHoneyInfoMapper"> 
+	<resultMap type="UserInfo" id="UserInfoMap">
+		<id property="userId" column="user_id"/>
+		<result property="name" column="name"/>
+		<result property="birth" column="birth"/>
+		<result property="sex" column="sex"/>
+		<result property="photoPath" column="photo_path"/>
+		<result property="areaId" column="area_id"/>
+		<result property="userCity" column="user_city"/>
+		<result property="bhri" column="bhri"/>
+		<result property="trustrank" column="trustrank"/>
+		<result property="userSkills" column="user_skills"/>
+		<result property="firstWorkDate" column="first_work_date"/>
+		<result property="userDesc" column="user_desc"/>
+	</resultMap>
+	
+	<resultMap type="UserInfoDetail" id="UserInfoDetailMap">
+		<id property="userId" column="user_id"/>
+		<result property="iDcard" column="IDcard"/>
+		<result property="telphone" column="telphone"/>
+		<result property="cellphone" column="cellphone"/>
+		<result property="qQ" column="QQ"/>
+		<result property="mSN" column="MSN"/>
+		<result property="weibo" column="weibo"/>
+		<result property="citizenshipId" column="citizenship_id"/>
+		<result property="citizenship" column="citizenship"/>
+		<result property="nationId" column="nation_id"/>
+		<result property="nation" column="nation"/>
+		<result property="maritalStatus" column="marital_status"/>
+		<result property="height" column="height"/>
+		<result property="weight" column="weight"/>
+		<result property="career" column="career"/>
+		<result property="salary" column="salary"/>
+		<result property="highestDegree" column="highest_degree"/>
+		<result property="graduateSchool" column="graduate_school"/>
+		<result property="profession" column="profession"/>
+		<result property="registeredAddress" column="registered_address"/>
+		<result property="emergencyPerson" column="emergency_person"/>
+		<result property="emergencyPhone" column="emergency_phone"/>
+		<result property="hobbies" column="hobbies"/>
+		<result property="blog" column="blog"/>
+	</resultMap>
+	
+	<resultMap type="UserEduInfo" id="UserEduInfoMap">
+		<id property="eduId" column="edu_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="beginDate" column="begin_date"/>
+		<result property="endDate" column="end_date"/>
+		<result property="school" column="school"/>
+		<result property="profession" column="profession"/>
+		<result property="graduate" column="graduate"/>
+		<result property="degree" column="degree"/>
+	</resultMap>
+	
+	<resultMap type="UserTrainingExperience" id="UserTrainingExperienceMap">
+		<id property="trainingId" column="training_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="beginDate" column="begin_date"/>
+		<result property="endDate" column="end_date"/>
+		<result property="trainingCompany" column="training_company"/>
+		<result property="trainingAddress" column="training_address"/>
+		<result property="profession" column="profession"/>
+		<result property="havePassport" column="have_passport"/>
+		<result property="title" column="title"/>
+		<result property="trainingDesc" column="training_desc"/>
+	</resultMap>
+	
+	<resultMap type="UserWorkExperience" id="UserWorkExperienceMap">
+		<id property="workId" column="work_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="beginDate" column="begin_date"/>
+		<result property="endDate" column="end_date"/>
+		<result property="workCompany" column="work_company"/>
+		<result property="jobDuty" column="job_duty"/>
+		<result property="reference" column="reference"/>
+		<result property="contactPhone" column="contact_phone"/>
+		<result property="workDesc" column="work_desc"/>
+	</resultMap>
+	
+	<!-- under code by Liwj Start-->
+	<!-- function : 查找我的蜂蜜UserInfo -->
+	<select id="getUserInfo" parameterType="int" resultType="com.fc.flf.common.domain.UserInfo" resultMap="UserInfoMap">
+		SELECT ui.user_id,ui.name,birth,ui.sex,ui.photo_path,user_city,user_skills,ui.first_work_date,user_desc 
+		  FROM user_info ui,customer_info_detail cid 
+		 WHERE cid.created_user = ui.user_id  
+		   AND cid.is_exchange = 0 
+		   AND cid.customer_id = #{customerId}  
+	  ORDER BY cid.created_at DESC 
+	     LIMIT 1
+	</select>
+	
+	<!-- function : 查找蜂蜜 userInfoDetail -->
+	<select id="getUserInfoDetail" parameterType="int" resultType="com.fc.flf.common.domain.UserInfoDetail" resultMap="UserInfoDetailMap">
+		SELECT uid.telphone,uid.cellphone,uid.QQ,uid.MSN,uid.weibo,uid.citizenship,uid.nation,uid.marital_status,uid.height,uid.weight,uid.career,
+			   uid.salary,uid.highest_degree,uid.graduate_school,uid.profession,uid.registered_address,uid.emergency_person,uid.emergency_phone,
+			   uid.hobbies,uid.IDcard 
+	      FROM user_info_detail uid,customer_info_detail cid 
+	     WHERE cid.created_user = uid.user_id  
+	       AND cid.is_exchange = 0 
+	       AND cid.customer_id = #{customerId} 
+	  ORDER BY cid.created_at DESC 
+	     LIMIT 1
+	</select>
+	
+	<!-- function : 查找蜂蜜 userEduInfo -->
+	<select id="getUserEduInfo" parameterType="int" resultType="com.fc.flf.common.domain.UserEduInfo" resultMap="UserEduInfoMap">
+		SELECT begin_date,end_date,uei.school,uei.profession,graduate,degree 
+		  FROM user_edu_info uei,customer_info_detail cid 
+		 WHERE uei.user_id = cid.created_user 
+		   AND cid.is_exchange = 0 
+		   AND cid.customer_id = #{customerId}  
+	  ORDER BY cid.created_at DESC 
+	     LIMIT 1
+	</select>
+	
+	<!-- function : 查找蜂蜜Email -->
+	<select id="getEmail" parameterType="int" resultType="String">
+		SELECT fsv.email 
+		  FROM fc_sys_visitor fsv,customer_info_detail cid 
+		 WHERE cid.customer_id = visitor_id 
+		   AND cid.customer_id= 
+	(
+		SELECT created_user 
+		  FROM customer_info_detail cid 
+		 WHERE customer_id = #{customerId} 
+		   AND cid.is_exchange = 0 
+	  ORDER BY cid.created_at DESC 
+	     LIMIT 1
+	) 
+	</select>
+	
+	<!-- function : 查找蜂蜜UserTrainingExperience-->
+	<select id="getUserTrainingExperience" parameterType="int" resultType="com.fc.flf.common.domain.UserTrainingExperience" resultMap="UserTrainingExperienceMap">
+		SELECT begin_date,end_date,training_company,training_address,ute.profession,have_passport,title,training_desc 
+		  FROM user_training_experience ute,customer_info_detail cid 
+		 WHERE ute.user_id = cid.created_user 
+		   AND cid.is_exchange = 0 
+		   AND cid.customer_id = #{customerId} 
+      ORDER BY cid.created_at DESC 
+         LIMIT 1
+	</select>
+	
+	<!-- function : 查找蜂蜜UserWorkExperience -->
+	<select id="getUserWorkExperience" parameterType="int" resultType="com.fc.flf.common.domain.UserWorkExperience" resultMap="UserWorkExperienceMap">
+		SELECT uwe.begin_date,uwe.end_date,uwe.work_company,uwe.job_duty,uwe.reference,uwe.contact_phone,uwe.work_desc 
+		  FROM user_work_experience uwe,customer_info_detail cid 
+		 WHERE uwe.user_id = cid.created_user 
+		   AND cid.is_exchange = 0 
+		   AND cid.customer_id = #{customerId} 
+	  ORDER BY cid.created_at DESC 
+	     LIMIT 1
+	</select>
+	<!-- top code by Liwj End-->
+</mapper>  

@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.flf.portal.mapper.HouseInfoMapper">
+
+
+	<resultMap type="HouseInfo" id="HouseInfoMap">
+		<id property="houseId" column="house_id"/>
+		<result property="houseNum" column="house_num"/>
+		<result property="tenementId" column="tenement_id"/>
+		<result property="developerId" column="developer_id"/>
+		<result property="areaId" column="area_id"/>
+		<result property="houseName" column="house_name"/>
+		<result property="houseNameExtend" column="house_name_extend"/>
+		<result property="houseDevelopersName" column="house_developers_name"/>
+		<result property="houseLogo" column="house_logo"/>
+		<result property="housePic" column="house_pic"/>
+		<result property="houseLocation" column="house_location"/>
+		<result property="houseProperties" column="house_properties"/>
+		<result property="housePrice" column="house_price"/>
+		<result property="houseMinArea" column="house_min_area"/>
+		<result property="houseMaxArea" column="house_max_area"/>
+		<result property="houseStructureType" column="house_structure_type"/>
+		<result property="houseDecorations" column="house_decorations"/>
+		<result property="houseBuildProcess" column="house_build_process"/>
+		<result property="houseSights" column="house_sights"/>
+		<result property="houseSaleEvent" column="house_sale_event"/>
+		<result property="houseBuildType" column="house_build_type"/>
+		<result property="businessRegion" column="business_region"/>
+		<result property="belongToRegion" column="belong_to_region"/>
+		<result property="metroIn15minBywalk" column="metro_in15min_bywalk"/>
+		<result property="busIn15minBywalk" column="bus_in15min_bywalk"/>
+		<result property="longDistanceBus" column="long_distance_bus"/>
+		<result property="wharf" column="wharf"/>
+		<result property="airportBus" column="airport_bus"/>
+		<result property="kindergartenIn15minBywalk" column="kindergarten_in15min_bywalk"/>
+		<result property="kindergartenIn20minBycar" column="kindergarten_in20min_bycar"/>
+		
+		<result property="kindergartenIn15minBybus" column="kindergarten_in15min_bybus"/>
+		<result property="elementarySchoolIn15minBywalk" column="elementary_school_in15min_bywalk"/>
+		<result property="elementarySchoolIn20minBycar" column="elementary_school_in20min_bycar"/>
+		<result property="elementarySchoolIn15minBybus" column="elementary_school_in15min_bybus"/>
+		<result property="juniorHighSchoolIn15minBywalk" column="junior_high_school_in15min_bywalk"/>
+		<result property="juniorHighSchoolIn20minBycar" column="junior_high_school_in20min_bycar"/>
+		<result property="juniorHighSchoolIn15minBybus" column="junior_high_school_in15min_bybus"/>
+		<result property="clubHospitalIn15minBywalk" column="club_hospital_in15min_bywalk"/>
+		<result property="clubHospitalIn20minBycar" column="club_hospital_in20min_bycar"/>
+		<result property="clubHospitalIn15minBybus" column="club_hospital_in15min_bybus"/>
+		<result property="aaaHospitalIn15minBywalk" column="aaa_hospital_in15min_bywalk"/>
+		<result property="aaaHospitalIn20minBycar" column="aaa_hospital_in20min_bycar"/>
+		<result property="aaaHospitalIn15minBybus" column="aaa_hospital_in15min_bybus"/>
+		<result property="hospitalIn15minBywalk" column="hospital_in15min_bywalk"/>
+		<result property="hospitalIn15minBycar" column="hospital_in15min_bycar"/>
+		<result property="hospitalIn15minBybus" column="hospital_in15min_bybus"/>
+		<result property="marketIn15minBywalk" column="market_in15min_bywalk"/>
+		<result property="supermarketIn15minBywalk" column="supermarket_in15min_bywalk"/>
+		<result property="restaurantIn15minBywalk" column="restaurant_in15min_bywalk"/>
+		<result property="shoppingIn15minBywalk" column="shopping_in15min_bywalk"/>
+		<result property="hopscaIn15minBywalk" column="hopsca_in15min_bywalk"/>
+		<result property="cbdIn15minBywalk" column="cbd_in15min_bywalk"/>
+		<result property="marketIn5minBywalk" column="market_in5min_bywalk"/>
+		<result property="supermarketIn5minBywalk" column="supermarket_in5min_bywalk"/>
+		<result property="restaurantIn5minBywalk" column="restaurant_in5min_bywalk"/>
+		<result property="shoppingIn5minBywalk" column="shopping_in5min_bywalk"/>
+		<result property="hopscaIn5minBywalk" column="hopsca_in5min_bywalk"/>
+		<result property="cbdIn5minBywalk" column="cbd_in5min_bywalk"/>
+		<result property="houseAttenttionCnt" column="house_attenttion_cnt"/>
+		<result property="houseCollectCnt" column="house_collect_cnt"/>
+		<result property="houseCommentCnt" column="house_comment_cnt"/>
+		<result property="userRecommendCnt" column="user_recommend_cnt"/>
+		<result property="createdUser" column="created_user"/>
+		<result property="createdAt" column="created_at"/>
+		<result property="updatedUser" column="updated_user"/>
+		<result property="updatedAt" column="updated_at"/>
+		<result property="houseDesc" column="house_desc"/>
+		<result property="areaName" column="area_name"/>
+		
+		<association property="houseInfoDetail" javaType="com.fc.flf.common.domain.HouseInfoDetail" column="house_id"  resultMap="com.fc.flf.portal.mapper.HouseInfoDetailMapper.HouseInfoDetailMap">
+		</association>
+		<association property="fcSysArea" column="area_id"
+			javaType="FcSysArea">
+			<id property="areaId" column="area_id" />
+			<result property="areaType" column="area_type" />
+			<result property="areaName" column="area_name" />
+			<result property="parentAreaId" column="parent_area_id" />
+			<result property="pinyin" column="pinyin" />
+			<result property="path" column="path" />
+			<result property="areaLevel" column="area_level" />
+			<result property="areaDesc" column="area_desc" />
+		</association>
+		
+		<association property="eventInfo" column="eventId" javaType="EventInfo">
+			<id property="eventId" column="event_id" />
+			<result property="eventNum" column="event_num" />
+			<result property="eventType" column="event_type" />
+			<result property="infoId" column="info_id" />
+			<result property="eventTitle" column="event_title" />
+			<result property="eventAddress" column="event_address" />
+			<result property="eventStartTime" column="event_start_time" />
+			<result property="eventEndTime" column="event_end_time" />
+			<result property="eventDesc" column="event_desc" />
+			<result property="keyMan" column="key_man" />
+			<result property="keyMan2" column="key_man2" />
+		</association>
+	</resultMap>
+	
+
+	<resultMap type="HomeShow" id="homeShowList">
+		<result column="show_id" property="id" />
+		<result column="show_type" property="showType" />
+		<result column="show_order_no" property="showOrderNo" />
+		<result column="is_enable" property="isEnable" />
+		<result column="show_content_id" property="showContentId" />
+	</resultMap>
+	
+	<resultMap type="VisitorSkimHouse" id="visitorSkimHouseMap">
+		<result column="skim_id" property="skimId" />
+		<result column="house_id" property="houseId" />
+		<result column="visitor_id" property="visitorId" />
+		<result column="visitor_type" property="visitorType" />
+		<result column="checkin_type" property="checkinType" />
+		<result column="checkin_time" property="checkinTime" />
+		<result column="checkout_time" property="checkoutTime" />
+		<result column="checkin_ip" property="checkinIp" />
+	</resultMap>
+	
+	<!-- code by zhenglh  start-->
+    <select id="findHouseInfoById" parameterType="int" resultType="HouseInfo" resultMap="HouseInfoMap">  
+      SELECT
+			house_id,
+			house_num,
+			tenement_id,
+			developer_id,
+			area_id,
+			house_name,
+			house_name_extend,
+			house_developers_name,
+			house_logo,
+			house_pic,
+			house_location,
+			house_properties,
+			house_price,
+			house_min_area,
+			house_max_area,
+			house_structure_type,
+			house_decorations,
+			house_build_process,
+			house_sights,
+			house_sale_event,
+			house_build_type,
+			business_region,
+			belong_to_region,
+			metro_in15min_bywalk,
+			bus_in15min_bywalk,
+			long_distance_bus,
+			wharf,
+			airport_bus,
+			kindergarten_in15min_bywalk,
+			kindergarten_in20min_bycar,
+			kindergarten_in15min_bybus,
+			elementary_school_in15min_bywalk,
+			elementary_school_in20min_bycar,
+			elementary_school_in15min_bybus,
+			junior_high_school_in15min_bywalk,
+			junior_high_school_in20min_bycar,
+			junior_high_school_in15min_bybus,
+			club_hospital_in15min_bywalk,
+			club_hospital_in20min_bycar,
+			club_hospital_in15min_bybus,
+			aaa_hospital_in15min_bywalk,
+			aaa_hospital_in20min_bycar,
+			aaa_hospital_in15min_bybus,
+			hospital_in15min_bywalk,
+			hospital_in15min_bycar,
+			hospital_in15min_bybus,
+			market_in15min_bywalk,
+			supermarket_in15min_bywalk,
+			restaurant_in15min_bywalk,
+			shopping_in15min_bywalk,
+			hopsca_in15min_bywalk,
+			cbd_in15min_bywalk,
+			market_in5min_bywalk,
+			supermarket_in5min_bywalk,
+			restaurant_in5min_bywalk,
+			shopping_in5min_bywalk,
+			hopsca_in5min_bywalk,
+			cbd_in5min_bywalk,
+			house_attenttion_cnt,
+			house_collect_cnt,
+			house_comment_cnt,
+			user_recommend_cnt,
+			created_user,
+			created_at,
+			updated_user,
+			updated_at,
+			house_desc
+	   FROM house_info
+      WHERE house_id=#{houseId}
+    </select>
+    <!-- code by zhenglh end-->
+    
+    <!-- code by HuangShan  start-->
+    <!-- 首页最新上市 -->
+    <select id="findHomeInfoNewHouseList" resultMap="homeShowList">  
+     	SELECT show_id,show_type,show_order_no,is_enable,show_content_id 
+     	  FROM fc_sys_show 
+     	 WHERE is_enable = 1
+     	 LIMIT 10
+    </select>
+    
+    <!-- 保存楼盘浏览记录 -->
+    <insert id="saveVisitorSkimHouse" parameterType="VisitorSkimHouse">  
+     	INSERT INTO visitor_skim_house(house_id,visitor_id,visitor_type,checkin_type,checkin_time,
+     	                               checkout_time,checkin_ip)
+		VALUES (#{houseId},#{visitorId},#{visitorType},#{checkinType},#{checkinTime},
+		        #{checkoutTime},inet_aton(#{checkinIp}))
+    </insert>
+    
+    <!-- 楼盘人气 ++ -->
+    <update id="updateHouseAttenttion" parameterType="int">
+    	UPDATE house_info SET house_attenttion_cnt = house_attenttion_cnt + 1 WHERE house_id = #{houseId};
+    </update>
+    
+    <!-- 查询用户收藏的楼盘 -->
+    <select id="findCollectHouse" parameterType="int" resultMap="HouseInfoMap">
+    	SELECT hi.house_id,hi.house_name,hi.house_price,hi.house_attenttion_cnt	
+    	  FROM visitor_collect_house vch,
+    	       house_info hi
+		 WHERE hi.house_id = vch.house_id
+	       AND vch.visitor_id = #{visitorId}
+	     LIMIT 10
+    </select>
+    
+    <!-- 查询新楼专卖（最新楼盘展示） -->
+    <select id="findNewHouseList" parameterType="String" resultMap="HouseInfoMap">
+    	SELECT house_id,house_logo,house_pic,house_desc,business_region,belong_to_region,house_min_area,
+    	       house_max_area,house_comment_cnt,house_name,house_price,house_attenttion_cnt
+    	  from house_info 
+    	 limit ${limitValue}
+    </select>
+    
+    <!-- 查询House_info总记录 -->
+    <select id="getTotalCount" resultType="int">
+    	select count(*) from house_info
+    </select>
+    
+    <!-- 根据条件查询House_info 总记录 -->
+    <select id="getHouseInfoAccurateCount" resultType="int">
+    	SELECT COUNT(*) FROM house_info WHERE 1=1
+    	<if test="areaId != 0">
+    	   AND area_id = #{areaId}
+   	    </if>
+   	    <if test="houseProperties != 0">
+   	       AND house_properties = #{houseProperties}
+   	  	</if>
+   	  	<if test="!(housePrice == 0 and priceMax ==0)">
+    	  <![CDATA[ 
+    	   AND house_price >= #{housePrice} AND house_price <= #{priceMax}
+    	  ]]>
+    	  </if>
+	   	<if test="houseStructureType != null and houseStructureType !=''">
+	   	   AND house_structure_type like '%${houseStructureType}%'
+	   	</if>
+	   	<if test="houseDecorations != 0">
+	   	   AND house_decorations = #{houseDecorations}
+	   	</if>
+	   	<if test="houseBuildProcess != 0">
+	   	   AND house_build_process = ${houseBuildProcess}
+	   	</if>
+	   	<if test="houseSaleEvent != 0">
+	   	   AND house_sale_event = ${houseSaleEvent}
+    	</if>
+    	<if test="!(houseMinArea == 0 and houseMaxArea == 0)">
+    	   <![CDATA[
+    	   AND ((${houseMinArea} <= house_min_area AND house_min_area <= ${houseMaxArea}) 
+    	   		 OR
+    	   	    (${houseMinArea} <= house_max_area AND house_max_area <= ${houseMaxArea}))
+    	   ]]>
+    	</if>
+    	<if test="metroIn15minBywalk == 1"> <!-- 地铁 -->
+    	   AND metro_in15min_bywalk = 1
+    	  </if>
+    	  <if test="busIn15minBywalk == 1"> <!-- 公交 -->
+    	   AND bus_in15min_bywalk = 1
+    	  </if>
+    	  <if test="longDistanceBus == 1">	  <!-- 长途汽车站 -->
+    	   AND long_distance_bus = 1
+    	  </if>
+    	  <if test="wharf == 1">	  		  <!-- 客运码头 -->
+    	   AND wharf = 1
+    	  </if>
+    	  <if test="airportBus == 1">	  	  <!-- 机场 -->
+    	   AND airport_bus = 1
+    	  </if>
+    	  <if test="houseSights != 0">
+    	   AND house_sights = #{houseSights}
+    	  </if>
+    	  <if test="kindergartenIn15minBywalk == 1">
+    	   AND kindergarten_in15min_bywalk = 1
+    	  </if>
+    	  <if test="kindergartenIn20minBycar == 1">
+    	   AND kindergarten_in20min_bycar = 1
+    	  </if>
+    	  <if test="kindergartenIn15minBybus == 1">
+    	   AND kindergarten_in15min_bybus = 1
+    	  </if>
+    	  <if test="elementarySchoolIn15minBywalk == 1">
+    	   AND elementary_school_in15min_bywalk = 1
+    	  </if>
+    	  <if test="elementarySchoolIn20minBycar == 1">
+    	   AND elementary_school_in20min_bycar = 1
+    	  </if>
+    	  <if test="elementarySchoolIn15minBybus == 1">
+    	   AND elementary_school_in15min_bybus = 1
+    	  </if>
+    	  <if test="juniorHighSchoolIn15minBywalk == 1">
+    	   AND junior_high_school_in15min_bywalk = 1
+    	  </if>
+    	  <if test="juniorHighSchoolIn20minBycar == 1">
+    	   AND junior_high_school_in20min_bycar = 1
+    	  </if>
+    	  <if test="juniorHighSchoolIn15minBybus == 1">
+    	   AND junior_high_school_in15min_bybus = 1
+    	  </if>
+    	  <if test="clubHospitalIn15minBywalk == 1">
+    	   AND club_hospital_in15min_bywalk = 1
+    	  </if>
+    	  <if test="clubHospitalIn20minBycar == 1">
+    	   AND club_hospital_in20min_bycar = 1
+    	  </if>
+    	  <if test="clubHospitalIn15minBybus == 1">
+    	   AND club_hospital_in15min_bybus = 1
+    	  </if>
+    	  <if test="aaaHospitalIn15minBywalk == 1">
+    	   AND AAA_hospital_in15min_bywalk = 1
+    	  </if>
+    	  <if test="aaaHospitalIn20minBycar == 1">
+    	   AND AAA_hospital_in20min_bycar = 1
+    	  </if>
+    	  <if test="aaaHospitalIn15minBybus == 1">
+    	   AND AAA_hospital_in15min_bybus = 1
+    	  </if>
+    	  <if test="hospitalIn15minBywalk == 1">
+    	   AND hospital_in15min_bywalk = 1
+    	  </if>
+    	  <if test="hospitalIn15minBycar == 1">
+    	   AND hospital_in15min_bycar = 1
+    	  </if>
+    	  <if test="hospitalIn15minBybus == 1">
+    	   AND hospital_in15min_bybus = 1
+    	  </if>
+    	  <if test="marketIn15minBywalk == 1">
+    	   AND market_in15min_bywalk = 1
+    	  </if>
+    	  <if test="supermarketIn15minBywalk == 1">
+    	   AND supermarket_in15min_bywalk = 1
+    	  </if>
+    	  <if test="restaurantIn15minBywalk == 1">
+    	   AND restaurant_in15min_bywalk = 1
+    	  </if>
+    	  <if test="shoppingIn15minBywalk == 1">
+    	   AND shopping_in15min_bywalk = 1
+    	  </if>
+    	  <if test="hopscaIn15minBywalk == 1">
+    	   AND HOPSCA_in15min_bywalk = 1
+    	  </if>
+    	  <if test="cbdIn15minBywalk == 1">
+    	   AND cbd_in15min_bywalk = 1
+    	  </if>
+    	  <if test="marketIn5minBywalk == 1">
+    	   AND market_in5min_bywalk = 1
+    	  </if>
+    	  <if test="supermarketIn5minBywalk == 1">
+    	   AND supermarket_in5min_bywalk = 1
+    	  </if>
+    	  <if test="restaurantIn5minBywalk == 1">
+    	   AND restaurant_in5min_bywalk = 1
+    	  </if>
+    	  <if test="shoppingIn5minBywalk == 1">
+    	   AND shopping_in5min_bywalk = 1
+    	  </if>
+    	  <if test="hopscaIn5minBywalk == 1">
+    	   AND HOPSCA_in5min_bywalk = 1
+    	  </if>
+    	  <if test="cbdIn5minBywalk == 1">
+    	   AND cbd_in5min_bywalk = 1
+    	  </if>
+    	  <if test="houseName != null and houseName !='' ">
+    	   AND house_name like '%${houseName}%'
+    	  </if>
+    </select>
+    
+    <!-- 根据条件精确查询House_info -->
+    <select id="findHouseInfoAccurate" resultMap="HouseInfoMap">
+    	SELECT house_id,house_logo,house_desc,business_region,belong_to_region,house_min_area,
+    	       house_max_area,house_comment_cnt,house_name,house_price,house_attenttion_cnt,
+    	       a.area_name area_name,i.house_name_extend,i.house_structure_type
+    	  FROM house_info i,fc_sys_area a
+    	 WHERE 1 = 1
+    	   AND i.area_id = a.area_id
+    	  <if test="areaId != 0">
+    	   AND i.area_id = #{areaId}
+    	  </if>
+    	  <if test="houseProperties != 0">
+    	   AND house_properties = #{houseProperties}
+    	  </if>
+    	  <if test="!(housePrice == 0 and priceMax ==0)">
+    	  <![CDATA[ 
+    	   AND house_price >= #{housePrice} AND house_price <= #{priceMax}
+    	  ]]>
+    	  </if>
+    	  <if test="houseStructureType != null and houseStructureType !=''">
+    	   AND house_structure_type like '%${houseStructureType}%'
+    	  </if>
+    	  <if test="houseDecorations != 0">
+    	   AND house_decorations = #{houseDecorations}
+    	  </if>
+    	  <if test="houseBuildProcess != 0">
+    	   AND house_build_process = ${houseBuildProcess}
+    	  </if>
+    	  <if test="houseSaleEvent != 0">
+    	   AND house_sale_event = ${houseSaleEvent}
+    	  </if>
+    	  <if test="!(houseMinArea == 0 and houseMaxArea == 0)">
+    	   <![CDATA[
+    	   AND ((${houseMinArea} <= house_min_area AND house_min_area <= ${houseMaxArea}) 
+    	   		OR
+    	   		(${houseMinArea} <= house_max_area AND house_max_area <= ${houseMaxArea}))
+    	   ]]>
+    	  </if>
+    	  <if test="metroIn15minBywalk == 1"> <!-- 地铁 -->
+    	   AND metro_in15min_bywalk = 1
+    	  </if>
+    	  <if test="busIn15minBywalk == 1"> <!-- 公交 -->
+    	   AND bus_in15min_bywalk = 1
+    	  </if>
+    	  <if test="longDistanceBus == 1">	  <!-- 长途汽车站 -->
+    	   AND long_distance_bus = 1
+    	  </if>
+    	  <if test="wharf == 1">	  		  <!-- 客运码头 -->
+    	   AND wharf = 1
+    	  </if>
+    	  <if test="airportBus == 1">	  	  <!-- 机场 -->
+    	   AND airport_bus = 1
+    	  </if>
+    	  <if test="houseSights != 0">
+    	   AND house_sights = #{houseSights}
+    	  </if>
+    	  <if test="kindergartenIn15minBywalk == 1">
+    	   AND kindergarten_in15min_bywalk = 1
+    	  </if>
+    	  <if test="kindergartenIn20minBycar == 1">
+    	   AND kindergarten_in20min_bycar = 1
+    	  </if>
+    	  <if test="kindergartenIn15minBybus == 1">
+    	   AND kindergarten_in15min_bybus = 1
+    	  </if>
+    	  <if test="elementarySchoolIn15minBywalk == 1">
+    	   AND elementary_school_in15min_bywalk = 1
+    	  </if>
+    	  <if test="elementarySchoolIn20minBycar == 1">
+    	   AND elementary_school_in20min_bycar = 1
+    	  </if>
+    	  <if test="elementarySchoolIn15minBybus == 1">
+    	   AND elementary_school_in15min_bybus = 1
+    	  </if>
+    	  <if test="juniorHighSchoolIn15minBywalk == 1">
+    	   AND junior_high_school_in15min_bywalk = 1
+    	  </if>
+    	  <if test="juniorHighSchoolIn20minBycar == 1">
+    	   AND junior_high_school_in20min_bycar = 1
+    	  </if>
+    	  <if test="juniorHighSchoolIn15minBybus == 1">
+    	   AND junior_high_school_in15min_bybus = 1
+    	  </if>
+    	  <if test="clubHospitalIn15minBywalk == 1">
+    	   AND club_hospital_in15min_bywalk = 1
+    	  </if>
+    	  <if test="clubHospitalIn20minBycar == 1">
+    	   AND club_hospital_in20min_bycar = 1
+    	  </if>
+    	  <if test="clubHospitalIn15minBybus == 1">
+    	   AND club_hospital_in15min_bybus = 1
+    	  </if>
+    	  <if test="aaaHospitalIn15minBywalk == 1">
+    	   AND AAA_hospital_in15min_bywalk = 1
+    	  </if>
+    	  <if test="aaaHospitalIn20minBycar == 1">
+    	   AND AAA_hospital_in20min_bycar = 1
+    	  </if>
+    	  <if test="aaaHospitalIn15minBybus == 1">
+    	   AND AAA_hospital_in15min_bybus = 1
+    	  </if>
+    	  <if test="hospitalIn15minBywalk == 1">
+    	   AND hospital_in15min_bywalk = 1
+    	  </if>
+    	  <if test="hospitalIn15minBycar == 1">
+    	   AND hospital_in15min_bycar = 1
+    	  </if>
+    	  <if test="hospitalIn15minBybus == 1">
+    	   AND hospital_in15min_bybus = 1
+    	  </if>
+    	  <if test="marketIn15minBywalk == 1">
+    	   AND market_in15min_bywalk = 1
+    	  </if>
+    	  <if test="supermarketIn15minBywalk == 1">
+    	   AND supermarket_in15min_bywalk = 1
+    	  </if>
+    	  <if test="restaurantIn15minBywalk == 1">
+    	   AND restaurant_in15min_bywalk = 1
+    	  </if>
+    	  <if test="shoppingIn15minBywalk == 1">
+    	   AND shopping_in15min_bywalk = 1
+    	  </if>
+    	  <if test="hopscaIn15minBywalk == 1">
+    	   AND HOPSCA_in15min_bywalk = 1
+    	  </if>
+    	  <if test="cbdIn15minBywalk == 1">
+    	   AND cbd_in15min_bywalk = 1
+    	  </if>
+    	  <if test="marketIn5minBywalk == 1">
+    	   AND market_in5min_bywalk = 1
+    	  </if>
+    	  <if test="supermarketIn5minBywalk == 1">
+    	   AND supermarket_in5min_bywalk = 1
+    	  </if>
+    	  <if test="restaurantIn5minBywalk == 1">
+    	   AND restaurant_in5min_bywalk = 1
+    	  </if>
+    	  <if test="shoppingIn5minBywalk == 1">
+    	   AND shopping_in5min_bywalk = 1
+    	  </if>
+    	  <if test="hopscaIn5minBywalk == 1">
+    	   AND HOPSCA_in5min_bywalk = 1
+    	  </if>
+    	  <if test="cbdIn5minBywalk == 1">
+    	   AND cbd_in5min_bywalk = 1
+    	  </if>
+    	  <if test="houseName != null and houseName !='' ">
+    	   AND house_name like '%${houseName}%'
+    	  </if>
+    	  
+    	  limit ${limitValue}
+    </select>
+    
+    <!-- 根据visitor_id 查询访问者浏览记录 House_info -->
+    <select id="findBrowserRecord" parameterType="int" resultMap="HouseInfoMap">
+    	SELECT hi.house_id,	hi.house_name,hi.house_price,hi.house_attenttion_cnt 
+    	  FROM visitor_skim_house vsh,
+    	  	   house_info hi
+         WHERE hi.house_id = vsh.house_id AND vsh.visitor_id = #{visitorId}
+	  ORDER BY vsh.checkin_time DESC 
+	     LIMIT 10
+    </select>
+    
+     <select id="findVisitorSkimHouse" resultType="VisitorSkimHouse" resultMap="visitorSkimHouseMap">
+    	SELECT skim_id,house_id,visitor_id,visitor_type,checkin_type,checkin_time,checkout_time,checkin_ip
+    	  FROM visitor_skim_house
+         WHERE house_id = #{houseId} AND visitor_id = #{visitorId}
+      ORDER BY checkin_time DESC 
+         LIMIT 0,1
+    </select>
+    
+    <!-- 更新访问时间 -->
+    <select id="updateVisitorSkimHouseInTime">
+    	UPDATE visitor_skim_house SET checkin_time = #{currentTime} WHERE house_id = #{houseId} AND visitor_id = #{visitorId}
+    </select>
+    
+    <!-- 更新访问者离开时间-->
+    <select id="updateVisitorSkimHouseOutTime">
+    	UPDATE visitor_skim_house SET checkout_time = #{currentTime} WHERE house_id = #{houseId} AND visitor_id = #{visitorId}
+    </select>
+    <!-- 房秘书推荐榜 -->
+    <select id="attentionHouseInfos" resultMap="HouseInfoMap">
+    	SELECT hi.house_id,hi.house_name,hi.house_price, hi.user_recommend_cnt 
+		  FROM house_info hi,
+		       house_info_detail hid 
+		 WHERE hi.house_id = hid.house_id 
+		   AND hid.house_sale_status = 2 
+		ORDER BY hi.user_recommend_cnt DESC 
+		LIMIT 8;
+    </select>
+    <!-- 大家关注的楼盘 -->
+    <select id="everyoneAttention" resultMap="HouseInfoMap">
+    	SELECT hi.house_id,hi.house_name,hi.house_price, hi.house_attenttion_cnt 
+		  FROM house_info hi,
+		       house_info_detail hid 
+		 WHERE hi.house_id = hid.house_id 
+		   AND hid.house_sale_status = 2 
+	  ORDER BY hi.user_recommend_cnt DESC 
+		LIMIT 8;
+    </select>
+    <!-- 会所本周活动 -->
+    <select id="weekActivity" resultMap="com.fc.flf.fparty.mapper.IEventInfoMapper.eventInfoMap">
+    	SELECT ei.event_id,ei.event_title,ei.event_start_time 
+		  FROM event_info ei
+		 WHERE ei.event_type=2 
+		   AND ei.event_start_time > ${date}
+	  ORDER BY ei.event_start_time ASC 
+		 LIMIT 8;
+    </select>
+    <!--  房秘书关注榜 -->
+    <select id="fangMishuAttention" resultMap="HouseInfoMap">
+    	SELECT hi.house_id,hi.house_name,hi.house_price,hi.house_attenttion_cnt
+		  FROM house_info hi,
+			   visitor_skim_house vsh
+		 WHERE hi.house_id = vsh.house_id AND vsh.visitor_type = 1
+	  ORDER BY vsh.checkin_time DESC 
+	  	 LIMIT 10
+	</select>
+    <!-- code by huangshan  end-->
+    
+    <!-- 查找开盘时间大于当前时间的楼盘信息，取前6条code by gaoqifang -->
+    <select id="findHouseInfoWithDetail" resultMap="HouseInfoMap" parameterType="java.sql.Date">
+    	<![CDATA[ 
+  		SELECT  hinfo.house_id,hinfo.house_name,hdetail.house_open_date 
+ 	      FROM  house_info hinfo ,
+    		    house_info_detail hdetail 
+    	 WHERE  hinfo.house_id = hdetail.house_id 
+  		   AND  hdetail.house_open_date >= #{currentTime} 
+  		 LIMIT  0, 6 ;
+  		 ]]>
+    </select>
+    
+    <!-- 查找最近签约的楼盘信息，取前2条code by gaoqifang -->
+    <select id="findRecentSignHouseInfo" resultMap="HouseInfoMap" parameterType="java.sql.Date">
+    	<![CDATA[ 
+  		SELECT  hinfo.house_id,hinfo.house_name,hinfo.house_price,hinfo.business_region,fsa.area_name 
+ 	      FROM  house_info hinfo,
+ 	      		fc_sys_area fsa  
+    	 WHERE  hinfo.area_id=fsa.area_id 
+    	   AND  hinfo.sign_date  < #{currentTime}
+      ORDER BY  hinfo.sign_date DESC
+  		 LIMIT  0, 2 ;
+  		 ]]>
+    </select>
+    
+    <!-- 覃启轩 add SQL    start -->
+    <!-- 查询看房团 -->
+    <select id="getSeeHouseAccurate" resultMap="HouseInfoMap">
+    	SELECT house_id,house_logo,house_desc,business_region,belong_to_region,house_min_area,
+    	       house_max_area,house_comment_cnt,house_name,house_price,house_attenttion_cnt,
+    	       a.area_name area_name,i.house_name_extend,i.house_structure_type,e.event_id
+    	  FROM house_info i,fc_sys_area a,event_info e
+    	 WHERE 1 = 1
+    	   AND i.area_id = a.area_id
+    	   AND e.info_id=i.house_id
+    	   AND e.event_type=1
+    	  <if test="houseName != null and houseName !='' ">
+    	   AND house_name like '%${houseName}%'
+    	  </if>
+    	  limit ${limitValue}
+    </select>
+    
+     <select id="getSeeHouseAccurateCount" resultType="int">
+    	SELECT COUNT(house_id)
+    	  FROM house_info i,fc_sys_area a,event_info e
+    	 WHERE 1 = 1
+    	   AND i.area_id = a.area_id
+    	   AND e.info_id=i.house_id
+    	   AND e.event_type=1
+    	  <if test="houseName != null and houseName !='' ">
+    	   AND house_name like '%${houseName}%'
+    	  </if>
+    </select>
+    <!-- 覃启轩 add SQL    end -->
+    
+</mapper>  

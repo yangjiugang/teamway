@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.flf.portal.mapper.IUserPhotosMapper">
+
+	<resultMap id="UserPhotosMap" type="UserPhotos">
+		<result property="photoId" column="photo_id"/>
+		<result property="setId" column="set_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="hostIp" column="host_ip"/>
+		<result property="photoPath" column="photo_path"/>
+	</resultMap>
+	
+	<!-- create sql by zhenglh -->
+	<select id="getUserPhotosByUserId" resultMap="UserPhotosMap" parameterType="int">
+		SELECT photo_id,set_id,user_id,host_ip,photo_path
+		  FROM user_photos
+		 WHERE user_id=#{userId}
+	</select>
+	<!-- create sql by zhenglh -->
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- Liwj -->
+
+<mapper namespace="com.fc.flf.portal.mapper.IAbroadPurchaseMapper">
+	
+	<resultMap type="HouseInfo" id="HouseInfoResultMap">
+		<id property="houseId" column="house_id"/>
+		<result property="housePrice" column="house_price"/>
+		<result property="housePic" column="house_pic"/>
+		<result property="houseAttenttionCnt" column="house_attenttion_cnt"/>
+		<result property="houseName" column="house_name"/>
+		<result property="houseMaxArea" column="house_max_area"/>
+		<result property="houseSights" column="house_sights"/>
+		<result property="houseStructureType" column="house_structure_type"/>
+		<result property="houseCommentCnt" column="house_comment_cnt"/>
+		<result property="houseDesc" column="house_desc"/>
+		<association property="houseInfoDetail" column="house_id" javaType="HouseInfoDetail">
+			<id property="houseId" column="house_id"/>
+			<result property="houseKeyword1" column="house_keyword1"/>
+			<result property="houseKeyword2" column="house_keyword2"/>	
+			<result property="houseKeyword3" column="house_keyword3"/>	
+			<result property="houseKeyword4" column="house_keyword4"/>	
+			<result property="houseKeyword5" column="house_keyword5"/>				
+		</association>
+		<association property="fcSysArea" column="area_id" javaType="FcSysArea">
+			<id property="areaId" column="area_id"/>
+			<result property="areaDesc" column="area_desc"/>
+			<result property="path" column="path"/>
+			<result property="areaLevel" column="area_level"/>
+		</association>
+	</resultMap>
+	
+	<resultMap type="HouseInfo" id="HouseInfoMap">
+		<id property="houseId" column="house_id"/>
+		<result property="houseName" column="house_name"/>
+	</resultMap>
+	
+	<!-- Liwj -->
+	<!-- function : 统计所有海外楼盘信息记录数-->
+	<select id="getCountAbraod" resultType="int">
+		SELECT COUNT(*) 
+		  FROM house_info hi,
+		       house_info_detail hid,
+		       event_info ei,
+		       fc_sys_area fsa
+		 WHERE hi.house_id = hid.house_id 
+		   AND ei.info_id = hi.house_id 
+		   AND fsa.area_id = hi.area_id 
+		   AND fsa.area_type = 1
+	</select>
+	
+	<!-- funcion : 查找所有海外楼盘信息-->
+	<select id="getAllAbroad" resultMap="HouseInfoResultMap" resultType="com.fc.flf.common.domain.HouseInfo" parameterType="String">
+		SELECT hi.house_id,hi.house_price,house_pic,house_attenttion_cnt,house_name,house_max_area,house_sights,house_structure_type,house_comment_cnt,
+			   house_desc,hid.house_keyword1,hid.house_keyword2,hid.house_keyword3,hid.house_keyword4,hid.house_keyword5,
+			   fsa.area_id,fsa.area_desc,fsa.path,fsa.area_level
+		  FROM house_info hi,
+		       house_info_detail hid,
+		       event_info ei,
+		       fc_sys_area fsa
+		 WHERE hi.house_id = hid.house_id 
+		   AND ei.info_id = hi.house_id 
+		   AND fsa.area_id = hi.area_id 
+		   AND fsa.area_type=1
+	  ORDER BY hi.house_id DESC
+		 LIMIT ${limitStr};
+	</select>
+	
+	<!-- function : 热点楼盘推荐 -->
+	<select id="getHotHousesName" resultMap="HouseInfoMap" resultType="com.fc.flf.common.domain.HouseInfo">
+		SELECT hi.house_id,hi.house_name 
+		  FROM house_info hi,
+		  	   house_info_detail hid,
+		  	   event_info ei,
+		  	   fc_sys_area fsa
+		 WHERE hi.house_id = hid.house_id 
+		   AND ei.info_id = hi.house_id 
+		   AND fsa.area_id = hi.area_id 
+		   AND fsa.area_type=1
+      ORDER BY hi.house_id DESC 
+		 LIMIT 8
+	</select>
+	
+</mapper>

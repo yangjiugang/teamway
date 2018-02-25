@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.flf.portal.mapper.IVisitorCollectHouseMapper">
+
+	<resultMap id="VisitorCollectHouseMap" type="VisitorCollectHouse">
+		<id property="collectId" column="collect_id"/>
+		<result property="houseId" column="house_id"/>
+		<result property="visitorId" column="visitor_id"/>
+		<result property="visitorType" column="visitor_type"/>
+		<result property="collectTime" column="collect_time"/>
+		<result property="column5" column="Column_5"/>
+	</resultMap>
+
+	<!-- create sql by zhenglh -->
+	
+	<!-- 根据userId 查询用户是否已经收藏该楼盘 -->
+	<select id="isInCollectHouseById" resultType="int" parameterType="int">
+		SELECT COUNT(collect_id) 
+		  FROM visitor_collect_house 
+		 WHERE visitor_id=#{userId}
+		   AND house_id=#{houseId}
+	</select>
+	
+	<!-- 收藏该楼盘 -->	
+	<insert id="userCollectHouse" parameterType="VisitorCollectHouse">
+	INSERT INTO visitor_collect_house (house_id,visitor_id,visitor_type,collect_time,Column_5)
+	     VALUES(#{houseId},#{visitorId},#{visitorType},#{collectTime},#{column5})
+	</insert>
+	
+	<!-- 更新楼盘收藏数 -->
+	<update id="updateHouseInfoCnt" parameterType="int">
+		UPDATE house_info
+		   SET house_collect_cnt= (house_collect_cnt+1)
+		 WHERE house_id=#{houseId}
+	</update>
+	
+	<!-- create sql by zhenglh -->
+	
+</mapper>

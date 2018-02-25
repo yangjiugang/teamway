@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.fparty.mapper.IVisitorSkimHouseGroupMapper">   
+   
+   <resultMap type="VisitorSkimHouseGroup" id="VisitorSkimHouseGroupMap">
+		<id column="skim_id" property="skimId"/>
+		<result column="house_group_id" property="houseGroupId"/>
+		<result column="visitor_id" property="visitorId"/>
+		<result column="visitor_type" property="vistorType"/>
+		<result column="checkin_type" property="checkinType"/>
+		<result column="checkin_time" property="checkinTime"/>
+		<result column="checkout_time" property="checkoutTime"/>
+		<result column="checkin_ip" property="checkinIp"/>		
+	</resultMap>	
+	
+	<resultMap type="VisitorSkimHouseGroup" id="lAndHouseGroupInfoMap">
+		<id column="skim_id" property="skimId"/>
+		<result column="house_group_id" property="houseGroupId"/>
+		<result column="visitor_id" property="visitorId"/>
+		<result column="visitor_type" property="vistorType"/>
+		<result column="checkin_type" property="checkinType"/>
+		<result column="checkin_time" property="checkinTime"/>
+		<result column="checkout_time" property="checkoutTime"/>
+		<result column="checkin_ip" property="checkinIp"/>		
+				
+		<association property="houseGroupInfo" column="house_group_id" javaType="com.fc.flf.common.domain.HouseGroupInfo" >
+		 <id property="houseGroupId" column="house_group_id"/>
+			<result property="groupName" column="group_name"/>
+			<result property="picPath" column="pic_path"/>
+			<result property="groupLineDesc" column="group_line_desc"/>
+			<result property="groupStartDate" column="group_start_date"/>
+			<result property="groupDeadlineDate" column="group_deadline_date"/>
+			<result property="groupDuration" column="group_duration"/>
+			<result property="groupPrice" column="group_price"/>
+			<result property="groupHotline" column="group_hotline"/>
+			<result property="housePurpose" column="house_purpose"/>
+			<result property="houseProperties" column="house_properties"/>
+			<result property="lineProperties" column="line_properties"/>
+			<result property="attentionCnt" column="attention_cnt"/>
+			<result property="joinCnt" column="join_cnt"/>
+			<result property="groupDesc" column="group_desc"/>	
+		</association> 
+		
+	</resultMap> 
+	
+	<resultMap id="houseGroupInfoMap" type="HouseGroupInfo">
+		<id property="houseGroupId" column="house_group_id"/>
+		<result property="groupName" column="group_name"/>
+		<result property="picPath" column="pic_path"/>
+		<result property="groupLineDesc" column="group_line_desc"/>
+		<result property="groupStartDate" column="group_start_date"/>
+		<result property="groupDeadlineDate" column="group_deadline_date"/>
+		<result property="groupDuration" column="group_duration"/>
+		<result property="groupPrice" column="group_price"/>
+		<result property="groupHotline" column="group_hotline"/>
+		<result property="housePurpose" column="house_purpose"/>
+		<result property="houseProperties" column="house_properties"/>
+		<result property="lineProperties" column="line_properties"/>
+		<result property="attentionCnt" column="attention_cnt"/>
+		<result property="joinCnt" column="join_cnt"/>
+		<result property="groupDesc" column="group_desc"/>
+	</resultMap>
+	<!-- gonghj start  -->
+     <!-- 我关注的房团条数 -->
+	<select id="getCount" parameterType="int" resultType="int">
+	  SELECT COUNT(hgi.house_group_id)   
+	    FROM visitor_skim_house_group vshg,
+             house_group_info hgi  
+       WHERE vshg.house_group_id=hgi.house_group_id
+         AND vshg.visitor_type = 1 
+         AND vshg.visitor_id=#{customerId}      
+	</select>
+    <!-- 我关注的房团 -->	
+	<select id="listHouseGroups" parameterType="map" resultMap="houseGroupInfoMap">
+	  SELECT hgi.house_group_id,hgi.group_name,hgi.pic_path,hgi.group_line_desc,hgi.group_start_date,hgi.group_deadline_date,
+	         hgi.group_duration,hgi.group_price,hgi.group_hotline,hgi.house_purpose,hgi.house_properties,hgi.line_properties,
+	         hgi.attention_cnt,hgi.join_cnt ,hgi.group_desc	  
+	    FROM visitor_skim_house_group vshg,
+             house_group_info hgi  
+       WHERE vshg.house_group_id=hgi.house_group_id
+         AND vshg.visitor_type=1 
+         AND vshg.visitor_id=#{customerId} 
+    ORDER BY hgi.house_group_id DESC 
+       LIMIT ${limit}   
+	</select>
+	<!-- gonghj -->
+</mapper>

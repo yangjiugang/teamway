@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.fparty.mapper.IEventBuyHouseOrderExchangeMapper">
+   
+   <resultMap id="eventBuyHouseOrderExchangeMap" type="EventBuyHouseOrderExchange">
+		<id property="exchangeId" column="exchange_id"/>
+		<result property="exchangeDate" column="exchange_date"/>
+		<result property="exchangeType" column="exchange_type"/>
+		<result property="exchangeMoney" column="exchange_money"/>
+		<result property="exchangeDesc" column="exchange_desc"/>
+		<result property="exchangePicPath" column="exchange_pic_path"/>		
+		
+		<association  property="eventBuyHouseOrder" column="order_id" javaType="EventBuyHouseOrder">
+		    <id property="orderId" column="order_id"/>
+			<result property="orderNum" column="order_num"/>
+			<result property="houseID" column="house_ID"/>
+			<result property="houseName" column="house_name"/>
+			<result property="cusId" column="cus_id"/>
+			<result property="customerName" column="customer_name"/>
+			<result property="userId" column="user_id"/>
+			<result property="userName" column="user_name"/>
+			<result property="orderName" column="order_name"/>
+			<result property="orderDate" column="order_date"/>
+			<result property="execOrderDate" column="exec_order_date"/>
+			<result property="orderStatus" column="order_status"/>
+			<result property="orderMoney" column="order_money"/>
+			<result property="payStatus" column="pay_status"/>
+			<result property="payType" column="pay_type"/>
+			<result property="payDate" column="pay_date"/>		
+		</association>
+		
+		<association  property="houseGroup" column="house_id" javaType="HouseGroupScheduleHouse">
+		    <result property="houseId" column="house_id"/>
+			<result property="groupScheduleId" column="group_schedule_id"/>
+			<result property="picPath" column="pic_path"/>
+			<result property="houseName" column="house_name"/>
+		</association>
+		
+	</resultMap>
+	
+	<!--买房订单   jix -->
+	<select id="eventBuyHouseOrderExchange" resultMap="eventBuyHouseOrderExchangeMap">
+	    SELECT ebho.order_num,ebho.order_name,ebho.order_date,ebho.order_status,
+	           ebhoe.exchange_type
+	      FROM event_buy_house_order AS ebho,
+	           event_buy_house_order_exchange AS ebhoe 
+	   	 WHERE ebho.order_id=ebhoe.order_id 
+	   	   AND ebho.user_id=1
+	  ORDER BY ebho.order_id
+	</select>
+	
+	<!--买房订单查询   jix -->
+	<select id="eventBuyHouse" parameterType="map" resultMap="eventBuyHouseOrderExchangeMap">
+	    SELECT ebho.order_num,ebho.order_name,ebho.order_date,ebho.order_status,
+	           ebhoe.exchange_type
+          FROM event_buy_house_order AS ebho,
+           	   event_buy_house_order_exchange AS ebhoe 
+         WHERE ebho.order_id=ebhoe.order_id      
+      ORDER BY ebho.order_id
+         LIMIT ${limit};
+	</select>
+	
+	<!--订单查询   jix -->
+	<select id="getCus" parameterType="int" resultType="int">
+	    SELECT count(ebho.order_id)
+	      FROM event_buy_house_order AS ebho,
+		       event_buy_house_order_exchange AS ebhoe
+         WHERE ebho.order_id=ebhoe.order_id 
+           AND ebho.user_id=1
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+

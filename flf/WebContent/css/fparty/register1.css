@@ -1,0 +1,43 @@
+@charset "utf-8";
+/* CSS Document */
+.khzlTitle{border-bottom:#DCDDDE 1px solid; line-height:25px; width:700px; margin:50px auto 0 auto; text-indent:15px; font-size:14px; color:#BB0E13;_margin:30px auto 0 auto;}
+.khzlTitle img,.xinxi img{ float:right; margin:15px 10px 0;}
+
+.Content1,.Content{ overflow:hidden; width:700px; margin:10px auto;}
+.jbzlIpunt{ float:left; width:580px;}
+.jbzlIpunt span{ display:block; width:500px; margin:15px auto; clear:both; overflow:hidden;}
+.jbzlIpunt label{ width:100px; text-align:right; display:block; float:left;}
+.jbzlIpunt span font{ color:#BB0E13; margin-left:5px;}
+.newphoto{ width:101px; float:right; margin-right:10px;}
+
+.Out{ clear:both; overflow:hidden;}
+.Content{ display:none;}
+
+#jbzlIpunt { margin-left:30px;}
+#jbzlIpunt li{ width:150px; float:left; margin:5px auto;}
+
+
+.xinxi{border-bottom:#DCDDDE 1px solid; display:block;}
+.xinxi img{ float:right; margin:9px 10px 0;}
+.Content2{ display:none;}
+
+.tijiao{ width:680px;margin:50px auto; text-align:right;}
+.tijiao input{ margin-right:10px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

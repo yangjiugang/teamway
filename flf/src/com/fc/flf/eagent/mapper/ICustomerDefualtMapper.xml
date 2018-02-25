@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.eagent.mapper.ICustomerDefualtMapper">
+	<resultMap id="userCustomerRelationshipMap" type="UserCustomerRelationship">
+		<id property="relationshipId" column="relationship_id" />
+		<result property="userId" column="user_id" />
+		<result property="cusId" column="cus_id" />
+		<result property="isExchange" column="is_exchange" />
+		<result property="customerType" column="customer_type" />
+		<result property="customerType" column="customerType" />
+		<result property="typeName" column="typeName" />
+		<result property="column4" column="Column_4" />
+		<result property="column5" column="Column_5" />
+		<association property="customerInfoDetail"
+					 javaType="com.fc.flf.common.domain.CustomerInfoDetail" 
+					 column="cus_id"
+					 resultMap="com.fc.flf.eagent.mapper.ICustomerFunMapper.customerInfoDetailMap"></association>
+		<association property="userInfoDetail"
+					 javaType="com.fc.flf.common.domain.UserInfoDetail" 
+					 column="user_id"
+					 resultMap="com.fc.flf.eagent.mapper.ICustomerFunMapper.userInfoDetailMap"></association>
+		<association property="customerInterests"
+					 javaType="com.fc.flf.common.domain.CustomerInterests" 
+					 column="id"
+					 resultMap="com.fc.flf.eagent.mapper.ICustomerFunMapper.customerInterestsMap"></association>
+	</resultMap>
+
+	<resultMap id="customerEduInfoMap" type="CustomerEduInfo">
+		<result property="eduId" column="edu_id" />
+		<result property="cusId" column="cus_id" />
+		<result property="beginDate" column="begin_date" />
+		<result property="endDate" column="end_date" />
+		<result property="school" column="school" />
+		<result property="certifier" column="certifier" />
+		<result property="graduate" column="graduate" />
+		<result property="degree" column="degree" />
+	</resultMap>
+
+	<resultMap id="customerFamilyInfoMap" type="CustomerFamilyInfo">
+		<result property="famId" column="fam_id" />
+		<result property="cusId" column="cus_id" />
+		<result property="memberName" column="member_name" />
+		<result property="relationship" column="relationship" />
+		<result property="birthday" column="birthday" />
+		<result property="workPlace" column="work_place" />
+		<result property="jobDuty" column="job_duty" />
+		<result property="contactphone" column="contactphone" />
+	</resultMap>
+
+	<resultMap id="eventBuyHouseOrderMap" type="EventBuyHouseOrder">
+		<result property="orderId" column="order_id" />
+		<result property="orderNum" column="order_num" />
+		<result property="houseID" column="house_ID" />
+		<result property="houseName" column="house_name" />
+		<result property="cusId" column="cus_id" />
+		<result property="customerName" column="customer_name" />
+		<result property="userId" column="user_id" />
+		<result property="saleControlId" column="sale_control_id" />
+		<result property="userName" column="user_name" />
+		<result property="orderName" column="order_name" />
+		<result property="orderDate" column="order_date" />
+		<result property="execOrderDate" column="exec_order_date" />
+		<result property="orderStatus" column="order_status" />
+		<result property="orderMoney" column="order_money" />
+		<result property="payStatus" column="pay_status" />
+		<result property="payType" column="pay_type" />
+		<result property="payDate" column="pay_date" />
+		<result property="orderDesc" column="order_desc"/>
+	</resultMap>
+
+	<resultMap id="eventInfoCustomerMap" type="EventInfoCustomer">
+		<result property="id" column="id" />
+		<result property="eventId" column="event_id" />
+		<result property="cusId" column="cus_id" />
+		<result property="vistorType" column="vistor_type" />
+		<result property="customerName" column="customer_name" />
+		<result property="isCheckin" column="is_checkin" />
+		<result property="isRegister" column="is_register" />
+		<result property="valuation" column="valuation" />
+		<result property="valuation1" column="valuation1" />
+		<result property="valuation2" column="valuation2" />
+		<result property="valuation3" column="valuation3" />
+		<result property="valuation4" column="valuation4" />
+	</resultMap>
+
+	<resultMap id="housePriceMap" type="HousePrice">
+		<result property="priceId" column="price_id" />
+		<result property="houseId" column="house_id" />
+		<result property="housePrice" column="house_price" />
+		<result property="saleDate" column="sale_date" />
+		<result property="visitorType" column="visitor_type" />
+		<result property="visitorId" column="visitor_id" />
+		<result property="visitorName" column="visitor_name" />
+	</resultMap>
+
+	<resultMap id="houseDiscussMap" type="HouseDiscuss">
+		<result property="discussId" column="discuss_id"/>
+		<result property="houseId" column="house_id"/>
+		<result property="visitorType" column="visitor_type"/>
+		<result property="visitorId" column="visitor_id"/>
+		<result property="visitorName" column="visitor_name"/>
+		<result property="anonymityFlag" column="anonymity_flag"/>
+		<result property="createDate" column="create_date"/>
+		<result property="houseGrade" column="house_grade"/>
+		<result property="column10" column="Column_10"/>
+		<result property="column11" column="Column_11"/>
+		<result property="column12" column="Column_12"/>
+		<result property="content" column="content"/>
+		<association property="houseInfoDetail" javaType="HouseInfo" column="house_id" 
+		             resultMap="com.fc.flf.fparty.mapper.IVisitorHouseMapper.houseInfoMap">
+		</association>	
+	</resultMap>
+	
+	<resultMap id="houseGroupCustomerMap" type="HouseGroupCustomer">
+		<result property="id" column="id" />
+		<result property="houseGroupId" column="house_group_id" />
+		<result property="cusId" column="cus_id" />
+		<result property="customerName" column="customer_name" />
+		<result property="customerId" column="customer_id" />
+		<result property="customerPhone" column="customer_phone" />
+		<result property="joinTime" column="join_time" />
+		<result property="togetherCustomers" column="together_customers" />
+		<result property="userId" column="user_id" />
+		<result property="travelStatus" column="travel_status" />
+		<association property="houseGroupInfo" 
+		             javaType="HouseGroupInfo" 
+		             column="house_group_id" 
+					 resultMap="com.fc.flf.fparty.mapper.IVisitorCollectHouseGroupMapper.houseGroupInfoMap">
+		</association>
+	</resultMap>
+
+	<resultMap id="userMsgMap" type="UserMsg">
+		<result property="id" column="id"/>
+		<result property="msgContent" column="msg_content"/>
+		<result property="receiveUserId" column="receive_user_id"/>
+		<result property="receiveUserType" column="receive_user_type"/>
+		<result property="msgType" column="msg_type"/>
+		<result property="isRead" column="is_read"/>
+		<result property="sendUserId" column="send_user_id"/>
+		<result property="sendUserType" column="send_user_type"/>
+		<result property="sendUserName" column="send_user_name"/>
+		<result property="sendTime" column="send_time"/>
+	</resultMap>
+
+	<resultMap id="eventInfoMap" type="EventInfo">
+		<result property="eventId" column="event_id" />
+		<result property="eventNum" column="event_num" />
+		<result property="eventType" column="event_type" />
+		<result property="infoId" column="info_id" />
+		<result property="eventTitle" column="event_title" />
+		<result property="eventAddress" column="event_address" />
+		<result property="eventStartTime" column="event_start_time" />
+		<result property="eventEndTime" column="event_end_time" />
+		<result property="eventDesc" column="event_desc" />
+		<result property="keyMan" column="key_man" />
+		<result property="keyMan2" column="key_man2" />
+	</resultMap>
+
+	<resultMap type="VisitorSkimUser" id="visitorSkimUserMap">
+		<result property="skimId" column="skim_id" />
+		<result property="visitorType" column="visitor_type" />
+		<result property="visitorId" column="visitor_id" />
+		<result property="userId" column="user_id" />
+		<result property="skimDate" column="skim_date" />
+	</resultMap>
+	<!-- Start fengH -->
+	<!-- 根据蜂蜜查询对应客户 -->
+	<select id="queryCusInUser" resultMap="com.fc.flf.eagent.mapper.ICustomerFunMapper.userInfoDetailMap" parameterType="java.util.Map">	
+	    SELECT ci.id,cid.cus_id,cid.name,cid.sex,cid.photo_path,cid.birthday,cid.cellphone,ci.interests,cid.customer_type 
+	      FROM user_info_detail ui,
+	           customer_info_detail cid,
+	           customer_interests ci 
+	     WHERE cid.cus_id = ci.cus_id 
+	       AND ui.user_id = cid.created_user 
+	    <if test="userId != bull">
+	       AND ui.user_id = #{userId}
+	    </if>
+		<if test="city != null">
+			AND cid.address LIKE CONCAT("%",#{city},"%")
+		</if>
+		<if test="name != null">
+			AND cid.name LIKE CONCAT("%",#{name},"%")
+		</if>
+		<if test="sexType != null">
+			AND cid.sex=#{sexType}
+		</if>
+		<if test="cusType != null">
+			AND cid.customer_type = #{cusType}
+		</if>
+		<if test="max!=null and min!=null">
+			LIMIT #{min},#{max}
+		</if>
+	</select>
+
+	<!-- 根据客户ID查询对应信息 -->
+	<select id="queryCusInCus" resultMap="com.fc.flf.eagent.mapper.ICustomerFunMapper.customerInfoDetailMap" parameterType="int">
+		SELECT cid.name,cid.sex,cid.photo_path,cid.birthday,cid.cellphone,ci.interests,cid.customer_type 
+	      FROM customer_info_detail cid,
+	           customer_interests ci 
+	     WHERE cid.cus_id = ci.cus_id 
+	       AND cid.cus_id=#{cudId}
+	</select>
+
+	<!-- 根据客户ID查询详细信息 -->
+	<select id="queryCusForCus" resultMap="com.fc.flf.eagent.mapper.ICustomerFunMapper.customerInfoDetailMap" parameterType="int">
+		SELECT cus_id,customer_id,name,sex,photo_path,id_type,ID_num,birthday,
+		       telphone,cellphone,QQ,MSN,Blog,weibo,email,work_place,address,
+		       registered_address,citizenship_id,citizenship,nation_id,nation,
+		       marital_status,highest_edu,school,profession,first_work_date,business,
+		       company,job_duty,income,created_user,created_at,updated_user,updated_at
+		  FROM customer_Info_detail
+		 WHERE cus_id=#{cusId}
+	</select>
+
+	<!-- 根据客户ID查询客户教育信息 -->
+	<select id="queryEduForCus" resultMap="customerEduInfoMap" parameterType="int">
+		SELECT edu_id,cus_id,begin_date,end_date,school,certifier,graduate,degree
+		  FROM customer_edu_Info
+		 WHERE cus_id=#{cusId}
+	</select>
+
+	<!-- 根据客户ID查询客户兴趣爱好跟置业信息 -->
+	<select id="queryIntereForCus"
+		resultMap="com.fc.flf.eagent.mapper.ICustomerFunMapper.customerInterestsMap"
+		parameterType="int">
+		SELECT id,cus_id,interests,hobby,purchasing_condition,purchasing_direction,purchasing_price,purchasing_plan
+		  FROM customer_Interests
+		 WHERE cus_id=#{cusId}
+	</select>
+
+	<!-- 根据客户ID查询客户家庭信息 -->
+	<select id="queryFamInfoForCus" resultMap="customerFamilyInfoMap"
+		parameterType="int">
+		SELECT fam_id,cus_id,member_name,relationship,birthday,work_place,job_duty,contactphone
+		  FROM customer_family_Info
+		 WHERE cus_id=#{cusId}
+	</select>
+
+	<!-- 喊价次数 -->
+	<select id="queryCountPrice" resultType="int" parameterType="int">
+		SELECT COUNT(visitor_id) 
+		  FROM house_price 
+		 WHERE visitor_id =#{cusId}
+	</select>
+
+	<!-- 客户看房 活动次数 -->
+	<select id="queryCountEvent" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(eic.cus_id)  
+		  FROM event_info_customer eic ,event_info ei 
+		 WHERE ei.event_id = eic.event_id 
+		   AND cus_id=#{cusId}
+	    <if test="eventType != null">
+		   AND event_type=#{eventType} 
+	    </if>
+	</select>
+
+	<!-- 客户参团次数 -->
+	<select id="queryCountGroup" resultType="int" parameterType="int">
+		SELECT COUNT(cus_id) 
+		  FROM house_group_customer 
+		 WHERE cus_id =#{cusId}
+	</select>
+
+	<!-- 客户评论次数 -->
+	<select id="queryCountDiscuss" resultType="int" parameterType="int">
+		SELECT COUNT(visitor_id) 
+		  FROM house_discuss 
+		 WHERE visitor_id =#{cusId}
+	</select>
+
+	<!-- 客户收藏次数 -->
+	<select id="queryCountCollect" resultType="int" parameterType="int">
+		SELECT COUNT(visitor_id) 
+		  FROM visitor_collect_house 
+		 WHERE visitor_id=#{cusId}
+	</select>
+
+	<!-- 客户关注次数 -->
+	<select id="queryCountSkim" resultType="int" parameterType="int">
+		SELECT COUNT(visitor_id) 
+		  FROM visitor_skim_house 
+		 WHERE visitor_id=#{cusId}
+	</select>
+
+	<!-- 客户购房订单数 -->
+	<select id="queryCountOrder" resultType="int" parameterType="int">
+		SELECT COUNT(cus_id) 
+		  FROM event_buy_house_order 
+		 WHERE cus_id=#{cusId}
+	</select>
+	
+    <!-- 插入蜂蜜给客户信息 -->
+	<insert id="insertUserMsg" parameterType="com.fc.flf.common.domain.UserMsg">
+		INSERT INTO user_msg(msg_content,receive_user_id,receive_user_type,msg_type,
+							 is_read,send_user_id,send_user_type,send_user_name,send_time)
+			   VALUES(#{msgContent},#{receiveUserId},#{receiveUserType},#{msgType},
+			   				 #{isRead},#{sendUserId},#{sendUserType},#{sendUserName},NOW())
+	</insert>
+	
+	<!-- 下过单的客户 -->
+	<select id="queryOrderCus" resultMap="com.fc.flf.eagent.mapper.ICustomerFunMapper.customerInfoDetailMap" parameterType="java.util.Map">
+		SELECT cid.cus_id,cid.name,cid.cellphone,cid.address,cid.customer_type 
+          FROM customer_info_detail cid
+         WHERE EXISTS (SELECT 1 FROM event_info_customer eic WHERE eic.cus_id=cid.cus_id)
+           AND cid.created_user = 1  
+		 UNION 
+		SELECT cid.cus_id,cid.name,cid.cellphone,cid.address,cid.customer_type 
+          FROM customer_info_detail cid
+         WHERE EXISTS (SELECT 1 FROM house_group_customer hgc WHERE hgc.cus_id=cid.cus_id)
+           AND cid.created_user  = 1  
+         UNION 
+		SELECT cid.cus_id,cid.name,cid.cellphone,cid.address,cid.customer_type 
+          FROM customer_info_detail cid   
+         WHERE EXISTS (SELECT 1 FROM event_buy_house_order ebho WHERE ebho.cus_id=cid.cus_id)
+	   AND cid.created_user  = 1 
+		<if test="max!=null and min!=null">
+		 LIMIT #{min},#{max}
+		</if>
+	</select>
+	
+	<!-- 参加活动(看房)的客户 -->
+	<select id="qerutEventForUser" resultMap="com.fc.flf.eagent.mapper.ICustomerFunMapper.customerInfoDetailMap" parameterType="java.util.Map">		
+		SELECT DISTINCT cid.cus_id,cid.name,cid.cellphone,cid.address,cid.customer_type 
+           	       FROM customer_info_detail cid,
+                	    event_info_customer eic,
+                	    event_info ei
+        		  WHERE cid.cus_id = eic.cus_id
+         	 	    AND ei.event_id=eic.event_id
+        		    AND ei.event_type = #{eventType}	
+	   				AND cid.created_user = #{userId}
+        <if test="startTime != null">
+        <![CDATA[
+           AND ei.event_start_time >= #{startTime}
+           ]]>
+        </if>
+        <if test="endTime != null">
+        <![CDATA[
+           AND ei.event_start_time <= #{endTime} 
+           ]]>
+        </if>
+        <if test="city != null">
+			AND cid.address LIKE CONCAT("%",#{city},"%")
+		</if>   	
+        <if test="name != null">
+			AND cid.name LIKE CONCAT("%",#{name},"%")
+		</if>
+	</select>
+	
+	<!-- 评论过的客户 -->
+	<select id="qeruyDiscuss" resultMap="com.fc.flf.eagent.mapper.ICustomerFunMapper.customerInfoDetailMap" parameterType="java.util.Map">
+		SELECT DISTINCT cid.cus_id,cid.name,cid.cellphone,cid.address,cid.customer_type 
+	      FROM customer_info_detail cid,
+	           house_discuss hd   
+	     WHERE cid.cus_id = cid.cus_id
+	       AND hd.visitor_id = cid.cus_id   
+	     <if test="userId != null">
+	       AND cid.created_user = #{userId}	 	
+	    </if>
+		<if test="startTime != null">
+        <![CDATA[
+           AND ei.event_start_time >= #{startTime}
+           ]]>
+        </if>
+        <if test="endTime != null">
+        <![CDATA[
+           AND ei.event_start_time <= #{endTime} 
+           ]]>
+        </if>
+	     <if test="city != null">
+			AND cid.address LIKE CONCAT("%",#{city},"%")	     
+	     </if>
+	     <if test="name != null">
+	       AND cid.name LIKE CONCAT("%",#{name},"%")
+	     </if>
+	</select>
+		
+	<!-- 参加过购房团的客户	 -->
+	<select id="queryGroupForUser" resultMap="com.fc.flf.eagent.mapper.ICustomerFunMapper.customerInfoDetailMap" parameterType="java.util.Map">
+		SELECT DISTINCT cid.cus_id,cid.name,cid.cellphone,cid.address,cid.customer_type 
+          FROM customer_info_detail cid,
+               house_group_customer hgc
+         WHERE cid.cus_id = cid.cus_id  
+           AND cid.cus_id = hgc.cus_id  
+           AND cid.created_user = #{userId} 	
+	    <if test="startTime != null">
+        <![CDATA[
+           AND ei.event_start_time >= #{startTime}
+           ]]>
+        </if>
+        <if test="endTime != null">
+        <![CDATA[
+           AND ei.event_start_time <= #{endTime} 
+           ]]>
+        </if>
+	     <if test="city != null">
+		   AND cid.address LIKE CONCAT("%",#{city},"%")	     
+	     </if>
+	     <if test="name != null">
+	       AND cid.name LIKE CONCAT("%",#{name},"%")
+	     </if> 
+	</select>
+				
+	<!-- 根据客户查询其评论记录 -->
+	<select id="queryDiscussForCus" parameterType="java.util.Map" resultMap="houseDiscussMap" >
+		 SELECT hd.create_date,hd.content,hi.house_name,hd.discuss_id
+           FROM house_discuss hd,
+                house_info hi
+		  WHERE visitor_type = 2
+		    AND hi.house_id = hd.house_id
+		<if test="cusId != null">
+		    AND visitor_id =  #{cusId}		   
+		</if>
+		<if test="max!=null and min!=null">
+			LIMIT #{min},#{max}
+		</if>
+	</select>
+
+	<!-- 根据客户查询其活动(看房)记录 -->
+	<select id="queryEventForCus" parameterType="java.util.Map" resultMap="eventInfoMap" >
+		SELECT eic.cus_id,ei.event_num,ei.event_start_time,ei.event_address,ei.event_title,ei.event_desc,ei.event_desc,
+		       ei.event_type
+		  FROM event_info ei,
+		       event_info_customer eic
+		 WHERE eic.event_id = ei.event_id 
+		   AND eic.cus_id = #{cusId} 
+		<if test="eventType!=null">
+			AND event_type = #{eventType}
+		</if>
+		<if test="max!=null and min!=null">
+			LIMIT #{min},#{max}
+		</if>
+	</select>
+
+	<!-- 根据客户ID查询其参加购房团的记录 -->
+	<select id="queryGruopForCus" parameterType="java.util.Map" resultMap="houseGroupCustomerMap" >
+		SELECT hgc.cus_id,
+		       hgi.house_group_id,
+		       hgi.group_start_date,
+		       hgi.group_name,
+		       hgi.group_duration,
+		       hgc.travel_status,
+		       hgi.group_desc
+		  FROM house_group_info hgi,
+		       house_group_customer hgc
+		 WHERE hgi.house_group_id = hgc.house_group_id 
+	 <if test="cusId != null">
+		   AND hgc.cus_id = #{cusId}
+		 </if>
+		<if test="max!=null and min!=null">
+			LIMIT #{min},#{max}
+		</if>
+	</select>
+	
+	<!-- 某客户的购房记录 -->
+	<select id="queryOrderForCus" resultMap="eventBuyHouseOrderMap" parameterType="int"> 
+		SELECT order_num,order_date,order_name,order_desc,pay_status
+		  FROM event_buy_house_order 
+		  WHERE cus_id = #{cusId}		
+	</select>
+	<!-- END fengH -->
+	
+	<!-- Code by HuangShan Start -->
+	<!-- 易介宝首页 最近成交榜 -->
+	<select id="findBuyHouseOrder" resultMap="eventBuyHouseOrderMap">
+		SELECT order_id,house_ID,order_date,house_name,customer_name 
+	      FROM event_buy_house_order 
+	  ORDER BY order_date DESC
+	  	 LIMIT 8
+	</select>
+	<!-- 最近未联络的客户 -->
+	<select id="findCustomerByNoContact" resultMap="com.fc.flf.eagent.mapper.ICustomerFunMapper.customerInfoDetailMap" >
+		SELECT cid.cus_id,cid.`name`,cid.address,cid.photo_path
+		  FROM customer_info_detail cid
+		 WHERE cid.cus_id in(
+			   SELECT uccr.cus_id FROM user_customer_contact_record uccr
+			    WHERE user_id = #{userId} AND TO_DAYS(NOW()) - TO_DAYS(uccr.record_end_date) > 10
+			 ORDER BY TO_DAYS(NOW()) - TO_DAYS(uccr.record_end_date) DESC
+			   )
+		 LIMIT 8
+	</select>	
+	
+	<!-- 判断客户是否属于当前蜂蜜 -->
+	<select id="findCustomerInfoDetail" resultMap="com.fc.flf.eagent.mapper.ICustomerFunMapper.customerInfoDetailMap" >
+		  SELECT cid.customer_id,cid.name,cid.address,cid.photo_path
+			FROM customer_info_detail cid 
+		   WHERE cid.created_user = #{userId}
+			 AND cid.customer_id = #{customerId}
+	</select>
+	
+	<!-- 根据UserID查询客户来访，如果是当前蜂蜜的客户查询customer_info_detail	  否则查询customer_info表 -->
+	<select id="findVisitorSkimUserByUserId" resultMap="visitorSkimUserMap">
+		SELECT skim_id,visitor_id,skim_user_id 
+		  FROM visitor_skim_user 
+		 WHERE skim_user_id = #{userId} 
+		   AND visitor_type = 0 
+	  ORDER BY skim_time DESC
+	  	 LIMIT 8
+	</select>
+	<!-- 查询最近到访客户(CustomerInfo表) -->
+	<select id="findCustomerInfoCId" resultMap="com.fc.flf.fparty.mapper.ICustomerInfoMapper.customerInfoMap">
+		SELECT ci.customer_id,ci.name,ci.address,ci.photo_path
+		  FROM customer_info ci,
+		  	   customer_info_detail cid
+		 WHERE ci.customer_id = cid.customer_id
+		   AND ci.customer_id = #{customerId}
+		   AND cid.created_user = #{userId} 
+	</select>
+	<!-- 蜂蜜推荐的楼盘 -->	
+	<select id="findRecommendHouse" resultMap="com.fc.flf.portal.mapper.HouseInfoMapper.HouseInfoMap">
+		SELECT fsa.area_name,hi.house_id,hi.house_name,hi.house_price,hi.house_pic,hi.belong_to_region
+		  FROM house_info hi,
+			   user_recommend_share urs,
+			   user_friends uf,
+		  	   fc_sys_area fsa
+		 WHERE urs.recommend_type = 2
+		   AND urs.recommend_visitor_type = 0
+		   AND uf.user_id = #{userId}
+		   AND uf.friend_id = urs.user_id
+		   AND hi.house_id = urs.recommend_content_id
+		   AND fsa.area_id = hi.area_id
+		 LIMIT ${limitValue}
+	</select>
+	
+	<!-- 蜂蜜推荐的楼盘 记录数-->	
+	<select id="findRecommendHouseCount" resultType="int">
+		SELECT count(1)
+		  FROM house_info hi,
+			   user_recommend_share urs,
+			   user_friends uf,
+		  	   fc_sys_area fsa
+		 WHERE urs.recommend_type = 2
+		   AND urs.recommend_visitor_type = 0
+		   AND uf.user_id = #{userId}
+		   AND uf.friend_id = urs.user_id
+		   AND hi.house_id = urs.recommend_content_id
+		   AND fsa.area_id = hi.area_id
+	</select>
+	
+	<!-- Code by HuangShan End -->
+</mapper>

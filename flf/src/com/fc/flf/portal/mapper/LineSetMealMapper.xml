@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+
+<!-- Liwj -->
+<mapper namespace="com.fc.flf.portal.mapper.LineSetMealMapper">
+
+	<resultMap type="HouseGroupInfo" id="HouseGroupInfoMap">
+		<id property="houseGroupId" column="house_group_id" />
+		<result property="groupName" column="group_name" />
+		<result property="groupStartDate" column="group_start_date" />
+		<result property="groupDeadlineDate" column="group_deadline_date" />
+		<result property="groupDuration" column="group_duration" />
+		<result property="groupPrice" column="group_price" />
+		<result property="groupHotline" column="group_hotline" />
+		<result property="housePurpose" column="house_purpose" />
+		<result property="houseProperties" column="house_properties" />
+		<result property="lineProperties" column="line_properties" />
+		<result property="attentionCnt" column="attention_cnt" />
+		<result property="joinCnt" column="join_cnt" />
+		<result property="groupDesc" column="group_desc" />
+		<result property="groupLineDesc" column="group_line_desc" />
+		<result property="picPath" column="pic_path" />
+	</resultMap>
+
+	<!-- 实体类映射关系 Start -->
+	<resultMap type="HouseGroupInfo" id="HouseGroupInforResultMap">
+		<id property="houseGroupId" column="house_group_id" />
+		<result property="groupName" column="group_name" />
+		<result property="groupStartDate" column="group_start_date" />
+		<result property="groupDeadlineDate" column="group_deadline_date" />
+		<result property="groupDuration" column="group_duration" />
+		<result property="groupPrice" column="group_price" />
+		<result property="groupHotline" column="group_hotline" />
+		<result property="housePurpose" column="house_purpose" />
+		<result property="houseProperties" column="house_properties" />
+		<result property="lineProperties" column="line_properties" />
+		<result property="attentionCnt" column="attention_cnt" />
+		<result property="joinCnt" column="join_cnt" />
+		<result property="groupDesc" column="group_desc" />
+		<result property="groupLineDesc" column="group_line_desc" />
+		<result property="picPath" column="hgi_pic_path" />
+		<collection property="houseGroupScheduleList" ofType="HouseGroupSchedule"
+			resultMap="HouseGroupScheduleResultMap" />
+		<collection property="houseGroupCustomerList" ofType="HouseGroupCustomer"
+			resultMap="HouseGroupCustomerResultMap" />
+	</resultMap>
+
+	<resultMap type="HouseGroupSchedule" id="HouseGroupScheduleResultMap">
+		<id property="groupScheduleId" column="group_schedule_id" />
+		<result property="orderNo" column="order_no" />
+		<result property="picPath" column="hgs_pic_path" />
+		<result property="groupDestination" column="group_destination" />
+		<result property="scheduleDesc" column="schedule_desc" />
+		
+		<association property="fcSysArea" column="area_id"
+			javaType="FcSysArea">
+			<id property="areaId" column="area_id" />
+			<result property="areaType" column="area_type" />
+			<result property="areaName" column="area_name" />
+			<result property="parentAreaId" column="parent_area_id" />
+			<result property="pinyin" column="pinyin" />
+			<result property="path" column="path" />
+			<result property="areaLevel" column="area_level" />
+			<result property="areaDesc" column="area_desc" />
+		</association>
+		
+		<collection property="houseGroupScheduleHouseList" ofType="HouseGroupScheduleHouse">
+			<id property="houseId" column="house_id" />
+			<result property="groupScheduleId" column="group_schedule_id" />
+			<result property="picPath" column="hgsh_pic_path" />
+			<result property="houseName" column="house_name"/>
+		</collection>
+		<collection property="houseGroupScheduleEventList" ofType="HouseGroupScheduleEvent">
+			<id property="id" column="id" />
+			<result property="groupScheduleId" column="group_schedule_id" />
+			<result property="eventContent" column="event_content" />
+			<result property="eventOrderNo" column="event_order_no" />
+			<result property="trafficTools" column="traffic_tools" />
+		</collection>
+	</resultMap>
+
+	<resultMap type="HouseGroupCustomer" id="HouseGroupCustomerResultMap">
+		<id property="id" column="id" />
+		<result property="customerName" column="customer_name" />
+		<result property="customerPhone" column="customer_phone" />
+		<result property="joinTime" column="join_time" />
+		<result property="togetherCustomers" column="together_customers" />
+		<result property="userId" column="user_id" />
+		<association property="customerInfoDetail" column="cus_id"
+			javaType="CustomerInfoDetail">
+			<id property="cusId" column="cus_id" />
+			<result property="customerId" column="customer_id" />
+			<result property="name" column="name" />
+			<result property="sex" column="sex" />
+			<result property="photoPath" column="photo_path" />
+			<result property="idType" column="id_type" />
+			<result property="iDNum" column="ID_num" />
+			<result property="birthday" column="birthday" />
+			<result property="telphone" column="telphone" />
+			<result property="cellphone" column="cellphone" />
+			<result property="qQ" column="QQ" />
+			<result property="mSN" column="MSN" />
+			<result property="blog" column="Blog" />
+			<result property="weibo" column="weibo" />
+			<result property="workPlace" column="work_place" />
+			<result property="address" column="address" />
+			<result property="registeredAddress" column="registered_address" />
+			<result property="citizenshipId" column="citizenship_id" />
+			<result property="citizenship" column="citizenship" />
+			<result property="nationId" column="nation_id" />
+			<result property="nation" column="nation" />
+			<result property="maritalStatus" column="marital_status" />
+			<result property="highestEdu" column="highest_edu" />
+			<result property="school" column="school" />
+			<result property="profession" column="profession" />
+			<result property="firstWorkDate" column="first_work_date" />
+			<result property="business" column="business" />
+			<result property="company" column="company" />
+			<result property="jobDuty" column="job_duty" />
+			<result property="income" column="income" />
+			<result property="createdUser" column="created_user" />
+			<result property="createdAt" column="created_at" />
+			<result property="updatedUser" column="updated_user" />
+			<result property="updatedAt" column="updated_at" />
+		</association>
+	</resultMap>
+	
+<resultMap id="visitorSkimHouseGroupMap" type="VisitorSkimHouseGroup">
+		<result property="skimId" column="skim_id"/>
+		<result property="houseGroupId" column="house_group_id"/>
+		<result property="visitorId" column="visitor_id"/>
+		<result property="vistorType" column="visitor_type"/>
+		<result property="checkinType" column="checkin_type"/>
+		<result property="checkinTime" column="checkin_time"/>
+		<result property="checkoutTime" column="checkout_time"/>
+		<result property="checkinIp" column="checkin_ip"/>
+	</resultMap>
+	
+	<!-- End -->
+	
+	<!-- under code by Liwj Start-->
+	<!-- function : 进入旅游详细信息页面 -->
+	<select id="getTravelPage" resultType="com.fc.flf.common.domain.HouseGroupInfo"
+		parameterType="int" resultMap="HouseGroupInforResultMap">
+		SELECT hgi.house_group_id,hgi.group_name,hgi.pic_path hgi_pic_path,hgi.group_line_desc,hgi.group_start_date,hgi.group_deadline_date,
+			   hgi.group_duration,hgi.group_price,hgi.group_hotline,hgi.house_purpose,hgi.house_properties,hgi.line_properties,
+			   hgi.attention_cnt,hgi.join_cnt,hgi.group_desc,hgs.group_schedule_id,hgs.house_group_id,hgs.pic_path hgs_pic_path,hgs.order_no,
+			   hgs.area_id,hgs.group_destination,hgs.schedule_desc,hgsh.house_id,hgsh.group_schedule_id,hgsh.pic_path hgsh_pic_path,hgsh.house_name,
+			   hgse.id,hgse.event_content,hgse.event_order_no,hgse.traffic_tools
+		  FROM 
+			   house_group_info hgi,
+			   house_group_schedule hgs,
+			   house_group_schedule_house hgsh,
+			   house_group_schedule_event hgse
+		 WHERE hgi.house_group_id = hgs.house_group_id 
+		   AND hgs.group_schedule_id = hgsh.group_schedule_id 
+		   AND hgs.group_schedule_id = hgse.group_schedule_id 
+		   AND hgs.house_group_id= #{houseGroupId}
+	</select>
+	
+	<!-- function : 按照旅游购房团ID查找 -->
+	<select id="getHouseGroupInfoById" resultMap="HouseGroupInfoMap" 
+		parameterType="int" resultType="com.fc.flf.common.domain.HouseGroupInfo">
+		SELECT house_group_id,group_name,pic_path,group_line_desc,group_start_date,group_deadline_date,group_duration,group_price,
+			   group_hotline,house_purpose,house_properties,line_properties,attention_cnt,join_cnt,group_desc
+		  FROM house_group_info
+		 WHERE house_group_id = #{id};
+	</select>
+	
+	<!--function : 所有旅游购房的总记录数 -->
+	<select id="getTotalCount" resultType="int">
+		SELECT COUNT(*) FROM house_group_info;
+	</select>
+
+	<!--function : 查询所有旅游购房团信息(分页) -->
+	<select id="getAllHouseGroupInfo" resultType="com.fc.flf.common.domain.HouseGroupInfo"
+		parameterType="String" resultMap="HouseGroupInfoMap">
+		SELECT house_group_id,group_name,pic_path,group_line_desc,group_start_date,group_deadline_date,
+			   group_duration,group_price,group_hotline,house_purpose,house_properties,line_properties,
+			   attention_cnt,join_cnt,group_desc
+		  FROM house_group_info 
+	  ORDER BY house_group_id DESC 
+	     LIMIT ${limitStr};
+	</select>
+
+	<!--function : 推荐线路名称  -->
+	<select id="getHotLineRecommend" resultType="com.fc.flf.common.domain.HouseGroupInfo"
+		resultMap="HouseGroupInfoMap">
+		SELECT house_group_id,group_name 
+		  FROM house_group_info 
+	  ORDER BY house_group_id DESC 
+		 LIMIT 8;
+	</select>
+	
+	<!-- function :  登陆用户收藏的旅游购房团信息-->
+	<select id="getCollectTouristGroup" resultMap="HouseGroupInfoMap" parameterType="int">
+		SELECT hgi.group_name,hgi.group_start_date,hgi.house_group_id
+		  FROM visitor_collect_house_group vchg,
+		  	   house_group_info hgi
+		 WHERE hgi.house_group_id = vchg.house_group_id 
+		   AND vchg.visitor_id = #{visitorId} 
+		   AND visitor_type = #{vistorType}
+	  ORDER BY hgi.group_start_date DESC 
+	     LIMIT 8;
+	</select>
+	
+	
+	<!-- function : 查找登陆用户的浏览记录  -->
+	<select id="getVisitorSkimHouseGroup" resultMap="visitorSkimHouseGroupMap">
+		SELECT skim_id,house_group_id,visitor_id,visitor_type
+		  FROM visitor_skim_house_group
+		 WHERE house_group_id = #{houseGroupId}
+		   AND visitor_id = #{visitorId}
+	</select>
+	
+	<!-- function : 查找经纪人关注过的浏览记录 -->
+	<select id="getEconomicManHouseGroup" resultMap="HouseGroupInfoMap" parameterType="VisitorSkimHouseGroup">
+		SELECT hgi.group_name,hgi.group_start_date FROM house_group_info hgi,visitor_skim_house_group vshg 
+		 WHERE vshg.visitor_id = 
+	(
+		SELECT created_user 
+		  FROM customer_info_detail cid 
+		 WHERE customer_id = #{visitorId} 
+		   AND cid.is_exchange = 0 
+      ORDER BY cid.created_at DESC   
+         LIMIT 1
+     ) 
+           AND hgi.house_group_id = vshg.house_group_id
+           AND visitor_type = #{vistorType}
+         LIMIT 8
+	</select>
+	
+	<!-- function : 更新用户登陆时间 -->
+	<update id="updateVisitorSkimHouseGroupInTime">
+		UPDATE visitor_skim_house_group SET checkin_time = #{currentTime} WHERE house_group_id = #{houseGroupId} AND visitor_id = #{visitorId}
+	</update>
+	
+	<!-- function : 保存旅游购房浏览记录  -->
+	<insert id="saveVisitorSkimHouseGroup" parameterType="VisitorSkimHouseGroup">
+  INSERT INTO visitor_skim_house_group(house_group_id,visitor_id,visitor_type,checkin_type,checkin_time,checkout_time,checkin_ip)
+	   VALUES (#{houseGroupId},#{visitorId},#{vistorType},#{checkinType},#{checkinTime},#{checkoutTime},
+		      INET_ATON(#{checkinIp}))
+	</insert>
+		
+	<!--function :  查找登陆用户的浏览信息 -->
+	<select id="getVisitorBrowse" resultMap="HouseGroupInfoMap" parameterType="int">
+		SELECT hgi.house_group_id,group_name,group_start_date
+		  FROM visitor_skim_house_group vshg,house_group_info hgi
+		 WHERE hgi.house_group_id = vshg.house_group_id 
+		   AND visitor_id = #{visitor}
+	</select>
+	
+	<!-- function : 旅游购房团搜索 -->
+	<select id="getSearchHouseGroupInfo" resultMap="HouseGroupInfoMap" resultType="com.fc.flf.common.domain.HouseGroupInfo">
+		SELECT house_group_id,group_name,pic_path,group_line_desc,group_start_date,group_deadline_date,group_duration, 
+      		   group_price,group_hotline,house_purpose,house_properties,line_properties,attention_cnt,join_cnt,group_desc
+		  FROM house_group_info 
+		 WHERE 1=1  
+		 <if test="groupDuration != null and groupDuration !='' ">
+		   AND group_duration = '${groupDuration}'
+		 </if>
+		 <if test="grouptime != null and grouptime !='' ">
+		   AND group_start_date BETWEEN '${nowTime}' AND '${nextTime}'
+		 </if> 
+		 <if test="groupLineDesc != null and groupLineDesc != '' ">
+		   AND group_line_desc LIKE '%${groupLineDesc}%'		 	
+		 </if>
+		 <if test="housePurpose !=0">
+           AND house_purpose = ${housePurpose}		 	
+		 </if>
+		 <if test="houseProperties !=0">
+           AND house_properties = ${houseProperties}		 	
+		 </if>
+		 <if test="lineProperties !=0">
+           AND line_properties = ${lineProperties}		 	
+		 </if> 
+		 LIMIT ${limitStr}
+	</select>
+	
+	<!-- function : 旅游购房搜索总记录数 -->
+	<select id="getSearchHouseGroupInfoCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM house_group_info 
+		 WHERE 1=1  
+		 <if test="groupDuration != null and groupDuration !='' ">
+		   AND group_duration = '${groupDuration}'
+		 </if>
+		 <if test="grouptime != null and grouptime !='' ">
+		   AND group_start_date BETWEEN '${nowTime}' AND '${nextTime}'
+		 </if> 
+		 <if test="groupLineDesc != null and groupLineDesc != '' ">
+		   AND group_line_desc LIKE '%${groupLineDesc}%'		 	
+		 </if>
+		 <if test="housePurpose !=0">
+           AND house_purpose = ${housePurpose}		 	
+		 </if>
+		 <if test="houseProperties !=0">
+           AND house_properties = ${houseProperties}		 	
+		 </if>
+		 <if test="lineProperties !=0">
+           AND line_properties = ${lineProperties}		 	
+		 </if>
+	</select>
+
+	<!-- top code by Liwj End -->
+	
+	<!-- 查找发团时间大于当前时间的六条记录 code by gaoqifang -->
+	<select id="getRecentOpenHouseGroupInfo" resultMap="HouseGroupInfoMap" parameterType="java.sql.Date">
+		<![CDATA[ 
+		SELECT house_group_id,group_name,group_start_date 
+		  FROM house_group_info 
+		 WHERE group_start_date >=#{currentTime} 
+	  ORDER BY group_start_date 
+		 LIMIT 0, 6 ; 
+		]]>
+	</select>
+	
+	<!-- 查找本周发团记录 code by gaoqifang -->
+	<select id="getCurrentWeekdayOpenHouseGroupInfo" resultMap="HouseGroupInfoMap" parameterType="java.sql.Date">
+		<![CDATA[ 
+		SELECT house_group_id,group_name,group_start_date,group_deadline_date,group_line_desc,group_price 
+		  FROM house_group_info 
+		 WHERE group_start_date <=#{currentWeekday}
+		   AND group_start_date>=#{mondayOFWeek}
+	  ORDER BY group_start_date 
+		]]>
+	</select>
+	<!-- code by gaoqifang End -->
+	
+	<!-- SQL By Zhenglh -->
+	<!-- 根据HouseId查询出购房团的名字 -->
+	<select id="getGroupNameByHouseId" parameterType="int" resultType="String">
+		SELECT groupInfo.group_name
+		  FROM house_group_schedule_house schenduleHouse,
+		       house_group_schedule groupSchedule,
+		       house_group_info groupInfo
+		 WHERE schenduleHouse.group_schedule_id=groupSchedule.group_schedule_id 
+		   AND groupSchedule.house_group_id=groupInfo.house_group_id
+		   AND schenduleHouse.house_id=#{houseId}
+	</select>
+	<!-- -->
+	
+	<!--function : 查询所有旅游购房团信息(分页)(客户报名使用)   add 覃启轩 -->
+	<select id="getAllHouseGroupInfoCus" resultType="com.fc.flf.common.domain.HouseGroupInfo"
+		parameterType="Map" resultMap="HouseGroupInfoMap">
+		SELECT house_group_id,group_name,pic_path,group_line_desc,group_start_date,group_deadline_date,
+			   group_duration,group_price,group_hotline,house_purpose,house_properties,line_properties,
+			   attention_cnt,join_cnt,group_desc
+		  FROM house_group_info
+		 WHERE 1=1
+		 <if test=" lineName != null ">
+		   AND group_name like '%${lineName}%'
+		 </if>
+	  ORDER BY house_group_id DESC 
+	     LIMIT ${limitStr};
+	</select>
+</mapper>

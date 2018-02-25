@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.fparty.mapper.IVisitorCollectHouseGroupMapper">   
+   
+   <resultMap id="visitorCollectHouseGroupMap" type="VisitorCollectHouseGroup">
+		<id property="collectId" column="collect_id"/>
+		<result property="visitorId" column="visitor_id"/>
+		<result property="visitorType" column="visitor_type"/>
+		<result property="column4" column="Column_4"/>
+		<result property="column5" column="Column_5"/>
+		
+		<association property="houseGroupInfo" column="house_group_id" javaType="com.fc.flf.common.domain.HouseGroupInfo" >
+		    <id property="houseGroupId" column="house_group_id"/>
+			<result property="groupName" column="group_name"/>
+			<result property="picPath" column="pic_path"/>
+			<result property="groupLineDesc" column="group_line_desc"/>
+			<result property="groupStartDate" column="group_start_date"/>
+			<result property="groupDeadlineDate" column="group_deadline_date"/>
+			<result property="groupDuration" column="group_duration"/>
+			<result property="groupPrice" column="group_price"/>
+			<result property="groupHotline" column="group_hotline"/>
+			<result property="housePurpose" column="house_purpose"/>
+			<result property="houseProperties" column="house_properties"/>
+			<result property="lineProperties" column="line_properties"/>
+			<result property="attentionCnt" column="attention_cnt"/>
+			<result property="joinCnt" column="join_cnt"/>
+			<result property="groupDesc" column="group_desc"/>	
+		</association> 
+		
+	</resultMap>
+	
+	<resultMap id="houseGroupInfoMap" type="HouseGroupInfo">
+		<id property="houseGroupId" column="house_group_id"/>
+		<result property="groupName" column="group_name"/>
+		<result property="picPath" column="pic_path"/>
+		<result property="groupLineDesc" column="group_line_desc"/>
+		<result property="groupStartDate" column="group_start_date"/>
+		<result property="groupDeadlineDate" column="group_deadline_date"/>
+		<result property="groupDuration" column="group_duration"/>
+		<result property="groupPrice" column="group_price"/>
+		<result property="groupHotline" column="group_hotline"/>
+		<result property="housePurpose" column="house_purpose"/>
+		<result property="houseProperties" column="house_properties"/>
+		<result property="lineProperties" column="line_properties"/>
+		<result property="attentionCnt" column="attention_cnt"/>
+		<result property="joinCnt" column="join_cnt"/>
+		<result property="groupDesc" column="group_desc"/>
+	</resultMap>
+	
+	<!-- 参加旅游购房团订单信息  add 覃启轩 -->
+	<resultMap id="getHouseGroupInfoMap" type="HouseGroupInfo">
+		<id property="houseGroupId" column="house_group_id"/>
+		<result property="groupName" column="group_name"/>
+		<result property="picPath" column="pic_path"/>
+		<result property="groupLineDesc" column="group_line_desc"/>
+		<result property="groupStartDate" column="group_start_date"/>
+		<result property="groupDeadlineDate" column="group_deadline_date"/>
+		<result property="groupDuration" column="group_duration"/>
+		<result property="groupPrice" column="group_price"/>
+		<result property="groupHotline" column="group_hotline"/>
+		<result property="housePurpose" column="house_purpose"/>
+		<result property="houseProperties" column="house_properties"/>
+		<result property="lineProperties" column="line_properties"/>
+		<result property="attentionCnt" column="attention_cnt"/>
+		<result property="joinCnt" column="join_cnt"/>
+		<result property="groupDesc" column="group_desc"/>
+		
+		<association property="houseGroupCustomer" column="id" javaType="HouseGroupCustomer">
+			<id property="id" column="id" />
+			<result property="joinTime" column="join_time" />
+			<result property="cusId" column="cus_id" />
+			<result property="customerId" column="customer_id" />
+			<result property="customerName" column="customer_name" />
+			<result property="houseGroupId" column="house_group_id" />
+			<result property="customerPhone" column="customer_phone" />
+			<result property="togetherCustomers" column="together_customers" />
+			<result property="travelStatus" column="travel_status" />
+		</association>
+	</resultMap>
+	
+
+	
+	<!-- gonghongjun start -->
+	<!-- 查询客户收藏的房团 -->
+	<select id="listCollectHouseGroup" parameterType="map" resultMap="houseGroupInfoMap">
+	  SELECT hgi.house_group_id,hgi.group_name,hgi.pic_path,hgi.group_line_desc ,hgi.group_start_date,hgi.group_deadline_date,
+	         hgi.group_duration,hgi.group_price,hgi.group_hotline,hgi.house_purpose,hgi.house_properties,hgi.line_properties,
+	         hgi.attention_cnt,hgi.join_cnt,hgi.group_desc	  
+		FROM visitor_collect_house_group vchg,
+		     house_group_info hgi  
+	   WHERE vchg.visitor_type=1 
+	     AND vchg.house_group_id=hgi.house_group_id
+		 AND vchg.visitor_id =#{customerId} 
+    ORDER BY hgi.house_group_id DESC 
+	   LIMIT ${limit}     
+	</select>
+	
+	<!-- 查询客户收藏的房团的条数 -->
+	<select id="getCount" parameterType="int" resultType="int">
+	    SELECT count(hgi.house_group_id) 	  
+		  FROM visitor_collect_house_group vchg,
+		       house_group_info hgi   
+		 WHERE vchg.house_group_id=hgi.house_group_id 
+		   and vchg.visitor_type=1 
+		   AND vchg.visitor_id=#{customerId}		        
+	</select>
+	
+	<!-- 查询客户参加的房团 -->
+	<select id="listJoinHouseGroup" parameterType="map" resultMap="houseGroupInfoMap">	   
+	   SELECT hgi.house_group_id,hgi.group_name,hgi.pic_path,hgi.group_line_desc ,hgi.group_start_date,hgi.group_deadline_date,
+	          hgi.group_duration,hgi.group_price,hgi.group_hotline,hgi.house_purpose,hgi.house_properties,hgi.line_properties,
+	          hgi.attention_cnt,hgi.join_cnt,hgi.group_desc 
+         FROM house_group_info hgi,
+              house_group_customer hgc 
+        WHERE hgi.house_group_id=hgc.house_group_id 
+          AND hgc.travel_status=1
+          AND hgc.customer_id=#{customerId}
+        ORDER BY hgi.house_group_id DESC 
+	    LIMIT ${limit}
+	   
+	</select>
+	
+	<!-- 查询客户参加的房团的条数 -->
+	<select id="getJoinCount" parameterType="int" resultType="int">
+	   SELECT count(hgi.house_group_id)
+	     FROM house_group_info hgi,
+              house_group_customer hgc 
+        WHERE hgi.house_group_id = hgc.house_group_id 
+          AND hgc.travel_status=1
+          AND hgc.customer_id=#{customerId}		        
+	</select>
+	
+	<!-- 查询经纪人推荐的房团 -->
+	<select id="listAgentRecommendHouseGroup" parameterType="map" resultMap="houseGroupInfoMap">
+	    SELECT hgi.house_group_id,hgi.group_name,hgi.pic_path,hgi.group_line_desc ,hgi.group_start_date,hgi.group_deadline_date,
+	           hgi.group_duration,hgi.group_price,hgi.group_hotline,hgi.house_purpose,hgi.house_properties,hgi.line_properties,
+	           hgi.attention_cnt,hgi.join_cnt,hgi.group_desc
+		  FROM house_group_info hgi,
+		       user_recommend_share urs,
+		       customer_info_detail cid,
+		       customer_info ci	      
+		 WHERE ci.customer_id=cid.customer_id
+		   AND hgi.house_group_id=urs.recommend_content_id
+		   AND urs.user_id=cid.created_user
+		   AND urs.recommend_visitor_type=1  
+		   AND urs.recommend_type=3
+		   AND urs.recommend_vistor=cid.customer_id  
+		   AND ci.customer_id=#{customerId}	   
+	  ORDER BY hgi.house_group_id DESC 
+		 LIMIT ${limit}
+	</select>
+	
+	<!-- 查询经纪人推荐的房团的条数-->
+	<select id="getRecommendCount" parameterType="int" resultType="int">
+	    SELECT COUNT(hgi.house_group_id)
+		  FROM house_group_info hgi,
+		       user_recommend_share urs,
+		       customer_info_detail cid,
+		       customer_info ci	      
+		 WHERE ci.customer_id=cid.customer_id
+		   AND hgi.house_group_id=urs.recommend_content_id
+		   AND urs.user_id=cid.created_user
+		   AND urs.recommend_visitor_type=1  
+		   AND urs.recommend_type=3
+		   AND urs.recommend_visitor=cid.customer_id  
+		   AND ci.customer_id=#{customerId}
+	</select>
+	
+	<!-- 查询经纪人收藏的房团 -->
+	<select id="userCollectGroupHouse" parameterType="map" resultMap="houseGroupInfoMap">
+		SELECT hgi.house_group_id,hgi.group_name,hgi.pic_path,hgi.group_line_desc ,hgi.group_start_date,hgi.group_deadline_date,
+		       hgi.group_duration,hgi.group_price,hgi.group_hotline,hgi.house_purpose,hgi.house_properties,hgi.line_properties,
+		       hgi.attention_cnt,hgi.join_cnt,hgi.group_desc
+		  FROM visitor_collect_house_group vchg,
+		       house_group_info hgi
+		 WHERE vchg.visitor_type=0
+		   AND hgi.house_group_id=vchg.house_group_id 
+		   AND vchg.visitor_id=#{userId}
+	  ORDER BY hgi.house_group_id DESC 
+		 LIMIT ${limit}
+	</select>
+	
+	<!-- 查询经纪人收藏的房团 -->
+	<select id="getUserCollectGroupHouse" parameterType="int" resultType="int">
+	    SELECT count(hgi.house_group_id)
+		  FROM visitor_collect_house_group vchg,
+		       house_group_info hgi
+		 WHERE vchg.visitor_type=0
+		   AND hgi.house_group_id=vchg.house_group_id 
+		   AND vchg.visitor_id=#{userId}
+	</select>
+    <!-- gonghongjun end -->
+    
+    <!--  覃启轩start -->
+    <!-- 新增旅游购房团订单 -->
+    <insert id="insertHouseGroupCusTomer" parameterType="Map">
+    	INSERT INTO house_group_customer(house_group_id,cus_id,customer_id,customer_name,customer_phone,
+    	                                 join_time,together_customers,user_id,travel_status)
+	                              VALUES(#{houseGroupId},#{cusId},#{customerId},#{customerName},#{customerPhone},
+	                                     #{joinTime},#{togetherCustomers},#{userId},'1')
+    </insert>
+    
+    <!-- 活动订单 -->
+    <insert id="insertSeeHouseOrder" parameterType="Map">
+    	INSERT INTO event_info_customer(event_id,cus_id,customer_id,customer_name,visitor_type,
+    	                                is_checkin,is_register,valuation,valuation1,valuation2,
+    	                                valuation3,valuation4,create_at)
+								 VALUES(#{eventId},#{cusId},#{customerId},#{customerName},#{visitorType},
+								        #{isCheckin},#{isRegister},#{valuation},#{valuation1},#{valuation2},
+								        #{valuation3},#{valuation4},#{createAt})
+    </insert>
+    
+    <!-- 购房订单 -->
+    <insert id="insertBuyHouseOrder" parameterType="Map">
+    	INSERT INTO event_buy_house_order(order_num,house_ID,house_name,cus_id,customer_id,customer_name,user_id,user_name,
+    								      order_name,order_date,exec_order_date,order_status,order_money,pay_status,
+    								      pay_type,pay_date,order_desc,sale_control_id)
+                                   VALUES(#{orderNum}#{houseId},#{houseName},#{cusId},#{customerId},#{customerName},#{userId},#{userName},
+                                          #{orderName},#{orderDate},#{execOrderDate},#{orderStatus},#{orderMoney},#{payStatus},
+                                          #{payType},#{payDate},#{orderDesc},#{saleControlId})
+    </insert>
+    
+    <!-- 删除旅游购房订单 -->
+    <delete id="deleteHouseGroupOrder" parameterType="int">
+    	DELETE FROM house_group_customer
+		 WHERE id=${orderId}
+    </delete>
+    
+    <!-- 查询客户参加旅游购房团订单 -->
+	<select id="queryJoinHouseGroup" parameterType="map" resultMap="getHouseGroupInfoMap">	   
+		SELECT hgi.house_group_id,hgi.group_name,cus.join_time,cus.travel_status,hgi.group_line_desc,hgi.group_price,
+			   cus.customer_id,cus.together_customers,cus.customer_phone,cus.cus_id,cus.customer_name
+		  FROM house_group_customer cus,
+		       house_group_info hgi
+		 WHERE 1=1
+		   AND hgi.house_group_id=cus.house_group_id
+		   AND cus.cus_id=#{cusId}
+		   <if test="null != queryObj and '' != queryObj">
+		   AND (hgi.group_name LIKE '%${queryObj}%' OR hgi.group_line_desc LIKE '%${queryObj}%')
+		   </if>
+		 LIMIT ${limit}
+	</select>
+    
+    <!-- 查询客户参加旅游购房团订单总数 -->
+	<select id="queryJoinHouseGroupCount" parameterType="Map" resultType="int">	   
+		SELECT COUNT(id)
+		  FROM house_group_customer cus,
+		       house_group_info hgi
+		 WHERE 1=1
+		   AND hgi.house_group_id=cus.house_group_id
+		   AND cus.cus_id=#{cusId}
+		   <if test="null != queryObj and '' != queryObj">
+		   AND (hgi.group_name LIKE '%${queryObj}%' OR hgi.group_line_desc LIKE '%${queryObj}%')
+		   </if>
+	</select>
+    
+	<!-- 覃启轩end -->
+	
+</mapper>

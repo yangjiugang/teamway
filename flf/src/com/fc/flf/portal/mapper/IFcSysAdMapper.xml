@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.portal.mapper.IFcSysAdMapper">
+	<resultMap type="FcSysAd" id="onlyFSA">
+		<id property="adId" column="ad_id" />
+		<result property="adType" column="ad_type"/>
+		<result property="hostIp" column="host_ip"/>
+		<result property="adPath" column="ad_path"/>
+		<result property="adDescPic" column="ad_desc_pic"/>
+		<result property="adOrder" column="ad_order"/>
+		<result property="adUrlId" column="ad_url_id"/>
+		<result property="isEnable" column="is_enable"/>
+		<result property="adUrl" column="ad_url"/>
+	</resultMap> 
+	<resultMap type="FcSysAd" id="FSAWithHouseInfo">
+		<id property="adId" column="ad_id" />
+		<result property="hostIp" column="host_ip"/>
+		<result property="adPath" column="ad_path"/>
+		<result property="adDescPic" column="ad_desc_pic"/>
+		<result property="adOrder" column="ad_order"/>
+		<result property="adUrlId" column="ad_url_id"/>
+		<association property="houseInfo" javaType="com.fc.flf.common.domain.HouseInfo" column="house_id"  resultMap="com.fc.flf.portal.mapper.HouseInfoMapper.HouseInfoMap">
+		</association>
+	</resultMap>
+			
+	<!--按广告类别查找前五条广告 code by gaoqifang  -->
+	<select id="selectFcSysAdByType" resultMap="onlyFSA"  >
+		SELECT ad_id,ad_type,INET_NTOA(host_ip) host_ip,ad_path,ad_desc_pic,ad_order,ad_url_id,is_enable,ad_url
+		  FROM fc_sys_ad 
+		 WHERE ad_type=#{adType} 
+		   AND is_enable=1
+	  ORDER BY ad_order 
+		 LIMIT 0,5;
+	</select>
+	
+	<!--按广告类别查找前五条广告(房子类广告) code by gaoqifang  -->
+	<select id="selectFcSysAdByTypeWithHouseInfo" resultMap="FSAWithHouseInfo"  >
+		SELECT fsa.ad_id,INET_NTOA(fsa.host_ip) host_ip,fsa.ad_path,fsa.ad_desc_pic,fsa.ad_order,fsa.ad_url_id,
+		       hi.house_attenttion_cnt,hi.house_collect_cnt 
+		  FROM fc_sys_ad fsa,
+		       house_info hi 
+		 WHERE fsa.ad_type=#{adType} 
+		   AND fsa.is_enable=1
+		   AND fsa.ad_url_id=hi.house_id
+	  ORDER BY fsa.ad_order 
+		 LIMIT 0,5;
+	</select>
+	<!-- code by gaoqifang End -->
+</mapper>

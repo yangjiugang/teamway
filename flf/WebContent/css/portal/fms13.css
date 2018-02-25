@@ -1,0 +1,27 @@
+@charset "utf-8";
+*{ margin:0; padding:0; list-style:none; }
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,p,blockquote,th,td,button,img{margin:0; padding:0; border:0;list-style:none;}
+body{font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#626262; background-color:#eaeaeb;}
+button{border:0; text-align:center; cursor:pointer;}
+label{cursor:pointer;}
+input, select, button, textarea {font-size:12px; vertical-align:middle;  font-family:"新宋体";}
+/* link */
+a{ color:#626262; text-decoration: none;}
+a:link{ color:#626262; text-decoration: none;}
+a:hover{ color:#BA0611; text-decoration:none;}
+
+
+
+
+.fms13{ width:830px; clear:both; overflow:hidden; background:#fff; padding:10px;POSITION: relative;}
+.fms13Left{ float:left; width:180px;}
+.fms13Left li{ padding-bottom:10px;}
+.fms13Right{ float:left; width:650px;}
+.fms13RightTop{ width:650px; clear:both; overflow:hidden; padding-bottom:20px;}
+.fms13RightTopL{ float:left; width:480px; color:#5e5e5e;}
+.fms13RightTopLT{ width:480px; clear:both; overflow:hidden;}
+.fms13RightTopLT li{ float:left; width:240px; height:25px; line-height:25px;}
+.fms13RightTopR{ float:left; width:132px;}
+.fms13RightBottom{ width:630px; color:#005eac; padding-bottom:20px;}
+.fms13RightBottom p{ width:580px; border:1px solid #D1D3D4; color:#5e5e5e; padding:5px 10px; margin:5px 0 0 27px; line-height:1.7em;}
+.fms16gbx{ width:830px; text-align:right; Z-INDEX: 900; POSITION:  absolute; TOP:0; LEFT:48px}

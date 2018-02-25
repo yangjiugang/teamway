@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.fparty.mapper.IEventInfoMapper">
+
+   <resultMap id="eventInfoMap" type="EventInfo">
+		<id property="eventId" column="event_id"/>
+		<result property="eventNum" column="event_num"/>
+		<result property="eventType" column="event_type"/>
+		<result property="infoId" column="info_id"/>
+		<result property="eventTitle" column="event_title"/>
+		<result property="eventAddress" column="event_address"/>
+		<result property="eventStartTime" column="event_start_time"/>
+		<result property="eventEndTime" column="event_end_time"/>
+		<result property="eventDesc" column="event_desc"/>
+		<result property="keyMan" column="key_man"/>
+		<result property="keyMan2" column="key_man2"/>
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="amount" column="amount"/>
+		
+		<!-- 参加活动客户信息 add 覃启轩 -->
+		<association property="eventInfoCustomer" column="id" javaType="EventInfoCustomer">
+			<id property="id" column="id" />
+			<result property="eventId" column="event_id" />
+			<result property="cusId" column="cus_id" />
+			<result property="visitorType" column="visitor_type" />
+			<result property="customerId" column="customer_id" />
+			<result property="customerName" column="customer_name" />
+			<result property="isCheckin" column="is_checkin" />
+			<result property="isRegister" column="is_register" />
+			<result property="valuation" column="valuation" />
+			<result property="valuation1" column="valuation1" />
+			<result property="valuation2" column="valuation2" />
+			<result property="valuation3" column="valuation3" />
+			<result property="valuation4" column="valuation4" />
+			<result property="createAt" column="create_at" />
+		</association>
+	</resultMap>
+	
+ <!-- gonghj start -->
+    <!-- 我关注的活动  -->
+	<select id="attentionActivity" resultMap="eventInfoMap" parameterType="map">	
+	   SELECT ei.event_id, ei.event_title,ei.event_desc,ei.event_start_time,ei.event_address 
+	     FROM event_info_customer eic,
+	          event_info ei 
+	    WHERE eic.event_id=ei.event_id 
+	      and eic.customer_id=#{customerId} 
+	 ORDER BY ei.event_id DESC
+	    LIMIT ${limit}
+
+	</select>
+		
+	<!-- 关注活动的总条数  -->
+	<select id="getAttentionCount" resultType="int" parameterType="int">
+	   SELECT count(ei.event_id) 
+	     FROM event_info_customer eic,
+	          event_info ei
+	    WHERE eic.event_id=ei.event_id
+	      and eic.customer_id=#{customerId}	
+	</select>
+	
+	<!-- 我报名的活动 -->
+	<select id="applyActivity" resultMap="eventInfoMap" parameterType="map" >
+	   SELECT ei.event_id, ei.event_title,ei.event_desc,ei.event_start_time,ei.event_address 
+	     FROM event_info_customer eic,
+	          event_info ei 
+	    WHERE eic.event_id=ei.event_id 
+	      AND eic.is_register=1
+	      AND eic.customer_id=#{customerId}
+	 ORDER BY ei.event_id DESC
+	    LIMIT ${limit}
+	</select>
+	
+	<!-- 报名活动的总条数 -->
+	<select id="getApplyCount" resultType="int" parameterType="int">
+	  SELECT count(ei.event_id)
+	    FROM event_info_customer eic,
+	         event_info ei 
+	   WHERE eic.event_id=ei.event_id 
+	     AND eic.is_register=1
+	     AND eic.customer_id=#{customerId}	
+	</select>
+	
+	<!-- 我参加的活动 -->
+	<select id="joinActivity" resultMap="eventInfoMap" parameterType="map" >
+	   SELECT ei.event_id, ei.event_title,ei.event_desc,ei.event_start_time,ei.event_address 
+	     FROM event_info_customer eic,
+	          event_info ei 
+	    WHERE eic.event_id=ei.event_id 
+	      AND eic.is_register=1
+	      AND eic.is_checkin=1
+	      AND eic.customer_id=#{customerId}
+	 ORDER BY ei.event_id DESC
+	    LIMIT ${limit}
+	</select>
+	
+	<!-- 参加活动的总条数 -->
+	<select id="getJoinCount" resultType="int" parameterType="int">
+	  SELECT count(ei.event_id)
+	    FROM event_info_customer eic,
+	         event_info ei 
+	   WHERE eic.event_id=ei.event_id 
+	     AND eic.is_register=1
+	     AND eic.is_checkin=1
+	     AND eic.customer_id=#{customerId}	
+	</select>
+	
+	<!-- 经济人推荐的活动 -->
+	<select id="recommendActivity"  resultMap="eventInfoMap" parameterType="map" >
+	  SELECT ei.event_id, ei.event_title,ei.event_desc,ei.event_start_time,ei.event_address
+        FROM event_info ei,
+             user_recommend_share urs,              
+             customer_info_detail cid,
+	         customer_info ci
+       WHERE ci.customer_id=cid.customer_id
+         AND ei.event_id=urs.recommend_content_id
+         AND urs.user_id=cid.created_user
+         AND urs.recommend_type=1
+         AND urs.recommend_visitor_type=1       
+         AND urs.recommend_visitor=cid.customer_id
+         AND ci.customer_id=#{customerId}
+    ORDER BY ei.event_id DESC 
+	   LIMIT ${limit}	
+	</select>
+	
+	<!-- 经济人推荐的活动的总条数 -->
+	<select id="getRecommendCount" resultType="int" parameterType="int">
+	  SELECT COUNT(ei.event_id)
+        FROM event_info ei,
+             user_recommend_share urs,              
+             customer_info_detail cid,
+	         customer_info ci
+       WHERE ci.customer_id=cid.customer_id
+         AND ei.event_id=urs.recommend_content_id
+         AND urs.user_id=cid.created_user
+         AND urs.recommend_type=1
+         AND urs.recommend_visitor_type=1       
+         AND urs.recommend_visitor=cid.customer_id
+         AND ci.customer_id=#{customerId}	
+	</select>
+
+	
+	<!-- 分页查询会所活动  根据event_start_time大于当前时间-->
+	<select id="findEventInfoList" resultMap="eventInfoMap" parameterType="map">
+	    SELECT event_id,event_num,event_type,info_id,event_title,event_address,event_start_time,event_end_time,event_desc,key_man,key_man2
+		  FROM event_info
+		 WHERE event_type = 2
+		   AND event_start_time >= #{now}		   
+	  ORDER BY event_id DESC 
+	     LIMIT ${limit}
+	</select>
+	
+	<!-- 查询会所活动总条数  根据event_start_time大于当前时间-->
+	<select id="findEventInfoCount" resultType="int" parameterType="int">
+	    SELECT count(1)
+		  FROM event_info
+		 WHERE event_type = 2
+		   AND event_start_time >= #{now}
+	</select>
+
+	
+	<!-- 查询全部订单 -->
+	<select id="queryAllOrderList" parameterType="Map" resultMap="eventInfoMap">
+		(SELECT eic.id,cid.name,ei.event_type,ei.event_title,eic.create_at,'-' amount
+		   FROM event_info_customer eic,
+		        customer_info_detail cid ,
+		        event_info ei
+		  WHERE eic.event_id=ei.event_id
+		    AND eic.cus_id=cid.cus_id
+			AND cid.created_user=#{userId})
+	  UNION ALL
+	    (SELECT ebho.order_id id,cid.name,4 event_type ,ebho.house_name event_title,ebho.order_date create_at,'-' amount
+		   FROM event_buy_house_order ebho,
+		        customer_info_detail cid
+		  WHERE ebho.cus_id=cid.cus_id
+		    AND cid.created_user=#{userId})
+	  UNION ALL
+	    (SELECT hgc.id,cid.name,3 event_type,hgi.group_name event_title,hgc.join_time create_at,hgi.group_price amount
+		   FROM house_group_customer hgc,
+		        customer_info_detail cid,
+		        house_group_info hgi
+		  WHERE hgc.cus_id=cid.cus_id
+			AND hgi.house_group_id=hgc.house_group_id
+			AND cid.created_user=#{userId})
+		  LIMIT ${limitValue}
+	</select>
+	
+	<!-- 查询全部订单总记录数 -->
+	<select id="queryAllOrderCount" parameterType="int" resultType="int">
+	     SELECT COUNT(a.id) FROM (
+		(SELECT eic.id,cid.name,ei.event_type,ei.event_title,eic.create_at,'-' amount
+		   FROM event_info_customer eic,
+		        customer_info_detail cid ,
+		        event_info ei
+		  WHERE eic.event_id=ei.event_id
+		    AND eic.cus_id=cid.cus_id
+			AND cid.created_user=#{userId})
+	  UNION ALL
+	    (SELECT ebho.order_id id,cid.name,4 event_type ,ebho.house_name event_title,ebho.order_date create_at,'-' amount
+		   FROM event_buy_house_order ebho,
+		        customer_info_detail cid
+		  WHERE ebho.cus_id=cid.cus_id
+		    AND cid.created_user=#{userId})
+	  UNION ALL
+	    (SELECT hgc.id,cid.name,3 event_type,hgi.group_name event_title,hgc.join_time create_at,hgi.group_price amount
+		   FROM house_group_customer hgc,
+		        customer_info_detail cid,
+		        house_group_info hgi
+		  WHERE hgc.cus_id=cid.cus_id
+			AND hgi.house_group_id=hgc.house_group_id
+			AND cid.created_user=#{userId})) a
+	</select>
+	
+	<!-- 取消订单 -->
+	<delete id="deleteSeeHouseOrder" parameterType="int">
+		DELETE FROM event_info_customer
+		 WHERE id=${orderId}
+	</delete>
+
+	<!-- gonghj end -->
+	
+	<!-- SQL CREATE BY Zhenglh -->
+	
+	<select id="getEventInfoById" resultMap="eventInfoMap" parameterType="int">
+	  	SELECT
+				event_id,
+				event_num,
+				event_type,
+				info_id,
+				event_title,
+				event_address,
+				event_start_time,
+				event_end_time,
+				event_desc,
+				key_man,
+				key_man2
+		  FROM  event_info
+	     WHERE  event_id=#{eventId}
+	</select>
+	
+	<!-- SQL CREATE BY Zhenglh -->
+	
+	<!-- 覃启轩 add SQL    start -->
+	<!-- 查询会所活动列表 -->
+	<select id="queryEventInfoList" resultMap="eventInfoMap">
+	    SELECT event_id,event_num,event_type,info_id,event_title,event_address,event_start_time,event_end_time,event_desc,key_man,key_man2
+		  FROM event_info
+		 WHERE event_type = 2
+		   AND event_start_time >= #{currentTime}
+		   <if test=" '' != eventName and null != eventName">
+		   AND event_title like '%${eventName}%'
+		   </if>
+	  ORDER BY event_start_time
+	     LIMIT ${limit}
+	</select>
+	
+	<!-- 查询会所活动总记录数 -->
+	<select id="queryEventInfoCount" resultType="int">
+	    SELECT COUNT(event_id)
+		  FROM event_info
+		 WHERE event_type = 2
+		   AND event_start_time >= #{currentTime}
+		   <if test=" '' != eventName and null != eventName">
+		   AND event_title like '%${eventName}%'
+		   </if>
+	  ORDER BY event_start_time
+	</select>
+	
+	<!--查询看房订单  -->
+	<select id="querySeeHouseOrder" parameterType="map" resultMap="eventInfoMap">
+	    SELECT event_num,event_title,create_at,event_end_time,is_checkin
+		  FROM event_info_customer cus,event_info info
+		 WHERE cus.event_id=info.event_id 
+		   AND event_type=1
+		   AND cus_id=#{cusId}
+         LIMIT ${limit};
+	</select>
+	
+	<!--查询看房订单总数  -->
+	<select id="querySeeHouseOrderCount" resultType="int" parameterType="int">
+	    SELECT COUNT(id)
+		  FROM event_info_customer cus,event_info info
+		 WHERE cus.event_id=info.event_id 
+		   AND event_type=1
+		   AND cus_id=#{cusId}
+	</select>
+	
+	<!--查询活动订单  -->
+	<select id="queryActivityOrder" parameterType="map" resultMap="eventInfoMap">
+	    SELECT id,event_num,event_title,create_at,is_checkin 
+		  FROM event_info_customer cus,
+		       event_info info
+		 WHERE cus.event_id=info.event_id
+		   AND event_type=2
+		   AND cus_id=#{cusId}
+		 LIMIT ${limit}
+	</select>
+	
+	<!--查询活动订单总数  -->
+	<select id="queryActivityOrderCount" resultType="int" parameterType="int">
+	    SELECT COUNT(id) 
+		  FROM event_info_customer cus,
+		       event_info info
+		 WHERE cus.event_id=info.event_id
+		   AND event_type=2
+		   AND cus_id=#{cusId}
+	</select>
+	
+	<!--新增活动订单  -->
+	<insert id="insertActivityOrder" parameterType="Map">
+	    INSERT INTO event_info_customer (event_id,cus_id,customer_id,customer_name,visitor_type,
+	                                     is_checkin,is_register,valuation,valuation1,valuation2,
+	                                     valuation3,valuation4,create_at)
+	    VALUES(#{eventId},#{cusId},#{customerId},#{customerName},#{visitorType},
+               #{isCheckin},#{isRegister},#{valuation},#{valuation1},#{valuation2},
+               #{valuation3},#{valuation4},#{createAt})
+	</insert>
+	<!-- 覃启轩 add SQL    end -->
+	
+	<!-- 查找最近会所活动，取两条 code by gaoqifang-->
+	<select id="selectFutrueEvent" resultMap="eventInfoMap">
+	    SELECT event_id,event_title,event_address,event_start_time
+		  FROM event_info
+		 WHERE event_type=2
+		   AND event_start_time>=#{currentTime}
+	  ORDER BY event_start_time 
+		 LIMIT 0, 2 ; 
+	</select>
+	<!-- code by gaoqifang End -->
+	
+</mapper>

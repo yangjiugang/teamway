@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.fparty.mapper.IEventInfoCustomerMapper">
+	<resultMap id="EventInfoCustomerMap" type="EventInfoCustomer">
+		<result property="id" column="id"/>
+		<result property="eventId" column="event_id"/>
+		<result property="cusId" column="cus_id"/>
+		<result property="customerId" column="customer_id"/>
+		<result property="visitorType" column="visitor_type"/>
+		<result property="isCheckin" column="is_checkin"/>
+		<result property="isRegister" column="is_register"/>
+		<result property="valuation" column="valuation"/>
+		<result property="valuation1" column="valuation1"/>
+		<result property="valuation2" column="valuation2"/>
+		<result property="valuation3" column="valuation3"/>
+		<result property="valuation4" column="valuation4"/>
+	</resultMap>
+	
+	<!-- SQL CREATE BY Zhenglh -->
+	
+	<select id="findEventRemarkByIdToPage" resultMap="EventInfoCustomerMap" parameterType="map">
+	  SELECT
+			 id,
+			 event_id,
+			 cus_id,
+			 customer_id,
+			 visitor_type,
+			 is_checkin,
+			 is_register,
+			 valuation,
+			 valuation1,
+			 valuation2,
+			 valuation3,
+			 valuation4
+		FROM
+			 event_info_customer
+	   WHERE cus_id=#{cusId}
+	   LIMIT #{start},#{end}
+	</select>
+	
+	<select id="findEventRemarkCountById" resultType="int" parameterType="int">
+	  SELECT COUNT(id) 
+	    FROM event_info_customer
+	   WHERE cus_id=#{cusId}
+	</select>
+	
+	<!-- SQL CREATE BY Zhenglh -->
+</mapper>

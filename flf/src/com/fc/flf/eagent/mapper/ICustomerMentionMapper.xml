@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.flf.eagent.mapper.ICustomerMentionMapper">
+	<resultMap id="customerMentionMap" type="CustomerMention">
+		<id property="mentionId" column="mention_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="cusId" column="customer_id"/>
+		<result property="mentionTime" column="mention_time"/>
+		<result property="isCheck" column="is_check"/>
+		<result property="column7" column="Column_7"/>
+		<association  property="customerInfo" column="customer_id" javaType="com.fc.flf.common.domain.CustomerInfo" >
+		    <id property="customerId" column="customer_id"/>
+			<result property="name" column="name"/>
+		</association>
+		
+	</resultMap>
+	
+	<!-- code by gaoqifang Start -->
+	<!-- 根据user_id查找点名信息 -->
+	<select id="selectCustomerMentionByUserId" resultMap="customerMentionMap" >
+		SELECT  cm.mention_id,cm.user_id,cm.customer_id,cm.mention_time,
+				cm.is_check,cm.Column_7,ci.customer_id,ci.name
+		  FROM  customer_mention cm,customer_info ci
+		 WHERE  cm.user_id = #{userId} 
+		   AND  cm.customer_id = ci.customer_id
+  	  ORDER BY  cm.mention_time DESC
+  	     LIMIT  ${limit}
+	</select>
+	
+	<!-- 根据user_id查找点名信息数 -->
+	<select id="selectCustomerMentionCountByUserId" resultType="int" parameterType="int">
+		SELECT  COUNT(cm.mention_id)
+		  FROM  customer_mention cm
+		 WHERE  cm.user_id = #{userId} 
+	</select>
+	
+	<!-- 根据mentionId删除点名信息 -->
+	<delete id="deletCusMentionById" parameterType="int">
+		DELETE  
+		  FROM  customer_mention
+		 WHERE  mention_id = #{mentionId}
+	</delete>
+	
+	<select id="selectCustomerMetionById" resultMap="customerMentionMap" parameterType="int">
+		SELECT  cm.mention_id,cm.user_id,cm.customer_id,cm.mention_time,
+				cm.is_check,cm.Column_7,ci.customer_id,ci.name
+		  FROM  customer_mention cm,customer_info ci
+		 WHERE  cm.mention_id = #{mentionId}
+		   AND  cm.customer_id = ci.customer_id 
+	</select>
+	<!-- code by gaoqifang End -->
+</mapper>

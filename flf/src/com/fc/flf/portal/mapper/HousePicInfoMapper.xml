@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.flf.portal.mapper.HousePicInfoMapper">
+
+	<resultMap id="HousePicInfoMap" type="HousePicInfo">
+		<result property="picId" column="pic_id"/>
+		<result property="houseId" column="house_id"/>
+		<result property="hostIp" column="host_ip"/>
+		<result property="picPath" column="pic_path"/>
+		<result property="picType" column="pic_type"/>
+		<result property="picDesc" column="pic_desc"/>
+	</resultMap>
+<!-- Code By Zhenglh Start-->
+    <select id="findHousePicInfoById" parameterType="int" resultType="com.fc.flf.common.domain.HousePicInfo" resultMap="HousePicInfoMap">  
+        SELECT pic_id,house_id,host_ip,pic_path,pic_type,pic_desc 
+          FROM house_pic_info 
+         WHERE pic_id=#{picId}
+    </select>
+    <select id="findHousePicInfoByHouseId" parameterType="int" resultMap="HousePicInfoMap">  
+        SELECT pic_id,house_id,host_ip,pic_path,pic_type,pic_desc 
+          FROM house_pic_info 
+         WHERE house_id=#{houseId} 
+      ORDER BY pic_type DESC
+    </select>
+    <select id="getHousePicInfoList" parameterType="int" resultMap="HousePicInfoMap">
+    	SELECT pic_id,house_id,host_ip,pic_path,pic_type,pic_desc 
+    	  FROM house_pic_info 
+    	 WHERE pic_type=#{picType} 
+    	   AND house_id=#{houseId}
+    </select>
+    <select id="getHousePicInfoListOnLimit" resultType="HousePicInfo" parameterType="map" resultMap="HousePicInfoMap">
+    	SELECT pic_id,house_id,host_ip,pic_path,pic_type,pic_desc 
+    	  FROM house_pic_info 
+    	 WHERE pic_type=#{picType} 
+    	   AND house_id=#{houseId} 
+    	 LIMIT ${limit}
+    </select>
+    
+    <select id="getHousePicInfoCount" resultType="int" parameterType="map">
+    	SELECT COUNT(pic_id) 
+    	  FROM house_pic_info 
+    	 WHERE pic_type=#{picType} 
+    	   AND house_id=#{houseId} 
+    </select>
+<!-- Code By Zhenglh End-->
+</mapper>  
