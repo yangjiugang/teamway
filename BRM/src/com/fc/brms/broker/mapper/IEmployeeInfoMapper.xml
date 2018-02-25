@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.fc.brms.broker.mapper.IEmployeeInfoMapper">
+
+   <resultMap id="employeeTransactionInfoMap" type="EmployeeTransactionInfo">
+		<result property="employeeId" column="employee_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="employeeNum" column="employee_num"/>
+		<result property="englishName" column="english_name"/>
+		<result property="userName" column="user_name"/>
+		<result property="userSex" column="user_sex"/>
+		<result property="userBirthday" column="user_birthday"/>
+		<result property="telephone" column="telephone"/>
+		<result property="officePhone" column="office_phone"/>
+		<result property="enterpriseMail" column="enterprise_mail"/>
+		<result property="photoPath" column="photo_path"/>
+		<result property="highestEducation" column="highest_education"/>
+		<result property="graduateSchool" column="graduate_school"/>
+		<result property="areaId" column="area_id"/>
+		<result property="hkPlace" column="hk_place"/>
+		<result property="socialSecurityNum" column="social_security_num"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="organizationName" column="organization_name"/>
+		<result property="postId" column="post_id"/>
+		<result property="postName" column="post_name"/>
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="jobGradeName" column="job_grade_name"/>
+		<result property="jobLevelId" column="job_level_id"/>
+		<result property="jobLevelName" column="job_level_name"/>
+		<result property="salaryLevelId" column="salary_level_id"/>
+		<result property="salaryLevelOrder" column="salary_level_order"/>
+		<result property="salaryTotal" column="salary_total"/>
+		<result property="structureType" column="structure_type"/>
+		<result property="socialSecurityId" column="social_security_id"/>
+		<result property="applyDate" column="apply_date"/>
+		<result property="isChange" column="is_change"/>
+		<result property="fpsgPost" column="fpsg_post"/>
+		<result property="entryDate" column="entry_date"/>
+		<result property="turnoverDate" column="turnover_date"/>
+		<result property="turnoverCause" column="turnover_cause"/>
+		<result property="submitId" column="submit_id"/>
+		<result property="bankId" column="bank_id"/>
+		<result property="bankNum" column="bank_num"/>
+		<result property="trainingCnt" column="training_cnt"/>
+		<result property="contactCnt" column="contact_cnt"/>
+		<result property="isConsultant" column="is_consultant"/>
+	</resultMap>
+	
+	<resultMap id="EmployeeInfoMap" type="EmployeeInfo">
+		<result property="employeeId" column="employee_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="employeeNum" column="employee_num"/>
+		<result property="englishName" column="english_name"/>
+		<result property="userName" column="user_name"/>
+		<result property="userSex" column="user_sex"/>
+		<result property="userBirthday" column="user_birthday"/>
+		<result property="telephone" column="telephone"/>
+		<result property="officePhone" column="office_phone"/>
+		<result property="enterpriseMail" column="enterprise_mail"/>
+		<result property="photoPath" column="photo_path"/>
+		<result property="highestEducation" column="highest_education"/>
+		<result property="graduateSchool" column="graduate_school"/>
+		<result property="areaId" column="area_id"/>
+		<result property="hkPlace" column="hk_place"/>
+		<result property="socialSecurityNum" column="social_security_num"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="organizationName" column="organization_name"/>
+		<result property="postId" column="post_id"/>
+		<result property="postName" column="post_name"/>
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="jobGradeName" column="job_grade_name"/>
+		<result property="jobLevelId" column="job_level_id"/>
+		<result property="jobLevelName" column="job_level_name"/>
+		<result property="salaryLevelId" column="salary_level_id"/>
+		<result property="salaryLevelOrder" column="salary_level_order"/>
+		<result property="salaryTotal" column="salary_total"/>
+		<result property="structureType" column="structure_type"/>
+		<result property="socialSecurityId" column="social_security_id"/>
+		<result property="applyDate" column="apply_date"/>
+		<result property="isChange" column="is_change"/>
+		<result property="fpsgPost" column="fpsg_post"/>
+		<result property="entryDate" column="entry_date"/>
+		<result property="turnoverDate" column="turnover_date"/>
+		<result property="turnoverCause" column="turnover_cause"/>
+		<result property="submitId" column="submit_id"/>
+		<result property="bankId" column="bank_id"/>
+		<result property="bankNum" column="bank_num"/>
+		<result property="trainingCnt" column="training_cnt"/>
+		<result property="contactCnt" column="contact_cnt"/>
+		<result property="isConsultant" column="is_consultant"/>
+		<result property="lastContactTime" column="last_contact_time"/>
+		<result property="lastContactEmployee" column="last_contact_employee"/>
+		<result property="mainContactCnt" column="main_contact_cnt"/>
+		<result property="lastMainContactTime" column="last_main_contact_time"/>
+		<result property="lastMainContactEmployee" column="last_main_contact_employee"/>
+		<result property="remindName" column="remind_name"/>
+		
+		<association  property="employeeInfoDetail" column="employee_id" javaType="EmployeeInfoDetail" >
+			<id property="employeeId" column="employee_id"/>
+			<result property="userAddress" column="user_address"/>
+			<result property="email" column="email"/>
+		</association>
+		
+		<association  property="cfgCompany" column="company_id" javaType="CfgCompany" >
+			<result property="companyId" column="company_id"/>
+			<result property="companyName" column="company_name"/>
+			<result property="companyShortName" column="company_short_name"/>
+			<result property="areaId" column="area_id"/>
+			<result property="companyCity" column="company_city"/>
+			<result property="companyAddress" column="company_address"/>
+			<result property="companyEmail" column="company_email"/>
+			<result property="companyPhone" column="company_phone"/>
+			<result property="companyFax" column="company_fax"/>
+			<result property="companyLogo" column="company_logo"/>
+			<result property="companyUrl" column="company_url"/>
+			<result property="companyPopulationScale" column="company_population_scale"/>
+			<result property="companyDesc" column="company_desc"/>
+			<result property="companyLegalPerson" column="company_legal_person"/>
+			<result property="createDate" column="create_date"/>
+			<result property="createUser" column="create_user"/>
+		</association>
+		
+		<association property="fcSysMsg" column="fc_sys_msg" javaType="com.fc.brms.common.domain.FcSysMsg">
+			<id property="msgId" column="msg_id"/>
+			<result property="companyId" column="company_id"/>
+			<result property="msgType" column="msg_type"/>
+			<result property="msgContent" column="msg_content"/>
+			<result property="receiveEmployeeId" column="receive_employee_id"/>
+			<result property="sendEmployeeId" column="send_employee_id"/>
+			<result property="sendTime" column="send_time"/>
+		</association>
+		
+		<association property="fcSysVisitorRole" column="visitor_id" javaType="com.fc.brms.common.domain.FcSysVisitorRole">
+			<id property="visitorId" column="visitor_id"/>
+			<result property="createTime" column="create_time"/>
+		</association>
+		
+		<collection property="fcSysRole" ofType="FcSysRole">
+			<id property="roleId" column="role_id"/>
+			<result property="roleName" column="role_name"/>
+		</collection>
+	</resultMap>
+	
+	<!-- Create SQL 覃启轩 Start -->
+	<!-- 异动后更新员工信息 -->
+	<update id="postUpdateInfo" parameterType="Map">
+		UPDATE employee_info 
+		   SET organization_id=#{organizationId},organization_name=#{organizationName},post_id=#{postId},post_name=#{postName},
+		   job_grade_id=#{jobGradeId},job_grade_name=#{jobGradeName},job_level_id=#{jobLevelId},job_level_name=#{jobLevelName},
+		   salary_level_id=#{salaryLevelId},salary_level_order=#{salaryLevelOrder},salary_total=#{salaryTotal},is_change=#{isChange},
+		   structure_type=#{structureType},company_id=#{companyId},submit_id=#{submitId},social_security_id=#{socialSecurityId}
+		 WHERE employee_id=#{employeeId}
+	</update>
+	
+	<!-- 查询员工沟通管理信息总记录数 -->
+	<select id="getEmployeeCommInfoCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM employee_info
+		 WHERE 1=1
+		 <if test="null != orgId and '' != orgId">
+		   AND ei.organization_id=#{orgId}
+		 </if>
+		 <if test="null != postId and '' != postId">
+		   AND ei.post_id=#{postId}
+		 </if>
+		 <if test="null != contactCnt and '' != contactCnt">
+		   AND ei.contact_cnt=#{contactCnt}
+		 </if>
+		 <if test="null != mainContactCnt and '' != mainContactCnt">
+		   AND ei.main_contact_cnt=#{mainContactCnt}
+		 </if>
+		 <if test="null != keyWord and '' != keyWord">
+		   AND (ei.employee_num like '%${keyWord}%' or ei.user_name like '%${keyWord}%')
+		 </if>
+	</select>
+	
+	<!-- 查询员工沟通管理信息列表 -->
+	<select id="getEmployeeCommInfoList" parameterType="Map" resultMap="EmployeeInfoMap" >
+		SELECT ei.employee_id,ei.employee_num,ei.user_name,ei.user_sex,ei.organization_id,ei.organization_name,
+			   ei.post_id,ei.post_name,ei.entry_date,ei.contact_cnt,ei.last_contact_time,ei.last_contact_employee,
+			   ei.main_contact_cnt,ei.last_main_contact_time,ei.last_main_contact_employee
+		  FROM employee_info ei
+		 WHERE 1=1
+		 <if test="null != orgId and '' != orgId">
+		   AND ei.organization_id=#{orgId}
+		 </if>
+		 <if test="null != postId and '' != postId">
+		   AND ei.post_id=#{postId}
+		 </if>
+		 <if test="null != contactCnt and '' != contactCnt">
+		   AND ei.contact_cnt=#{contactCnt}
+		 </if>
+		 <if test="null != mainContactCnt and '' != mainContactCnt">
+		   AND ei.main_contact_cnt=#{mainContactCnt}
+		 </if>
+		 <if test="null != keyWord and '' != keyWord">
+		   AND (ei.employee_num like '%${keyWord}%' or ei.user_name like '%${keyWord}%')
+		 </if>
+		 LIMIT ${limit}
+	</select>
+	
+	<!-- 查询约谈记录总记录数 -->
+	<select id="queryCommunicationManageCount" parameterType="Map" resultType="int">
+	    SELECT COUNT(*)
+          FROM employee_info ei,fc_sys_msg fsm
+         WHERE ei.employee_id=fsm.receive_employee_id
+         <if test="null != startTime and null != endTime">
+           AND fsm.send_time BETWEEN #{startTime} AND #{endTime}
+         </if>
+         <if test="null != keyWord">
+           AND (ei.employee_num LIKE '%${keyWord}%' OR ei.user_name LIKE '%${keyWord}%')
+         </if>
+	</select>
+	<!-- 查询约谈记录列表 -->
+	<select id="queryCommunicationManageList" parameterType="Map" resultMap="EmployeeInfoMap">
+		SELECT fsm.msg_id,ei.employee_num,ei.user_name,ei.organization_name,
+               ei.post_name,fsm.send_time,(SELECT user_name FROM employee_info WHERE employee_id=fsm.send_employee_id) remind_name
+          FROM employee_info ei,fc_sys_msg fsm
+         WHERE ei.employee_id=fsm.receive_employee_id
+         <if test="null != startTime and null != endTime">
+           AND fsm.send_time BETWEEN #{startTime} AND #{endTime}
+         </if>
+         <if test="null != keyWord">
+           AND (ei.employee_num LIKE '%${keyWord}%' OR ei.user_name LIKE '%${keyWord}%')
+         </if>
+	</select>
+	<!-- 删除提醒 -->
+	<delete id="deleteCommunicationRemind" parameterType="int">
+		DELETE FROM fc_sys_msg WHERE msg_id=#{msgId}
+	</delete>
+	<!-- Create SQL 覃启轩 End -->
+	
+	<!-- SQL CODE BY ZHENGLH -->
+	<select id="getUserInfoById" resultType="EmployeeInfo" resultMap="EmployeeInfoMap" parameterType="int">
+	  SELECT ei.employee_id,ei.user_id,ei.company_id,ei.employee_num,ei.user_name,ei.telephone,ei.enterprise_mail,
+			 ei.highest_education,ei.social_security_num,ei.organization_id,ei.organization_name,ei.post_id,
+			 ei.post_name,ei.fpsg_post,ei.entry_date,cc.company_name,cc.company_address
+		FROM employee_info ei,cfg_company cc
+	   WHERE user_id=#{userId}
+	</select>
+	<!-- SQL CODE BY ZHENGLH -->
+	
+	<!-- SQL Code BY Lufoz Start -->
+	<select id="getEmployeeInfoCountByKeyword" parameterType="Map" resultType="int">
+		SELECT count(1)
+		FROM employee_info 
+		<if test="keyword != null">
+		WHERE employee_num LIKE CONCAT("%", #{keyword}, "%") OR user_name LIKE CONCAT("%", #{keyword}, "%")
+		</if>
+	</select>
+	
+	<select id="getEmployeeInfoByKeyword" parameterType="Map" resultMap="EmployeeInfoMap">
+		SELECT employee_id,employee_num,user_name,post_name
+		FROM employee_info 
+		<if test="keyword != null">
+		WHERE employee_num LIKE CONCAT("%", #{keyword}, "%") OR user_name LIKE CONCAT("%", #{keyword}, "%")
+		</if>
+		<!-- LIMIT ${limit} -->
+	</select>
+	
+	<select id="getEmployeeInfoById" parameterType="int" resultMap="EmployeeInfoMap">
+		SELECT employee_id,employee_num,user_name,post_name
+		FROM employee_info
+		WHERE employee_id = #{employeeId}
+	</select>
+	
+	<select id="getEmployeeInfoByPostId" parameterType="int" resultMap="EmployeeInfoMap">
+		SELECT employee_id,employee_num,user_name,post_name
+		FROM employee_info
+		WHERE post_id = #{postId}
+	</select>
+	
+	<select id="getEmployeeInfoByOrgId" parameterType="int" resultMap="EmployeeInfoMap">
+		SELECT employee_id,employee_num,user_name,post_name 
+		FROM employee_info e
+			INNER JOIN
+			(
+			SELECT organization_id FROM cfg_organization
+			WHERE organization_level_path LIKE CONCAT((SELECT organization_level_path FROM cfg_organization WHERE organization_id = #{organizationId}), "%")
+			) o ON o.organization_id = e.organization_id
+	</select>
+	
+	<select id="getEmployeeInfoByCompanyId" parameterType="int" resultMap="EmployeeInfoMap">
+		SELECT employee_id,employee_num,user_name,post_name
+		FROM employee_info
+		WHERE company_id = #{companyId}
+	</select>
+	<!-- SQL Code BY Lufoz End -->
+	
+	<!-- SQL CODE BY Gaoqf start -->
+	<!-- 查询employee信息及相应角色 -->
+	<select id="selectEmployeeInfoWithRoleInfo"  resultMap="EmployeeInfoMap">
+		SELECT ei.employee_id,ei.user_id,ei.company_id,ei.employee_num,ei.user_name,ei.organization_name,
+  			   ei.post_name,a.role_name,a.role_id 
+		  FROM employee_info ei 
+  	 LEFT JOIN (SELECT fsr.role_name,fsvr.visitor_id,fsr.role_id  
+    			  FROM fc_sys_visitor_role fsvr,
+     				   fc_sys_role fsr 
+    			 WHERE fsvr.role_id = fsr.role_id 
+      			   AND fsvr.company_id = #{companyId} 
+     			   AND fsr.company_id = #{companyId}) a 
+   			 ON ei.employee_id = a.visitor_id 
+    	  WHERE ei.company_id = #{companyId}
+    	<if test="null != keyWord and '' != keyWord">
+		    AND (ei.employee_num LIKE CONCAT('%',#{keyWord},'%') OR ei.user_name LIKE CONCAT('%',#{keyWord},'%'))
+		</if> 
+		<if test="orgId gt 0 and '' != orgId and null != orgId">
+		    AND ei.organization_id = #{orgId}
+		</if> 
+		  LIMIT ${limit}
+	</select>
+	
+	<!-- 查询employee信息及相应角色 数-->
+	<select id="selectEmployeeInfoWithRoleInfoCount" resultType="int">
+		SELECT COUNT(ei.employee_id)
+		  FROM employee_info ei 
+  	 LEFT JOIN (SELECT fsr.role_name,fsvr.visitor_id 
+    			  FROM fc_sys_visitor_role fsvr,
+     				   fc_sys_role fsr 
+    			 WHERE fsvr.role_id = fsr.role_id 
+      			   AND fsvr.company_id = #{companyId} 
+     			   AND fsr.company_id = #{companyId}) a 
+   			 ON ei.employee_id = a.visitor_id 
+    	  WHERE ei.company_id = #{companyId}
+    	<if test="null != keyWord and '' != keyWord">
+		    AND (ei.employee_num LIKE CONCAT('%',#{keyWord},'%') OR ei.user_name LIKE CONCAT('%',#{keyWord},'%'))
+		</if> 
+		<if test="orgId gt 0 and '' !=orgId and null != orgId">
+		    AND ei.organization_id = #{orgId}
+		</if> 
+	</select>
+	
+	<!-- 查询employee姓名-->
+	<select id="selectEmployeeName" resultMap="EmployeeInfoMap">
+		SELECT employee_id,user_name 
+		  FROM employee_info 
+		 WHERE company_id = #{companyId}
+  		   AND employee_id IN 
+		<foreach collection="employeeIdes" item="item" open="(" separator="," close=")">
+			   	#{item}
+		</foreach>
+	</select>
+	
+	<!-- 查询停用经纪人列表-->
+	<select id="selectDimissionEmployeeList" resultMap="EmployeeInfoMap">
+  		SELECT a.employee_id,a.user_id,a.employee_num,a.user_name,a.user_birthday,a.organization_name,a.post_name,
+  			   a.entry_date,a.turnover_date,a.turnover_cause,a.highest_education,a.telephone,a.user_address 
+  		  FROM (SELECT ei.employee_id,ei.user_id,ei.employee_num,ei.user_name,ei.user_birthday,ei.organization_name,ei.post_name,
+  					   ei.entry_date,ei.turnover_date,ei.turnover_cause,ei.highest_education,ei.telephone,eid.user_address 
+				  FROM employee_info ei 
+  			 LEFT JOIN employee_info_detail eid 
+    				ON ei.employee_id = eid.employee_id 
+				 WHERE ei.turnover_date > '0000-00-00' 
+  				   AND ei.company_id = #{companyId} )a ,
+  			   user_resume_belongto urb
+  		 WHERE a.user_id = urb.user_id
+		   AND urb.company_id=#{companyId}
+		   AND urb.black_red_list IN 
+		<foreach collection="black" item="item" open="(" separator="," close=")">
+			   	#{item}
+		</foreach>
+		 LIMIT ${limit}
+	</select>
+	
+	<!-- 查询停用经纪人列表数-->
+	<select id="selectDimissionEmployeeCount" resultType="int">
+		SELECT COUNT(ei.employee_id)
+  		  FROM employee_info ei ,
+  			   user_resume_belongto urb
+  		 WHERE ei.user_id = urb.user_id
+  		   AND ei.turnover_date > '0000-00-00' 
+		   AND urb.company_id=#{companyId}
+		   AND urb.black_red_list IN 
+		<foreach collection="black" item="item" open="(" separator="," close=")">
+			   	#{item}
+		</foreach>
+	</select>
+	
+	<!-- 根据离职日期、学历、关键字查询停用经纪人 列表 -->
+	<select id="selectDimissionEmployeeWithFactor" resultMap="EmployeeInfoMap" >
+		SELECT a.employee_id,a.user_id,a.employee_num,a.user_name,a.user_birthday,a.organization_name,a.post_name,
+  			   a.entry_date,a.turnover_date,a.turnover_cause,a.highest_education,a.telephone,a.user_address 
+  		  FROM (SELECT ei.employee_id,ei.user_id,ei.employee_num,ei.user_name,ei.user_birthday,ei.organization_name,ei.post_name,
+  					   ei.entry_date,ei.turnover_date,ei.turnover_cause,ei.highest_education,ei.telephone,eid.user_address 
+				  FROM employee_info ei 
+  			 LEFT JOIN employee_info_detail eid 
+    				ON ei.employee_id = eid.employee_id 
+				 WHERE ei.turnover_date > '0000-00-00' 
+  				   AND ei.company_id = #{companyId} )a ,
+  			   user_resume_belongto urb
+  		 WHERE a.user_id = urb.user_id
+		   AND urb.company_id=#{companyId}
+		   AND urb.black_red_list IN 
+		<foreach collection="black" item="item" open="(" separator="," close=")">
+			   #{item}
+		</foreach>
+		<if test="null != startDate and '' != startDate and null != endDate and '' != endDate">
+		   AND a.turnover_date BETWEEN #{startDate} AND #{endDate}
+		</if>
+		<if test="7 != education ">
+		   AND a.highest_education = #{education}
+		</if>
+		<if test="null != keyWord and '' != keyWord">
+		   AND (a.employee_num LIKE CONCAT('%',#{keyWord},'%') OR a.user_name LIKE CONCAT('%',#{keyWord},'%'))
+		</if> 
+		<if test="talkNum gt 0 and talkNum lt 7 ">
+		   AND (SELECT COUNT(utr.track_id) 
+	  				  FROM user_track_record utr 
+	  				 WHERE user_id 
+	    			   AND utr.user_id = urb.user_id 
+	   				   AND utr.company_id = 1) = #{talkNum}
+		</if>
+		<if test=" talkNum gt 6 ">
+		 	<![CDATA[ 
+		   AND (SELECT COUNT(utr.track_id) 
+	  				   FROM user_track_record utr 
+	  				  WHERE user_id 
+	    			    AND utr.user_id = urb.user_id 
+	   				    AND utr.company_id = 1) > #{talkNum}]]>
+		</if>
+		 LIMIT ${limit}
+	</select>
+		
+	<!-- 根据离职日期、学历、关键字查询停用经纪人 总数 -->
+	<select id="selectDimissionEmployeeCountWithFactor" resultType="int" >
+		SELECT COUNT(ei.employee_id)
+  		  FROM employee_info ei ,
+  			   user_resume_belongto urb
+  		 WHERE ei.user_id = urb.user_id
+  		   AND ei.turnover_date > '0000-00-00'
+		   AND urb.company_id=#{companyId}
+		   AND urb.black_red_list IN 
+		<foreach collection="black" item="item" open="(" separator="," close=")">
+			   	#{item}
+		</foreach>
+  		<if test="null != startDate and '' != startDate and null != endDate and '' != endDate">
+		   AND ei.entry_date BETWEEN #{startDate} AND #{endDate}
+		</if>
+		<if test="7 != education ">
+		   AND ei.highest_education = #{education}
+		</if>
+		<if test="null != keyWord and '' != keyWord">
+		   AND (ei.employee_num LIKE CONCAT('%',#{keyWord},'%') OR ei.user_name LIKE CONCAT('%',#{keyWord},'%'))
+		</if> 
+		<if test="talkNum gt 0 and talkNum lt 7 ">
+		   AND (SELECT COUNT(utr.track_id) 
+	  				  FROM user_track_record utr 
+	  				 WHERE user_id 
+	    			   AND utr.user_id = urb.user_id 
+	   				   AND utr.company_id = 1) = #{talkNum}
+		</if>
+		<if test=" talkNum gt 6 ">
+		 	<![CDATA[ 
+		   AND (SELECT COUNT(utr.track_id) 
+	  				   FROM user_track_record utr 
+	  				  WHERE user_id 
+	    			    AND utr.user_id = urb.user_id 
+	   				    AND utr.company_id = 1) > #{talkNum}]]>
+		</if> 
+	</select>
+	
+		<!-- 根据userId查询经纪人邮箱、姓名等 -->
+		<select id="selectEmployeeById" resultMap="EmployeeInfoMap" parameterType="int">
+			SELECT ei.employee_id,ei.user_id,ei.user_name,eid.email
+			  FROM employee_info ei
+		 LEFT JOIN employee_info_detail eid
+		 		ON ei.employee_id=eid.employee_id
+			 WHERE ei.employee_id = #{employeeId}
+		</select>
+	<!-- SQL CODE BY Gaoqf end -->
+	
+	
+	<!-- SQL CODE BY Zhenglh Start -->
+		<!-- 多条件查询内部经纪人 : 涉及页面 内部经纪人 首页初始化数据 -->
+		<select id="getUserInfoByIdAndNotTurnover" parameterType="map" resultMap="EmployeeInfoMap">
+			SELECT 
+					ei.employee_id,
+					ei.user_id,
+					ei.company_id,
+					ei.employee_num,
+					ei.english_name,
+					ei.user_name,
+					ei.user_sex,
+					ei.user_birthday,
+					ei.telephone,
+					ei.office_phone,
+					ei.enterprise_mail,
+					ei.photo_path,
+					ei.highest_education,
+					ei.graduate_school,
+					ei.area_id,
+					ei.hk_place,
+					ei.social_security_num,
+					ei.organization_id,
+					ei.organization_name,
+					ei.post_id,
+					ei.post_name,
+					ei.job_grade_id,
+					ei.job_grade_name,
+					ei.job_level_id,
+					ei.job_level_name,
+					ei.salary_level_id,
+					ei.salary_level_order,
+					ei.salary_total,
+					ei.structure_type,
+					ei.social_security_id,
+					ei.apply_date,
+					ei.is_change,
+					ei.fpsg_post,
+					ei.entry_date,
+					ei.turnover_date,
+					ei.turnover_cause,
+					ei.submit_id,
+					ei.bank_id,
+					ei.bank_num,
+					ei.training_cnt,
+					ei.contact_cnt,
+					ei.is_consultant,
+					ei.last_contact_time,
+					ei.last_contact_employee,
+					ei.main_contact_cnt,
+					ei.last_main_contact_time,
+					ei.last_main_contact_employee 
+			  FROM  employee_info ei
+			 <![CDATA[
+			 WHERE  ei.turnover_date <= ei.entry_date
+			  ]]> 
+	<if test="null != isSubmit">
+		<if test="null != startTime and null != endTime">
+			   AND  ei.entry_date BETWEEN #{startTime} AND #{endTime}
+		</if>
+		<if test="null != keyWord">
+			   AND  (ei.employee_num = #{keyWord} OR ei.user_name = #{keyWord} OR ei.post_name = #{keyWord} OR ei.graduate_school = #{keyWord} )
+		</if>
+	</if> 
+			 LIMIT  ${limit}
+		</select>
+		
+		<!-- 多条件查询内部经纪人 总记录数:  涉及页面 内部经纪人 首页初始化数据 -->
+		<select id="getUserInfoCountByIdAndNotTurnover" parameterType="map" resultType="int">
+			SELECT COUNT(1)
+			  FROM employee_info ei
+			 <![CDATA[
+			 WHERE ei.turnover_date <= ei.entry_date
+			  ]]> 
+	<if test="null != isSubmit">
+		<if test="null != startTime and null != endTime">
+			   AND ei.entry_date BETWEEN #{startTime} AND #{endTime}
+		</if>
+		<if test="null != keyWord">
+			   AND (ei.employee_num = #{keyWord} OR ei.user_name = #{keyWord} OR ei.post_name = #{keyWord} OR ei.graduate_school = #{keyWord} )
+		</if>
+	</if> 
+		</select>
+	<!-- SQL CODE BY Zhenglh End -->
+</mapper>

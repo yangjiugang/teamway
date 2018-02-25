@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+
+<mapper namespace="com.fc.brms.account.mapper.LoginMapper">
+
+  <cache />
+  <!-- songp start-->
+  <resultMap type="FcSysVisitor" id="FcSysVisitorRes">
+		<id column="visitor_id" property="visitorId"/>
+		<result column="company_id" property="companyId"/>
+		<result column="visitor_name" property="visitorName"/>
+		<result column="visitor_password" property="visitorPassword"/>
+		<result column="register_time" property="registerTime"/>
+		<result column="user_status" property="userStatus"/>
+		<result column="company_name" property="companyName"/>
+		<result column="organization_id" property="organizationId"/>
+		<result column="organization_name" property="organizationName"/>
+   </resultMap>
+   
+   <resultMap type="FcSysFunc" id="FcSysFuncRes">
+		<id column="func_id" property="funcId"/>
+		<result column="func_code" property="funcCode"/>
+		<result column="func_name" property="funcName"/>
+   </resultMap>
+
+  <select id="getVisitorById" resultMap="FcSysVisitorRes">
+    SELECT fsv.visitor_id,fsv.company_id,fsv.visitor_name,fsv.visitor_password,fsv.register_time,fsv.user_status,cc.company_name,ei.organization_id,ei.organization_name
+    FROM fc_sys_visitor fsv, cfg_company cc,employee_info ei
+	WHERE fsv.company_id = cc.company_id AND fsv.visitor_id = ei.employee_id AND fsv.visitor_name = #{loginName}
+  </select>  
+  
+  <select id="getVisitorFunctionsbyId" resultType="list" resultMap="FcSysFuncRes">
+    SELECT fsf.func_code
+	FROM fc_sys_visitor fsv, fc_sys_visitor_role fsvr,  fc_sys_role_func fsrf, fc_sys_func fsf
+	WHERE fsv.visitor_id = fsvr.visitor_id
+	AND fsvr.role_id = fsrf.role_id
+	AND fsrf.func_id = fsf.func_id
+	AND fsv.visitor_name = #{loginName}
+  </select>  
+  <!-- songp end-->
+</mapper>

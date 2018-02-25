@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.brms.external.mapper.IUserInfoMapper">
+	
+	<!-- 家庭成员Map -->
+	<resultMap id="EmployeeFamilyInfoMap" type="EmployeeFamilyInfo">
+		<result property="id" column="id"/>
+		<result property="employeeId" column="employee_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="memberName" column="member_name"/>
+		<result property="relationship" column="relationship"/>
+		<result property="memberBirthday" column="member_birthday"/>
+		<result property="memberUnit" column="member_unit"/>
+		<result property="memberPost" column="member_post"/>
+		<result property="telephone" column="telephone"/>
+	</resultMap>
+	
+	<!-- 基本信息/入职信息 MAP -->
+	<resultMap id="EmployeeInfoMap" type="EmployeeInfo">
+		<result property="employeeId" column="employee_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="employeeNum" column="employee_num"/>
+		<result property="englishName" column="english_name"/>
+		<result property="userName" column="user_name"/>
+		<result property="userSex" column="user_sex"/>
+		<result property="userBirthday" column="user_birthday"/>
+		<result property="telephone" column="telephone"/>
+		<result property="officePhone" column="office_phone"/>
+		<result property="enterpriseMail" column="enterprise_mail"/>
+		<result property="photoPath" column="photo_path"/>
+		<result property="highestEducation" column="highest_education"/>
+		<result property="graduateSchool" column="graduate_school"/>
+		<result property="areaId" column="area_id"/>
+		<result property="hkPlace" column="hk_place"/>
+		<result property="socialSecurityNum" column="social_security_num"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="organizationName" column="organization_name"/>
+		<result property="postId" column="post_id"/>
+		<result property="postName" column="post_name"/>
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="jobGradeName" column="job_grade_name"/>
+		<result property="jobLevelId" column="job_level_id"/>
+		<result property="jobLevelName" column="job_level_name"/>
+		<result property="salaryLevelId" column="salary_level_id"/>
+		<result property="salaryLevelOrder" column="salary_level_order"/>
+		<result property="salaryTotal" column="salary_total"/>
+		<result property="structureType" column="structure_type"/>
+		<result property="socialSecurityId" column="social_security_id"/>
+		<result property="applyDate" column="apply_date"/>
+		<result property="isChange" column="is_change"/>
+		<result property="fpsgPost" column="fpsg_post"/>
+		<result property="entryDate" column="entry_date"/>
+		<result property="turnoverDate" column="turnover_date"/>
+		<result property="turnoverCause" column="turnover_cause"/>
+		<result property="submitId" column="submit_id"/>
+		<result property="bankId" column="bank_id"/>
+		<result property="bankNum" column="bank_num"/>
+		<result property="trainingCnt" column="training_cnt"/>
+		<result property="contactCnt" column="contact_cnt"/>
+		<result property="isConsultant" column="is_consultant"/>
+		<result property="lastContactTime" column="last_contact_time"/>
+		<result property="lastContactEmployee" column="last_contact_employee"/>
+		<result property="mainContactCnt" column="main_contact_cnt"/>
+		<result property="lastMainContactTime" column="last_main_contact_time"/>
+		<result property="lastMainContactEmployee" column="last_main_contact_employee"/>
+	</resultMap>
+	
+	<!-- 岗位MAP -->
+	<resultMap id="CfgPostMap" type="CfgPost">
+		<result property="postId" column="post_id"/>
+		<result property="postNo" column="post_no"/>
+		<result property="postName" column="post_name"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="postPersons" column="post_persons"/>
+		<result property="isFpsg" column="is_fpsg"/>
+		<result property="lowestSalaryLevel" column="lowest_salary_level"/>
+		<result property="highestSalaryLevel" column="highest_salary_level"/>
+		<result property="higherPostId" column="higher_post_id"/>
+		<result property="createDate" column="create_date"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+		<result property="companyId" column="company_id"/>
+	</resultMap>
+	
+	<!-- 职系MAP -->
+	<resultMap id="CfgJobGradeMap" type="CfgJobGrade">
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="jobGradeNo" column="job_grade_no"/>
+		<result property="jobGradeName" column="job_grade_name"/>
+		<result property="jobGradeDesc" column="job_grade_desc"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+		<result property="companyId" column="company_id"/>
+	</resultMap>
+	
+	<!-- 职等 MAP-->
+	<resultMap id="CfgJobLevelMap" type="CfgJobLevel">
+		<result property="jobLevelId" column="job_level_id"/>
+		<result property="jobLevelName" column="job_level_name"/>
+		<result property="jobLevelOrder" column="job_level_order"/>
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="lowestSalaryLevel" column="lowest_salary_level"/>
+		<result property="highestSalaryLevel" column="highest_salary_level"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+		<result property="companyId" column="company_id"/>
+	</resultMap>
+	
+	<!-- 薪酬 -->
+	<resultMap id="CfgSalaryLevelMap" type="CfgSalaryLevel">
+		<result property="salaryLevelId" column="salary_level_id"/>
+		<result property="salaryLevelOrder" column="salary_level_order"/>
+		<result property="salary" column="salary"/>
+		<result property="salaryLevelDiff" column="salary_level_diff"/>
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="jobLevelId" column="job_level_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+		<result property="companyId" column="company_id"/>
+	</resultMap>
+	
+	<!-- 社保 -->
+	<resultMap id="SalarySocialSecurityMap" type="SalarySocialSecurity">
+		<result property="socialSecurityId" column="social_security_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="ssName" column="ss_name"/>
+		<result property="ssDesc" column="ss_desc"/>
+		<result property="areaId" column="area_id"/>
+		<result property="areaName" column="area_name"/>
+		<result property="hkType" column="hk_type"/>
+		<result property="endowmentInsuranceRate" column="endowment_insurance_rate"/>
+		<result property="endowmentInsurancePersonRate" column="endowment_insurance_person_rate"/>
+		<result property="endowmentInsuranceCompanyRate" column="endowment_insurance_company_rate"/>
+		<result property="endowmentInsurancePlus" column="endowment_insurance_plus"/>
+		<result property="unemploymentRate" column="unemployment_rate"/>
+		<result property="unemploymentPersonRate" column="unemployment_person_rate"/>
+		<result property="unemploymentCompanyRate" column="unemployment_company_rate"/>
+		<result property="unemploymentPlus" column="unemployment_plus"/>
+		<result property="healthInsuranceRate" column="health_insurance_rate"/>
+		<result property="healthInsurancePersonRate" column="health_insurance_person_rate"/>
+		<result property="healthInsuranceCompanyRate" column="health_insurance_company_rate"/>
+		<result property="healthInsurancePlus" column="health_insurance_plus"/>
+		<result property="injuryInsuranceRate" column="injury_insurance_rate"/>
+		<result property="injuryInsurancePersonRate" column="injury_insurance_person_rate"/>
+		<result property="injuryInsuranceCompanyRate" column="injury_insurance_company_rate"/>
+		<result property="injuryInsurancePlus" column="injury_insurance_plus"/>
+		<result property="birthInsuranceRate" column="birth_insurance_rate"/>
+		<result property="birthInsurancePersonRate" column="birth_insurance_person_rate"/>
+		<result property="birthInsuranceCompanyRate" column="birth_insurance_company_rate"/>
+		<result property="birthInsurancePlus" column="birth_insurance_plus"/>
+		<result property="housingFundRate" column="housing_fund_rate"/>
+		<result property="housingFundPersonRate" column="housing_fund_person_rate"/>
+		<result property="housingFundCompanyRate" column="housing_fund_company_rate"/>
+		<result property="housingFundPlus" column="housing_fund_plus"/>
+		<result property="others1" column="others1"/>
+		<result property="others2" column="others2"/>
+		<result property="others3" column="others3"/>
+		<result property="others4" column="others4"/>
+		<result property="isChange" column="is_change"/>
+	</resultMap>
+	
+	<!-- 面试/约谈 -->
+	<resultMap id="EmployeeTalkRecordMap" type="EmployeeTalkRecord">
+		<result property="talkId" column="talk_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="talkNum" column="talk_num"/>
+		<result property="surveyType" column="survey_type"/>
+		<result property="talkToOrganizationId" column="talk_to_organization_id"/>
+		<result property="talkToOrganizationName" column="talk_to_organization_name"/>
+		<result property="talkToPostId" column="talk_to_post_id"/>
+		<result property="talkToPostName" column="talk_to_post_name"/>
+		<result property="talkToEmployee" column="talk_to_employee"/>
+		<result property="talkToEmployeeNum" column="talk_to_employee_num"/>
+		<result property="talkToEmployeeName" column="talk_to_employee_name"/>
+		<result property="relationships" column="relationships"/>
+		<result property="surveyOrganizationId" column="survey_organization_id"/>
+		<result property="surveyOrganizationName" column="survey_organization_name"/>
+		<result property="surveyPostId" column="survey_post_id"/>
+		<result property="surveyPostName" column="survey_post_name"/>
+		<result property="surveyEmployee" column="survey_employee"/>
+		<result property="surveyEmployeeNum" column="survey_employee_num"/>
+		<result property="surveyEmployeeName" column="survey_employee_name"/>
+		<result property="mainTalkOrganizationId" column="main_talk_organization_id"/>
+		<result property="mainTalkOrganizationName" column="main_talk_organization_name"/>
+		<result property="mainTalkPostId" column="main_talk_post_id"/>
+		<result property="mainTalkPostName" column="main_talk_post_name"/>
+		<result property="mainTalkEmployee" column="main_talk_employee"/>
+		<result property="mainTalkEmployeeNum" column="main_talk_employee_num"/>
+		<result property="mainTalkEmployeeName" column="main_talk_employee_name"/>
+		<result property="planTalkTime" column="plan_talk_time"/>
+		<result property="startTime" column="start_time"/>
+		<result property="endTime" column="end_time"/>
+		<result property="talkType" column="talk_type"/>
+		<result property="talkPlace" column="talk_place"/>
+		<result property="talkEstimate" column="talk_estimate"/>
+		<result property="stableProcess" column="stable_process"/>
+		<result property="createTime" column="create_time"/>
+		
+		<association  property="employeeTalkContent" column="talk_id" javaType="EmployeeTalkContent" >
+			<result property="contentId" column="content_id"/>
+			<result property="talkId" column="talk_id"/>
+			<result property="contentType" column="content_type"/>
+			<result property="content" column="content"/>
+		</association>
+		
+		
+	</resultMap>
+	
+	<!-- 考勤 -->
+	<resultMap id="EmployeeCheckingInMap" type="EmployeeCheckingIn">
+		<result property="employeeId" column="employee_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="startTime" column="start_time"/>
+		<result property="endTime" column="end_time"/>
+		<result property="checkingType" column="checking_type"/>
+		<result property="cause" column="cause"/>
+		<result property="duration" column="duration"/>
+		<result property="checkingStatus" column="checking_status"/>
+	</resultMap>
+	
+	<!-- 培训 -->
+	<resultMap id="TrainingTaskMap" type="TrainingTask">
+		<result property="taskId" column="task_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="taskNum" column="task_num"/>
+		<result property="tastName" column="tast_name"/>
+		<result property="tastType" column="tast_type"/>
+		<result property="tastPurpose" column="tast_purpose"/>
+		<result property="trainingContentTypeId" column="training_content_type_id"/>
+		<result property="testId" column="test_id"/>
+		<result property="trainingStartTime" column="training_start_time"/>
+		<result property="trainingEndTime" column="training_end_time"/>
+		<result property="trainingDesc" column="training_desc"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="organizationalUnit" column="organizational_unit"/>
+		<result property="sponsorId" column="sponsor_id"/>
+		<result property="sponsor" column="sponsor"/>
+		<result property="userId" column="user_id"/>
+		<result property="contactPersonName" column="contact_person_name"/>
+		<result property="contactPersonPhone" column="contact_person_phone"/>
+		<result property="taskStatus" column="task_status"/>
+		<result property="planEmployees" column="plan_employees"/>
+		<result property="actualEmployees" column="actual_employees"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+	</resultMap>
+	
+	<!-- 所得税信息 -->
+	<resultMap id="SalarySocialSecuritySusbmitMap" type="SalarySocialSecuritySusbmit">
+		<result property="submitId" column="submit_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="submitName" column="submit_name"/>
+		<result property="companyName" column="company_name"/>
+		<result property="areaId" column="area_id"/>
+		<result property="submitPlace" column="submit_place"/>
+		<result property="socialSecurityBase" column="social_security_base"/>
+		<result property="houseFundBase" column="house_fund_base"/>
+		<result property="isChange" column="is_change"/>
+	</resultMap>
+	
+	<!-- 合同信息 -->
+	<resultMap id="EmployeeContrackMap" type="EmployeeContrack">
+		<result property="contrackId" column="contrack_id"/>
+		<result property="employeeId" column="employee_id"/>
+		<result property="contractType" column="contract_type"/>
+		<result property="contractNum" column="contract_num"/>
+		<result property="contractDoc" column="contract_doc"/>
+	</resultMap>
+	
+	<!-- SQL CODE BY ZHENGLH -->
+	
+	<!-- 家庭成员 -->
+		<!-- 查询用户的家庭成员 -->
+		<select id="getUserFamilyById" resultMap="EmployeeFamilyInfoMap" parameterType="int">
+		SELECT id,employee_id,company_id,member_name,relationship,member_birthday,member_unit,member_post,telephone
+		  FROM employee_family_info
+		 WHERE employee_id=#{empId}
+		</select>
+		
+		<!-- 新增家庭成员 -->
+		<insert id="addNewFamilyById" parameterType="EmployeeFamilyInfo">
+		INSERT INTO employee_family_info (employee_id,company_id,member_name,relationship,member_birthday,member_unit,member_post,telephone) 
+		VALUES  (#{employeeId}, #{companyId},#{memberName},#{relationship},#{memberBirthday},#{memberUnit},#{memberPost},#{telephone})
+		</insert>
+	<!-- 家庭成员 -->
+	
+	<!-- 入职信息 -->
+		<!-- 查看入职信息 -->
+		<select id="findUserInfoById" parameterType="int" resultMap="EmployeeInfoMap" resultType="EmployeeInfo">
+		SELECT 
+		  	   employee_id,user_id,company_id,employee_num,english_name,user_name,user_sex,user_birthday,telephone,
+  			   office_phone,enterprise_mail,photo_path,highest_education,graduate_school,area_id,hk_place,social_security_num,
+  			   organization_id,organization_name,post_id,post_name,job_grade_id,job_grade_name,job_level_id,job_level_name,
+  			   salary_level_id,salary_level_order,salary_total,structure_type,social_security_id,apply_date,is_change,
+  			   fpsg_post,entry_date,turnover_date,turnover_cause,submit_id,bank_id,bank_num,training_cnt,contact_cnt,
+  			   is_consultant,last_contact_time,last_contact_employee,main_contact_cnt,last_main_contact_time,last_main_contact_employee 
+		  FROM employee_info
+		 WHERE employee_id=#{empId}
+		</select>
+	<!-- 入职信息 -->
+	
+	<!-- 岗位标识 -->
+		<!-- 查看岗位 -->
+		<select id="getUserPostById" parameterType="int" resultType="CfgPost">
+			SELECT post_id,post_no,post_name,organization_id,job_grade_id,post_persons,is_fpsg,lowest_salary_level,
+				   highest_salary_level,higher_post_id,create_date,create_user,last_update_time,last_update_user,company_id 
+			  FROM cfg_post
+			 WHERE post_id=#{poseId}
+			 LIMIT 0,1
+		</select>
+	<!-- 岗位标识 -->
+	
+	<!-- 职系 -->
+		<!-- 查看职系 -->
+		<select id="getJobGradeById" parameterType="int" resultType="CfgJobGrade">
+		SELECT job_grade_id,job_grade_no,job_grade_name,job_grade_desc,create_time,create_user,last_update_time,last_update_user,company_id
+		  FROM cfg_job_grade
+		 WHERE job_grade_id=#{jobGradeId}
+		</select>
+	<!-- 职系 -->
+	
+	<!-- 职等 -->
+		<!-- 查询职等 -->
+		<select id="getJobLevelById" parameterType="int" resultType="CfgJobLevel">
+		SELECT job_level_id,job_level_name,job_level_order,job_grade_id,lowest_salary_level,highest_salary_level,create_time,create_user,
+			   last_update_time,last_update_user,company_id
+		  FROM cfg_job_level
+		 WHERE job_level_id=#{jobLevelId}
+		</select>
+	<!-- 职等 -->
+	
+	<!-- 薪酬 -->
+		<!-- 查询薪酬 -->
+		<select id="getSalaryById" parameterType="int" resultType="CfgSalaryLevel">
+		SELECT salary_level_id,salary_level_order,salary,salary_level_diff,job_grade_id,job_level_id,create_time,create_user,last_update_time,
+			   last_update_user,company_id
+		  FROM cfg_salary_level
+		 WHERE salary_level_id=#{salaryLevelId}
+		</select>
+	<!-- 薪酬 -->
+	
+	<!-- 社保 -->
+		<!-- 社保基本信息 -->
+		<select id="getSocialById" parameterType="SalarySocialSecurity" resultType="SalarySocialSecurity">
+		SELECT social_security_id,company_id,ss_name,ss_desc,area_id,area_name,hk_type,endowment_insurance_rate,endowment_insurance_person_rate,
+			   endowment_insurance_company_rate,endowment_insurance_plus,unemployment_rate,unemployment_person_rate,unemployment_company_rate,
+			   unemployment_plus,health_insurance_rate,health_insurance_person_rate,health_insurance_company_rate,health_insurance_plus,
+			   injury_insurance_rate,injury_insurance_person_rate,injury_insurance_company_rate,injury_insurance_plus,birth_insurance_rate,
+			   birth_insurance_person_rate,birth_insurance_company_rate,birth_insurance_plus,housing_fund_rate,housing_fund_person_rate,
+			   housing_fund_company_rate,housing_fund_plus,others1,others2,others3,others4,is_change
+		  FROM salary_social_security
+		 WHERE social_security_id=#{socialSecurityId}
+		</select>
+	
+	<!-- 面试/约谈 -->
+		<!-- 根据ID获得面试约谈列表 -->
+		<select id="getTalkRecordListById" parameterType="map" resultMap="EmployeeTalkRecordMap">
+			SELECT talk_id,
+				   talk_num,
+				   survey_type,
+				   talk_to_organization_name,
+				   talk_to_post_name,
+				   talk_to_employee,
+				   talk_to_employee_num,
+				   talk_to_employee_name,
+				   relationships,
+				   start_time,
+				   end_time,
+				   talk_type,
+				   talk_place,
+				   talk_estimate,
+				   stable_process,
+				   plan_talk_time,
+				   main_talk_employee_name,
+				   main_talk_organization_name
+			  FROM employee_talk_record
+			 WHERE talk_to_employee=#{userId}
+			<if test="null != mtoId">
+	   		   AND main_talk_organization_id=#{mtoId}
+	   		</if>
+	   		<if test="null != mtUserId">
+	   		   AND main_talk_employee = #{mtUserId}
+	   		</if>
+	   		<if test="null != startTime">
+	   		   AND start_time BETWEEN #{startTime} AND #{endTime}
+	   		</if>
+			 LIMIT ${limit}
+		</select>
+		
+		<!-- 根据ID获得面试约谈列表 总记录-->
+		<select id="getTalkRecordListCountById" parameterType="map" resultType="int">
+			SELECT COUNT(1)
+			  FROM employee_talk_record
+			 WHERE talk_to_employee=#{userId}
+			 <if test="null != mtoId">
+	   		   AND main_talk_organization_id=#{mtoId}
+	   		</if>
+	   		<if test="null != mtUserId">
+	   		   AND main_talk_employee = #{mtUserId}
+	   		</if>
+	   		<if test="null != startTime">
+	   		   AND start_time BETWEEN #{startTime} AND #{endTime}
+	   		</if>
+		</select>
+		
+		<!-- 获得面试/约谈详细 -->
+		<select id="getTalkRecordInfoById" parameterType="int" resultType="EmployeeTalkRecord">
+			SELECT etr.talk_id,
+				   etr.company_id,
+				   etr.talk_num,
+				   etr.survey_type,
+				   etr.talk_to_organization_id,
+				   etr.talk_to_organization_name,
+				   etr.talk_to_post_id,
+				   etr.talk_to_post_name,
+				   etr.talk_to_employee,
+				   etr.talk_to_employee_num,
+				   etr.talk_to_employee_name,
+				   etr.relationships,
+				   etr.survey_organization_id,
+				   etr.survey_organization_name,
+				   etr.survey_post_id,
+				   etr.survey_post_name,
+				   etr.survey_employee,
+				   etr.survey_employee_num,
+				   etr.survey_employee_name,
+				   etr.main_talk_organization_id,
+				   etr.main_talk_organization_name,
+				   etr.main_talk_post_id,
+				   etr.main_talk_post_name,
+				   etr.main_talk_employee,
+				   etr.main_talk_employee_num,
+				   etr.main_talk_employee_name,
+				   etr.plan_talk_time,
+				   etr.start_time,
+				   etr.end_time,
+				   etr.talk_type,
+				   etr.talk_place,
+				   etr.talk_estimate,
+				   etr.stable_process,
+				   etr.create_time,
+				   etc.content_type,
+				   etc.content
+			  FROM employee_talk_record etr,employee_talk_content etc
+			 WHERE etr.talk_id=etc.talk_id
+			   AND talk_id=#{talkId} 
+		</select>
+	<!-- 面试/约谈 -->
+	
+	<!-- 考勤 -->
+	
+		<!-- 查询考核记录 列表 -->
+		<select id="getCheckingListById" parameterType="map" resultMap="EmployeeCheckingInMap">
+		SELECT employee_id,company_id,start_time,end_time,checking_type,cause,duration,checking_status 
+		  FROM employee_checking_in 
+		 WHERE employee_id=#{empId}
+		 <if test="null != checkType">
+		   AND checking_type=#{checkType}
+		 </if>
+		 <if test="null != startTime">
+		   AND start_time BETWEEN #{startTime} AND #{endTime}
+		 </if>
+		 LIMIT ${limit}
+		</select>
+		
+		<!-- 查询考核记录 列表 总记录-->
+		<select id="getCheckingListCountById" parameterType="map" resultType="int">
+		SELECT COUNT(1) 
+		  FROM employee_checking_in 
+		 WHERE employee_id=#{empId}
+		 <if test="null != checkType">
+		   AND checking_type=#{checkType}
+		 </if>
+		 <if test="null != startTime">
+		   AND start_time BETWEEN #{startTime} AND #{endTime}
+		 </if>
+		</select>
+		
+		<!-- 查询考核记录详细-->
+		<select id="getCheckingById" parameterType="map" resultType="EmployeeCheckingIn">
+		SELECT employee_id,company_id,start_time,end_time,checking_type,cause,duration,checking_status 
+		  FROM employee_checking_in
+		 WHERE employee_id=#{empId}
+		   AND start_time = #{startTime}
+		   AND end_time = #{endTime}
+		</select>
+	<!-- 考勤 -->
+	
+	<!-- 培训 -->
+		<!-- 查询培训记录 列表 -->
+		<select id="getTrainingTaskListById" resultMap="TrainingTaskMap" parameterType="map">
+		SELECT tt.task_id,tt.task_num,tt.task_name,tt.organizational_unit,tt.task_type,ts.teacher,tt.plan_employees,tt.actual_employees,tt.last_update_time,tt.task_place
+		  FROM training_task tt,
+		  	   training_users tu,
+		  	   training_schedule ts
+		 WHERE tt.task_id=tu.task_id
+		   AND tu.employee_id=#{empId}
+		    OR tt.sponsor_id = #{empId}
+		 <if test="null != taskType">
+		   AND task_type=#{taskType}
+		 </if>
+		 <if test="null != keyWord">
+		   AND (tt.task_num = #{keyWord} OR tt.task_name = #{keyWord} OR tt.task_place = #{keyWord})
+		 </if>
+		 LIMIT ${limit}
+		</select>
+		
+		<!-- 查询培训记录 列表 总记录数 -->
+		<select id="getTrainingTaskListCountById" resultType="int" parameterType="map">
+		SELECT COUNT(1)
+		  FROM training_task tt,
+		  	   training_users tu,
+		  	   training_schedule ts
+		 WHERE tt.task_id=tu.task_id
+		   AND tu.employee_id=#{empId}
+		    OR tt.sponsor_id = #{empId}
+		 <if test="null != taskType">
+		   AND task_type=#{taskType}
+		 </if>
+		 <if test="null != keyWord">
+		   AND (tt.task_num = #{keyWord} OR tt.task_name = #{keyWord} OR tt.task_place = #{keyWord})
+		 </if>
+		</select>
+		
+	<!-- 培训 -->
+	
+	<!-- 所得税 -->
+	<select id="getUserSubmitBuId" resultMap="SalarySocialSecuritySusbmitMap" resultType="SalarySocialSecuritySusbmit" parameterType="int">
+		SELECT submit_id,company_id,submit_name,company_name,area_id,submit_place,social_security_base,house_fund_base,is_change
+		  FROM salary_social_security_susbmit
+		 WHERE submit_id=#{submitId}
+		 LIMIT 0,1
+	</select>
+	
+	<!-- 合同信息 -->
+	<!-- 根据用户ID获得合同信息 列表 -->
+	<select id="getUserContrackById" parameterType="map" resultMap="EmployeeContrackMap">
+	SELECT contrack_id,employee_id,contract_type,contract_num,contract_doc
+	  FROM employee_contrack
+	 WHERE employee_id=#{userId}
+	 LIMIT ${limit}
+	</select>
+	
+	<!-- 根据用户ID获得合同信息 列表  总记录数 -->
+	<select id="getUserContrackCountById" parameterType="int" resultType="int">
+	SELECT COUNT(1)
+	  FROM employee_contrack
+	 WHERE employee_id=#{userId}
+	</select>
+	<!-- SQL CODE BY ZHENGLH -->
+
+</mapper>

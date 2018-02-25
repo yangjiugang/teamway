@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--*******************************************
+*				招聘任务  
+*    			邓祥新建
+*******************************************-->
+
+<mapper namespace="com.fc.brms.broker.mapper.IRecruitTaskMapper">
+
+	<resultMap id="recruitTaskMap" type="RecruitTask">
+		<result property="taskId" column="task_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="requirementNum" column="requirement_num"/>
+		<result property="requirementId" column="requirement_id"/>
+		<result property="taskNum" column="task_num"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="organizationName" column="organization_name"/>
+		<result property="postId" column="post_id"/>
+		<result property="postName" column="post_name"/>
+		<result property="taskDesc" column="task_desc"/>
+		<result property="userCnt" column="user_cnt"/>
+		<result property="recruitDate" column="recruit_date"/>
+		<result property="hopeWorkDate" column="hope_work_date"/>
+		<result property="requireUserId" column="require_user_id"/>
+		<result property="requireUserName" column="require_user_name"/>
+		<result property="requireDate" column="require_date"/>
+		<result property="matchUsers" column="match_users"/>
+		<result property="recruitMembers" column="recruit_members"/>
+		<result property="taskStatus" column="task_status"/>
+		<result property="taskCreateTime" column="task_create_time"/>
+	</resultMap>
+	
+	<!-- 查询招聘任务 -->
+	<select id="recruitTaskList" resultMap="recruitTaskMap">
+   		SELECT
+			task_id,
+			company_id,
+			requirement_num,
+			requirement_id,
+			task_num,
+			organization_id,
+			organization_name,
+			post_id,
+			post_name,
+			task_desc,
+			user_cnt,
+			recruit_date,
+			hope_work_date,
+			require_user_id,
+			require_user_name,
+			require_date,
+			match_users,
+			recruit_members,
+			task_status,
+			task_create_time
+		FROM
+			recruit_task
+		WHERE 
+			task_status = ${taskStatus}
+			<if test="companyId!=null">
+	   		AND  company_id = ${companyId}
+	   		</if>
+   </select> 
+   
+   
+   <!-- 查询招聘任务条数 -->
+	<select id="recruitTaskCount" resultType="int">
+   		 SELECT COUNT(1) FROM
+			recruit_task
+		WHERE 
+			task_status = #{taskStatus}
+   </select> 
+   
+   
+   
+   <!-- 根据ID查询招聘任务 -->
+	<select id="recruitTaskById" resultMap="recruitTaskMap">
+   		SELECT
+   			task_id,
+			company_id,
+			requirement_num,
+			requirement_id,
+			task_num,
+			organization_id,
+			organization_name,
+			post_id,
+			post_name,
+			task_desc,
+			user_cnt,
+			recruit_date,
+			hope_work_date,
+			require_user_id,
+			require_user_name,
+			require_date,
+			match_users,
+			recruit_members,
+			task_status,
+			task_create_time
+		FROM
+			recruit_task
+		WHERE 
+			task_id = #{taskId}
+   </select> 
+   
+   
+   <!-- 新增招聘任务 -->
+    <insert id="insertRecruitTask" parameterType="RecruitTask">
+   		INSERT INTO recruit_task(
+			company_id,
+			requirement_num,
+			requirement_id,
+			task_num,
+			organization_id,
+			organization_name,
+			post_id,
+			post_name,
+			task_desc,
+			user_cnt,
+			recruit_date,
+			hope_work_date,
+			require_user_id,
+			require_user_name,
+			require_date,
+			match_users,
+			recruit_members,
+			task_status,
+			task_create_time
+		)
+		VALUES(
+			#{companyId},
+			#{requirementNum},
+			#{requirementId},
+			#{taskNum},
+			#{organizationId},
+			#{organizationName},
+			#{postId},
+			#{postName},
+			#{taskDesc},
+			#{userCnt},
+			#{recruitDate},
+			#{hopeWorkDate},
+			#{requireUserId},
+			#{requireUserName},
+			#{requireDate},
+			#{matchUsers},
+			#{recruitMembers},
+			#{taskStatus},
+			#{taskCreateTime}
+		)
+   
+   </insert>
+   
+   <!-- 修改招聘任务 -->
+   <update id="updateRecruitTask" parameterType="int">
+   		UPDATE
+			recruit_task
+		SET
+			company_id = #{companyId},
+			requirement_num = #{requirementNum},
+			requirement_id = #{requirementId},
+			task_num = #{taskNum},
+			organization_id = #{organizationId},
+			organization_name = #{organizationName},
+			post_id = #{postId},
+			post_name = #{postName},
+			task_desc = #{taskDesc},
+			user_cnt = #{userCnt},
+			recruit_date = #{recruitDate},
+			hope_work_date = #{hopeWorkDate},
+			require_user_id = #{requireUserId},
+			require_user_name = #{requireUserName},
+			require_date = #{requireDate},
+			match_users = #{matchUsers},
+			recruit_members = #{recruitMembers},
+			task_status = #{taskStatus},
+			task_create_time = #{taskCreateTime}
+		WHERE
+			task_id = #{taskId}
+   	</update>
+   	
+   	 <!-- 终止招聘任务 -->
+   <update id="closeRecruitTask" parameterType="int">
+   		UPDATE
+			recruit_task
+		SET
+			task_status = 3
+			
+		WHERE
+			task_id = #{taskId}
+   	</update>
+   
+   <!-- 删除招聘任务 -->
+   <delete id="delRecruitTask" parameterType="int">
+   		DELETE
+		  FROM recruit_task
+		 WHERE task_id = #{taskId}
+   	</delete>
+   	
+   <!-- SQL CODE BY ZHENGLH	 -->
+   		<!-- 查询进行中招聘任务  -->
+   		<select id="recruitTaskListByPage" parameterType="map" resultMap="recruitTaskMap">
+   		SELECT tr.task_id,tr.company_id,tr.requirement_num,tr.requirement_id,tr.task_num,tr.organization_id,tr.organization_name,tr.post_id,
+			   tr.post_name,tr.task_desc,tr.user_cnt,tr.recruit_date,tr.hope_work_date,tr.require_user_id,tr.require_user_name,tr.require_date,
+			   tr.match_users,tr.recruit_members,tr.task_status,tr.task_create_time 
+		  FROM recruit_task tr
+		 WHERE tr.task_id NOT IN(SELECT ri.task_id FROM recruit_interview ri WHERE ri.user_id = #{userId})
+		   AND tr.task_status=1
+	  ORDER BY tr.task_create_time DESC
+		 LIMIT ${limit}
+   		</select>
+   		
+   		<!-- 查询进行中招聘任务  总记录-->
+   		<select id="recruitTaskCountByPage" parameterType="map" resultType="int">
+   		SELECT COUNT(1)
+		  FROM recruit_task tr
+		 WHERE tr.task_id NOT IN(SELECT ri.task_id FROM recruit_interview ri WHERE ri.user_id = #{userId})
+		   AND tr.task_status=1
+   		</select>
+   		
+   		
+   <!-- SQL CODE BY ZHENGLH	 -->
+</mapper>

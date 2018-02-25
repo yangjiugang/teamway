@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.fc.brms.broker.mapper.IRewardPunishmentMapper">
+
+<!-- Liwj Start -->
+	<resultMap type="EmployeeRewardPunishment" id="employeeRewardPunishmentMap">
+		<result property="recordId" column="record_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="organizationName" column="organization_name"/>
+		<result property="postId" column="post_id"/>
+		<result property="postName" column="post_name"/>
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="jobGradeName" column="job_grade_name"/>
+		<result property="jobLevelId" column="job_level_id"/>
+		<result property="jobLevelName" column="job_level_name"/>
+		<result property="recordType" column="record_type"/>
+		<result property="causeDate" column="cause_date"/>
+		<result property="praisePunishmentDesc" column="praise_punishment_desc"/>
+		<result property="recordDate" column="record_date"/>
+		<result property="praisePunishmentMethod" column="praise_punishment_method"/>
+		<result property="praiseOrganizationId" column="praise_organization_id"/>
+		<result property="praiseOrganizationName" column="praise_organization_name"/>
+		<result property="praisePunishmentMoney" column="praise_punishment_money"/>
+		<result property="signEmployeeId" column="sign_employee_id"/>
+		<result property="employeeId" column="employee_id"/>
+		<association property="employeeInfo" column="employee_id" javaType="EmployeeInfo">
+			<id property="employeeId" column="employee_id"/>
+			<result property="userId" column="user_id"/>
+			<result property="employeeNum" column="employee_num"/>
+			<result property="userName" column="user_name"/>
+			<result property="postId" column="post_id"/>
+			<result property="jobLevelId" column="job_level_id"/>
+		</association>			
+	</resultMap>
+	
+	<resultMap type="EmployeeInfo" id="EmployeeInfoMap">
+		<result property="employeeId" column="employee_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="employeeNum" column="employee_num"/>
+		<result property="englishName" column="english_name"/>
+		<result property="userName" column="user_name"/>
+		<result property="userSex" column="user_sex"/>
+		<result property="userBirthday" column="user_birthday"/>
+		<result property="telephone" column="telephone"/>
+		<result property="officePhone" column="office_phone"/>
+		<result property="enterpriseMail" column="enterprise_mail"/>
+		<result property="photoPath" column="photo_path"/>
+		<result property="highestEducation" column="highest_education"/>
+		<result property="graduateSchool" column="graduate_school"/>
+		<result property="areaId" column="area_id"/>
+		<result property="hkPlace" column="hk_place"/>
+		<result property="socialSecurityNum" column="social_security_num"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="organizationName" column="organization_name"/>
+		<result property="postId" column="post_id"/>
+		<result property="postName" column="post_name"/>
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="jobGradeName" column="job_grade_name"/>
+		<result property="jobLevelId" column="job_level_id"/>
+		<result property="jobLevelName" column="job_level_name"/>
+		<result property="salaryLevelId" column="salary_level_id"/>
+		<result property="salaryLevelOrder" column="salary_level_order"/>
+		<result property="salaryTotal" column="salary_total"/>
+		<result property="structureType" column="structure_type"/>
+		<result property="socialSecurityId" column="social_security_id"/>
+		<result property="applyDate" column="apply_date"/>
+		<result property="isChange" column="is_change"/>
+		<result property="fpsgPost" column="fpsg_post"/>
+		<result property="entryDate" column="entry_date"/>
+		<result property="turnoverDate" column="turnover_date"/>
+		<result property="turnoverCause" column="turnover_cause"/>
+		<result property="submitId" column="submit_id"/>
+		<result property="bankId" column="bank_id"/>
+		<result property="bankNum" column="bank_num"/>
+		<result property="trainingCnt" column="training_cnt"/>
+		<result property="contactCnt" column="contact_cnt"/>
+		<result property="isConsultant" column="is_consultant"/>
+	</resultMap>
+
+	<!-- under code By Liwj Start -->
+	<!--function : 查看全部奖惩信息    废弃
+	<select id="getAllRewardPunishment" resultMap="employeeRewardPunishmentMap">
+		SELECT record_id,erp.employee_id,record_id,cause_date,praise_punishment_desc,erp.organization_id,record_date,praise_punishment_method,
+			   praise_punishment_money,sign_employee_id,record_type,ei.employee_num,ei.job_level_id,user_name,erp.post_id,erp.organization_name,
+			   erp.post_name,erp.job_grade_name,erp.job_level_name
+		  FROM employee_reward_punishment erp,employee_info ei 
+		 WHERE erp.employee_id = ei.employee_id
+   	  ORDER BY record_id DESC
+		 LIMIT ${Limit}
+	</select>-->
+	
+	<!--function : 统计奖惩信息  废弃 
+	<select id="getCountRewardPunishment" resultType="int">
+		SELECT COUNT(*) FROM employee_reward_punishment erp,employee_info ei WHERE erp.employee_id = ei.employee_id
+	</select>-->
+	
+	<!--function : 按照employeeId查找employeeId,userName -->
+	<select id="getEmployeeInfoById" parameterType="int" resultMap="EmployeeInfoMap">
+		SELECT employee_id,user_name FROM employee_info WHERE employee_id = #{employeeId}
+	</select>
+	
+	<!-- function : 按照employeeId查看 EmployeeRewardPunishment-->
+	<select id="getRewardPunishmentById" resultMap="employeeRewardPunishmentMap">
+		SELECT erp.employee_id,record_id,cause_date,praise_punishment_desc,erp.organization_id,record_date,praise_punishment_method,
+			   praise_punishment_money,sign_employee_id,record_type,ei.employee_num,ei.job_level_id,user_name,erp.post_id,erp.organization_name,
+			   erp.post_name,erp.job_grade_name,erp.job_level_name,cause_date 
+		  FROM employee_reward_punishment erp,employee_info ei
+		 WHERE erp.employee_id = ei.employee_id
+		   AND erp.employee_id = #{employeeId}
+		 LIMIT ${Limit}
+	</select>
+	
+	<!-- function : 根据employeeId查找EmployeeRewardPunishment的总记录数 -->
+	<select id="getCountRewardPunishmentById" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM employee_reward_punishment erp,employee_info ei WHERE erp.employee_id = ei.employee_id AND erp.employee_id = #{employeeId}
+	</select>
+	
+	<!-- function : 查看EmployeeRewardPunishment by id and recordId-->
+	<select id="getRewardPunishmentByIdAndrecordId" parameterType="EmployeeRewardPunishment" resultMap="employeeRewardPunishmentMap">
+		SELECT record_id,erp.employee_id,record_id,cause_date,praise_punishment_desc,erp.organization_id,record_date,praise_punishment_method,
+			   praise_punishment_money,sign_employee_id,record_type,ei.employee_num,ei.job_level_id,user_name,erp.post_id,erp.organization_name,
+			   erp.post_name,erp.job_grade_name,erp.job_level_name,erp.praise_organization_name
+		  FROM employee_reward_punishment erp,employee_info ei 
+		 WHERE erp.employee_id = ei.employee_id
+		   AND erp.employee_id = #{employeeId}
+		   AND erp.record_id = #{recordId}
+	</select>
+	
+	<!-- function : 修改 -->
+	<update id="updateEmployeeRewardPunishmentById" parameterType="EmployeeRewardPunishment">
+		UPDATE employee_reward_punishment 
+		   SET cause_date = #{causeDate},praise_punishment_desc = #{praisePunishmentDesc},record_date = #{recordDate},praise_punishment_method  = #{praisePunishmentMethod},praise_organization_name = #{praiseOrganizationName},
+		       praise_punishment_money =#{praisePunishmentMoney},sign_employee_id = #{signEmployeeId} 
+		 WHERE record_id= #{recordId}
+	</update>
+	
+	<!-- function : 按照signName 查找 employee_id -->
+	<select id="getEmployeeIdByName" resultType="int">
+		SELECT employee_id FROM employee_info WHERE user_name = #{signName}
+	</select>
+	
+	<!-- function : 删除 -->
+	<delete id="deleteEmployeeRewardPunishment" parameterType="int">
+		DELETE FROM employee_reward_punishment WHERE record_id = #{recordId}
+	</delete>
+	
+	<!-- function : 条件搜索 -->
+	<select id="searchEmployeeRewardPunishment" resultMap="employeeRewardPunishmentMap" parameterType="EmployeeRewardPunishment">
+		SELECT record_id,erp.employee_id,record_id,cause_date,praise_punishment_desc,erp.organization_id,record_date,praise_punishment_method,
+			   praise_punishment_money,sign_employee_id,record_type,ei.employee_num,ei.job_level_id,user_name,erp.post_id,erp.organization_name,
+			   erp.post_name,erp.job_grade_name,erp.job_level_name
+		  FROM employee_reward_punishment erp,employee_info ei 
+		 WHERE erp.employee_id = ei.employee_id
+		 <if test="causeDateStart !='' and causeDateStart!=null and causeDateEnd !='' and causeDateEnd !=null ">
+		   AND cause_date BETWEEN '${causeDateStart}' AND '${causeDateEnd}'
+		 </if>
+		 <if test="recordType !='' and recordType != null">
+		   AND record_type = #{recordType}
+		 </if>
+		 <if test="praisePunishmentMethod !='' and praisePunishmentMethod != null">
+		   AND praise_punishment_method = #{praisePunishmentMethod}
+		 </if>
+		 <if test="organizationName !='' and organizationName !=null">
+		  AND erp.organization_name = #{organizationName}
+		 </if>
+		 <if test="idOrName !='' and idOrName !=null">
+		  AND (ei.employee_num = #{idOrName} OR ei.user_name = #{idOrName})
+		 </if>
+	 ORDER BY record_id DESC
+		LIMIT ${Limit}	
+	</select>
+	
+	<!-- function : 条件查询统计 -->
+	<select id="countSearchEmployeeRewardPunishment" resultType="int" parameterType="EmployeeRewardPunishment">
+		SELECT COUNT(*)
+		  FROM employee_reward_punishment erp,employee_info ei 
+		 WHERE erp.employee_id = ei.employee_id
+		 <if test="causeDateStart !='' and causeDateStart!=null and causeDateEnd !='' and causeDateEnd !=null ">
+		   AND cause_date BETWEEN '${causeDateStart}' AND '${causeDateEnd}'
+		 </if>
+		 <if test="recordType !='' and recordType != null">
+		   AND record_type = #{recordType}
+		 </if>
+		 <if test="praisePunishmentMethod !='' and praisePunishmentMethod != null">
+		   AND praise_punishment_method = #{praisePunishmentMethod}
+		 </if>
+		 <if test="organizationName !='' and organizationName !=null">
+		   AND erp.organization_name = #{organizationName}
+		 </if>
+		 <if test="idOrName !='' and idOrName !=null">
+		   AND (ei.employee_num = #{idOrName} OR ei.user_name = #{idOrName})
+		 </if>
+	</select>
+	
+	<!-- function : 新增 -->
+	<select id="insertEmployeeRewardPunishment" parameterType="EmployeeRewardPunishment">
+  INSERT INTO employee_reward_punishment(company_id,employee_id,organization_id,organization_name,post_id,post_name,job_grade_id,
+										 job_grade_name,job_level_id,job_level_name,record_type,cause_date,praise_punishment_desc,record_date,
+										 praise_punishment_method,praise_organization_id,praise_organization_name,praise_punishment_money,
+									     sign_employee_id)
+			                      VALUES(#{companyId},#{employeeId},#{organizationId},#{organizationName},#{postId},#{postName},#{jobGradeId},
+			                             #{jobGradeName},#{jobLevelId},#{jobLevelName},#{recordType},#{causeDate},#{praisePunishmentDesc},#{recordDate},
+			                             #{praisePunishmentMethod},#{praiseOrganizationId},#{praiseOrganizationName},#{praisePunishmentMoney},
+			                             #{signEmployeeId}
+			                             )
+	</select>
+	
+	<!-- function : 按照EmployeeNum查找employeeInfo -->
+	<select id="getEmployeeInfoByEmployeeNum" resultMap="EmployeeInfoMap">
+		SELECT company_id,employee_id,organization_id,organization_name,post_id,post_name,job_grade_id,job_grade_name,job_level_id,job_level_name 
+		  FROM employee_info WHERE employee_num = #{employeeNum}
+	</select>
+	<!-- Liwj Code Over -->
+   <!-- Liwj End -->
+   
+   
+   <!-- SQL CODE BY Zhenglh -->
+   	<!-- 查询奖惩根据ID 多条件 分页 -->
+   	<select id="searchUserPunishmentListById" resultMap="employeeRewardPunishmentMap" parameterType="map">
+		SELECT record_id,erp.employee_id,record_id,cause_date,praise_punishment_desc,erp.organization_id,record_date,praise_punishment_method,
+			   praise_punishment_money,sign_employee_id,record_type,ei.employee_num,ei.job_level_id,user_name,erp.post_id,erp.organization_name,
+			   erp.post_name,erp.job_grade_name,erp.job_level_name
+		  FROM employee_reward_punishment erp,employee_info ei 
+		 WHERE erp.employee_id = ei.employee_id
+		   AND ei.employee_id=#{userId}
+		 <if test="startTime !='' and startTime and endTime !='' and endTime !=null ">
+		   AND cause_date BETWEEN '${startTime}' AND '${endTime}'
+		 </if>
+		 <if test="recordType !='' and recordType != null">
+		   AND record_type = #{recordType}
+		 </if>
+	 ORDER BY record_id DESC
+		LIMIT ${limit}	
+	</select>
+	
+	<!-- 查询奖惩根据ID 多条件 分页 总记录-->
+	<select id="searchUserPunishmentListCountById" resultType="int" parameterType="map">
+		SELECT COUNT(*)
+		  FROM employee_reward_punishment erp,employee_info ei 
+		 WHERE erp.employee_id = ei.employee_id
+		   AND ei.employee_id=#{userId}
+		 <if test="startTime !='' and startTime and endTime !='' and endTime !=null ">
+		   AND cause_date BETWEEN '${startTime}' AND '${endTime}'
+		 </if>
+		 <if test="recordType !='' and recordType != null">
+		   AND record_type = #{recordType}
+		 </if>
+	</select>
+   <!-- SQL CODE BY Zhenglh --> 
+</mapper>

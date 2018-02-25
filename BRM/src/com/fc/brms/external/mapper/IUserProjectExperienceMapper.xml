@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.brms.external.mapper.IUserProjectExperienceMapper">
+	<resultMap id="UserProjectExperienceMap" type="UserProjectExperience">
+		<result property="projectId" column="project_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="projectDesc" column="project_desc"/>
+	</resultMap>
+	
+	
+	<!-- SQL Code By Zhenglh Start -->
+	
+	<!-- 根据ID查看用户项目经验列表 -->
+	<select id="getUserProjectById" parameterType="map" resultMap="UserProjectExperienceMap">
+		SELECT project_id,user_id,project_desc
+		  FROM user_project_experience
+		 WHERE user_id=#{userId}
+		 LIMIT ${limit}
+	</select>
+	
+	<!-- 根据ID查看用户项目经验列表 总记录数-->
+	<select id="getUserProjectCountById" parameterType="int" resultType="int">
+		SELECT COUNT(1) FROM user_project_experience WHERE user_id=#{userId}
+	</select>
+	
+	<!-- SQL Code By Zhenglh End -->
+</mapper>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fc.brms.broker.mapper.IExamPapersMapper">
+    <resultMap id="questionPaperEmployeeAnswerMap" type="QuestionPaperEmployeeAnswer">
+		<result property="id" column="id"/>
+		<result property="visitorId" column="visitor_id"/>
+		<result property="testId" column="test_id"/>
+		<result property="questionId" column="question_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="answerContent" column="answer_content"/>
+		<result property="isRight" column="is_right"/>
+		<result property="score" column="score"/>
+		<result property="answerTime" column="answer_time"/>
+		<result property="hostIp" column="host_ip"/>
+	</resultMap>
+	
+	<resultMap id="questionPapersEmployeesMap" type="QuestionPapersEmployees">
+		<result property="id" column="id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="testId" column="test_id"/>
+		<result property="visitorId" column="visitor_id"/>
+		<result property="isSubmit" column="is_submit"/>
+		<result property="submitTime" column="submit_time"/>
+		<result property="score" column="score"/>
+		<result property="isAvailabe" column="is_availabe"/>
+	</resultMap>
+	
+	<resultMap id="questionPapersDetailMap" type="QuestionPapersDetail">
+		<result property="id" column="id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="paperId" column="paper_id"/>
+		<result property="questionId" column="question_id"/>
+		<result property="questionPoints" column="question_points"/>
+		<result property="questionOrder" column="question_order"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+	</resultMap>
+
+ <!-- code gonghongjun statr -->
+ <!-- 增加员工考试问题记录 -->
+ <insert id="saveQuestionPaperEmployeeAnswer">
+   INSERT INTO question_paper_employee_answer
+               (visitor_id,test_id,question_id,company_id,answer_content,is_right,score,answer_time,host_ip)
+        VALUES (#{visitorId},#{testId},#{questionId},#{companyId},#{answerContent},#{isRight},#{score},#{answerTime},#{hostIp});
+ 
+ </insert>
+ <!-- 更改员工考试问题记录 -->
+ <update id="updateQuestionPaperEmployeeAnswer">
+   UPDATE fcbrm.question_paper_employee_answer 
+      SET answer_content=#{answerContent},answer_time =#{answerTime},is_right=#{isRight} 
+    WHERE visitor_id = #{visitorId}
+      AND test_id=#{testId}
+      AND question_id=#{questionId} 
+ </update> 
+ 
+ <!-- 查询员工考试问题记录 -->
+ <select id="findQuestionPaperEmployeeAnswer" resultMap="questionPaperEmployeeAnswerMap">
+ SELECT id,visitor_id,test_id,question_id,company_id,answer_content,is_right,score,answer_time,host_ip
+   FROM question_paper_employee_answer
+  WHERE test_id=#{testId}
+    AND question_id=#{questionId}
+    AND visitor_id=#{visitorId}
+ </select>
+ 
+ <!-- 查询员工考试问题记录 -->
+ <select id="findQuestionPaperEmployeeAnswerCon" resultMap="questionPaperEmployeeAnswerMap">
+ SELECT id,visitor_id,test_id,question_id,company_id,answer_content,is_right,score,answer_time,host_ip
+   FROM question_paper_employee_answer
+  WHERE test_id=#{testId}
+    AND visitor_id=#{visitorId}
+ </select>
+ 
+ <!-- 查询调查活动的人员  -->
+ <select id="findQuestionPapersEmployees" resultMap="questionPapersEmployeesMap">
+   SELECT id,company_id,test_id,visitor_id,is_submit,submit_time,score,is_availabe
+     FROM question_papers_employees
+    WHERE test_id=#{testId}
+      AND visitor_id=#{visitorId}
+ </select>
+ 
+ <select id="findQuestionPapersDetail" resultMap="questionPapersDetailMap">
+     SELECT id,company_id,paper_id,question_id,question_points,question_order,create_time,create_user,last_update_time,last_update_user
+	   FROM Question_papers_detail
+      WHERE paper_id=#{paperId}
+        AND question_id=#{questionId}
+ 
+ </select>
+ 
+<update id="updateQuestionPapersEmployees">
+ UPDATE question_papers_employees
+    SET is_submit = #{isSubmit},submit_time = now(),score = #{score},is_availabe = #{isAvailabe}
+  WHERE test_id=#{testId}
+    AND visitor_id=#{visitorId}
+</update>
+ 
+ <!-- 根据qeustiongtype取总题数 -->
+ <select id="findQuestionTypeCount" resultType="int">
+   SELECT COUNT(*)  
+     FROM question_papers_detail qpd,
+          question_library ql
+   WHERE ql.question_id=qpd.question_id
+     AND qpd.paper_id=#{paperId}
+    AND ql.question_type=#{questionType}
+ </select>
+ 
+ <!-- 根据qeustiongtype取总分数 -->
+ <select id="findQuestionPointsCount" resultType="int">
+   SELECT SUM(qpd.question_points)  
+     FROM question_papers_detail qpd,
+          question_library ql
+    WHERE ql.question_id=qpd.question_id
+      AND qpd.paper_id=#{paperId}
+      AND ql.question_type=#{questionType}
+ </select>
+ 
+ <!-- code gonghongjun end -->
+	
+</mapper>

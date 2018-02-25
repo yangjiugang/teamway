@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fc.brms.echelon.mapper.IBrokerEchelonMapper">
+	
+	<resultMap id="echelonEmployeeInfo" type="EmployeeInfo">
+		<result property="employeeId" column="employee_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="employeeNum" column="employee_num"/>
+		<result property="englishName" column="english_name"/>
+		<result property="userName" column="user_name"/>
+		<result property="userSex" column="user_sex"/>
+		<result property="userBirthday" column="user_birthday"/>
+		<result property="telephone" column="telephone"/>
+		<result property="officePhone" column="office_phone"/>
+		<result property="enterpriseMail" column="enterprise_mail"/>
+		<result property="photoPath" column="photo_path"/>
+		<result property="highestEducation" column="highest_education"/>
+		<result property="graduateSchool" column="graduate_school"/>
+		<result property="areaId" column="area_id"/>
+		<result property="hkPlace" column="hk_place"/>
+		<result property="socialSecurityNum" column="social_security_num"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="organizationName" column="organization_name"/>
+		<result property="postId" column="post_id"/>
+		<result property="postName" column="post_name"/>
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="jobGradeName" column="job_grade_name"/>
+		<result property="jobLevelId" column="job_level_id"/>
+		<result property="jobLevelName" column="job_level_name"/>
+		<result property="salaryLevelId" column="salary_level_id"/>
+		<result property="salaryLevelOrder" column="salary_level_order"/>
+		<result property="salaryTotal" column="salary_total"/>
+		<result property="structureType" column="structure_type"/>
+		<result property="socialSecurityId" column="social_security_id"/>
+		<result property="applyDate" column="apply_date"/>
+		<result property="isChange" column="is_change"/>
+		<result property="fpsgPost" column="fpsg_post"/>
+		<result property="entryDate" column="entry_date"/>
+		<result property="turnoverDate" column="turnover_date"/>
+		<result property="turnoverCause" column="turnover_cause"/>
+		<result property="submitId" column="submit_id"/>
+		<result property="bankId" column="bank_id"/>
+		<result property="bankNum" column="bank_num"/>
+		<result property="trainingCnt" column="training_cnt"/>
+		<result property="contactCnt" column="contact_cnt"/>
+		<result property="isConsultant" column="is_consultant"/>
+		<result property="lastContactTime" column="last_contact_time"/>
+		<result property="lastContactEmployee" column="last_contact_employee"/>
+		<result property="mainContactCnt" column="main_contact_cnt"/>
+		<result property="lastMainContactTime" column="last_main_contact_time"/>
+		<result property="lastMainContactEmployee" column="last_main_contact_employee"/>
+		<result property="fpsgTime" column="fpsg_time"/>
+	</resultMap>
+	
+	<!-- add SQL 覃启轩  Start -->
+	<!-- 查询已加入人才梯队的员工信息总记录数 -->
+	<select id="queryEchelonEmployeeCount" resultType="int" parameterType="Map">
+	
+		SELECT COUNT(*)
+		  FROM employee_info
+		<![CDATA[
+         WHERE fpsg_post <> 0
+        ]]>
+        <if test="null != startTime and null != endTime and '' != startTime and '' != endTime">
+           AND fpsg_time BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="null != keyWord">
+           AND (employee_num LIKE '%${keyWord}%' OR user_name LIKE '%${keyWord}%')
+        </if>
+        <if test="null != orgClass and '' != orgClass">
+           AND organization_id=#{orgClass}
+        </if>
+	</select>
+	
+	<!-- 查询已加入人才梯队的员工信息 -->
+	<select id="queryEchelonEmployeeList" resultMap="echelonEmployeeInfo" parameterType="Map">
+		SELECT employee_id,user_id,company_id,employee_num,english_name,user_name,user_sex,user_birthday,telephone,
+		       office_phone,enterprise_mail,photo_path,highest_education,graduate_school,area_id,hk_place,social_security_num,
+		       organization_id,organization_name,post_id,post_name,job_grade_id,job_grade_name,job_level_id,job_level_name,
+		       salary_level_id,salary_level_order,salary_total,structure_type,social_security_id,apply_date,is_change,fpsg_post,
+		       entry_date,turnover_date,turnover_cause,submit_id,bank_id,bank_num,training_cnt,contact_cnt,is_consultant,last_contact_time,
+		       last_contact_employee,main_contact_cnt,last_main_contact_time,last_main_contact_employee,fpsg_time
+		  FROM employee_info
+		<![CDATA[
+         WHERE fpsg_post <>0
+        ]]>
+        <if test="null != startTime and null != endTime and '' != startTime and '' != endTime">
+           AND fpsg_time BETWEEN #{startTime} AND #{endTime}
+        </if>
+        <if test="null != keyWord">
+           AND (employee_num LIKE '%${keyWord}%' OR user_name LIKE '%${keyWord}%')
+        </if>
+        <if test="null != orgClass and '' != orgClass">
+           AND organization_id=#{orgClass}
+        </if>
+         LIMIT ${limit}
+	</select>
+	
+	<!-- 移除梯队 -->
+	<update id="removeEchelon" parameterType="Map">
+		UPDATE employee_info
+           SET fpsg_post='0',fpsg_time='0000-00-00 00:00:00' 
+         WHERE employee_id IN
+         <foreach collection="employeeIdes" item="item" open="(" separator="," close=")">
+         	   #{item}
+		 </foreach>
+	</update>
+	<!-- add SQL 覃启轩  End -->
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:b="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+	<!-- 
+    <global-method-security pre-post-annotations="enabled">
+        <expression-handler ref="expressionHandler"/>
+    </global-method-security>
+	  -->
+	  
+	  
+    <http auto-config="true">
+        <intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <!-- <intercept-url pattern="/investigationManagement" access="ROLE_0"/> -->
+
+		<session-management invalid-session-url="/"> <concurrency-control session-registry-ref="sessionRegistry" error-if-maximum-exceeded="false" max-sessions="1" expired-url="/sessionExpired" /></session-management>
+ 		
+        <form-login login-page="/login" default-target-url="/authorize" authentication-failure-url="/login?login_error=1"/>
+        <http-basic/>
+        <logout invalidate-session="true" logout-url="/j_spring_security_logout" success-handler-ref="myLogoutSuccessHandler" /> 
+        <remember-me  key="BRMAppKey"/>
+    </http>
+    
+    <authentication-manager>
+        <authentication-provider>
+           <password-encoder hash="md5"/>
+           <jdbc-user-service data-source-ref="boneCPDataSource"
+           	users-by-username-query="select visitor_name, visitor_password,user_status from fc_sys_visitor where visitor_name=?"
+           	authorities-by-username-query="select visitor_name, fsr.role_code from fc_sys_visitor fsv, fc_sys_visitor_role fsvr, fc_sys_role fsr where fsv.visitor_id = fsvr.visitor_id and fsvr.role_id = fsr.role_id and fsv.visitor_name=?"/>		
+        </authentication-provider>
+    </authentication-manager>
+    
+    
+    
+    <b:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+	
+    <b:bean id="loggerListener" class="org.springframework.security.authentication.event.LoggerListener"/>
+    
+    <b:bean id="myLogoutSuccessHandler" class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">     
+    	<b:property name="defaultTargetUrl" value="/" />     
+    	<b:property name="alwaysUseDefaultTargetUrl" value="true" />
+    </b:bean> 
+    
+</b:beans>

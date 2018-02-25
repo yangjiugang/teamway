@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.fc.brms.broker.mapper.ICommunicationManageMapper">
+
+	<resultMap id="employeeTalkRecordMap" type="EmployeeTalkRecord">
+		<result property="talkId" column="talk_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="talkNum" column="talk_num"/>
+		<result property="surveyType" column="survey_type"/>
+		<result property="talkToOrganizationId" column="talk_to_organization_id"/>
+		<result property="talkToOrganizationName" column="talk_to_organization_name"/>
+		<result property="talkToPostId" column="talk_to_post_id"/>
+		<result property="talkToPostName" column="talk_to_post_name"/>
+		<result property="talkToEmployee" column="talk_to_employee"/>
+		<result property="talkToEmployeeNum" column="talk_to_employee_num"/>
+		<result property="talkToEmployeeName" column="talk_to_employee_name"/>
+		<result property="relationships" column="relationships"/>
+		<result property="surveyOrganizationId" column="survey_organization_id"/>
+		<result property="surveyOrganizationName" column="survey_organization_name"/>
+		<result property="surveyPostId" column="survey_post_id"/>
+		<result property="surveyPostName" column="survey_post_name"/>
+		<result property="surveyEmployee" column="survey_employee"/>
+		<result property="surveyEmployeeNum" column="survey_employee_num"/>
+		<result property="surveyEmployeeName" column="survey_employee_name"/>
+		<result property="mainTalkOrganizationId" column="main_talk_organization_id"/>
+		<result property="mainTalkOrganizationName" column="main_talk_organization_name"/>
+		<result property="mainTalkPostId" column="main_talk_post_id"/>
+		<result property="mainTalkPostName" column="main_talk_post_name"/>
+		<result property="mainTalkEmployee" column="main_talk_employee"/>
+		<result property="mainTalkEmployeeNum" column="main_talk_employee_num"/>
+		<result property="mainTalkEmployeeName" column="main_talk_employee_name"/>
+		<result property="planTalkTime" column="plan_talk_time"/>
+		<result property="startTime" column="start_time"/>
+		<result property="endTime" column="end_time"/>
+		<result property="talkType" column="talk_type"/>
+		<result property="talkPlace" column="talk_place"/>
+		<result property="talkEstimate" column="talk_estimate"/>
+		<result property="stableProcess" column="stable_process"/>
+		<result property="createTime" column="create_time"/>
+		
+		<association property="fcSysMsg" column="fc_sys_msg" javaType="com.fc.brms.common.domain.FcSysMsg">
+			<id property="msgId" column="msg_id"/>
+			<result property="companyId" column="company_id"/>
+			<result property="msgType" column="msg_type"/>
+			<result property="msgContent" column="msg_content"/>
+			<result property="receiveEmployeeId" column="receive_employee_id"/>
+			<result property="sendEmployeeId" column="send_employee_id"/>
+			<result property="sendTime" column="send_time"/>
+		</association>
+		
+		<association property="employeeTalkContent" column="employee_talk_content" javaType="com.fc.brms.common.domain.EmployeeTalkContent" >
+			<id property="contentId" column="content_id"/>
+			<result property="talkId" column="talk_id"/>
+			<result property="contentType" column="content_type"/>
+			<result property="content" column="content"/>
+		</association>
+	</resultMap>
+
+	<!-- Create SQL 覃启轩 Start -->
+	<!-- 查询人员约谈记录 -->
+	<select id="queryCommHistory" parameterType="int" resultMap="employeeTalkRecordMap">
+		SELECT talk_id,talk_num,survey_type,talk_to_organization_id,talk_to_organization_name,talk_to_post_id,talk_to_post_name,
+			   talk_to_employee,talk_to_employee_num,talk_to_employee_name,relationships,survey_organization_id,survey_organization_name,
+			   survey_post_id,survey_post_name,survey_employee,survey_employee_num,survey_employee_name,main_talk_organization_id,
+			   main_talk_organization_name,main_talk_post_id,main_talk_post_name,main_talk_employee,main_talk_employee_num,main_talk_employee_name,
+			   plan_talk_time,start_time,end_time,talk_type,talk_place,talk_estimate,stable_process,create_time
+          FROM employee_talk_record
+         WHERE (talk_to_employee=#{employeeId} OR survey_employee=#{employeeId} OR main_talk_employee=#{employeeId})
+	</select>
+	
+	<!-- 根据ID查询约谈记录 -->
+	<select id="getTalkRecordById" parameterType="int" resultMap="employeeTalkRecordMap">
+		SELECT talk_id,talk_num,survey_type,talk_to_organization_id,talk_to_organization_name,talk_to_post_id,talk_to_post_name,
+			   talk_to_employee,talk_to_employee_num,talk_to_employee_name,relationships,survey_organization_id,survey_organization_name,
+			   survey_post_id,survey_post_name,survey_employee,survey_employee_num,survey_employee_name,main_talk_organization_id,
+			   main_talk_organization_name,main_talk_post_id,main_talk_post_name,main_talk_employee,main_talk_employee_num,main_talk_employee_name,
+			   plan_talk_time,start_time,end_time,talk_type,talk_place,talk_estimate,stable_process,create_time
+          FROM employee_talk_record
+         WHERE talk_id=#{talkId}
+	</select>
+	
+	<select id="queryTalkContent" parameterType="int" resultMap="employeeTalkRecordMap">
+		SELECT content_type,content 
+		  FROM employee_talk_content WHERE talk_id = #{talkId}
+	</select>
+	
+	<!-- 新增约谈记录 -->
+	<insert id="addCommunicationRecord" parameterType="Map" useGeneratedKeys="true" keyProperty="talkId">
+		INSERT INTO employee_talk_record(company_id,talk_num,survey_type,talk_to_organization_id,talk_to_organization_name,
+				                         talk_to_post_id,talk_to_post_name,talk_to_employee,talk_to_employee_name,relationships,
+										 survey_organization_id,survey_organization_name,survey_post_id,survey_post_name,survey_employee,
+				                         survey_employee_name,main_talk_organization_id,main_talk_organization_name,main_talk_post_id,
+				                         main_talk_post_name,main_talk_employee,main_talk_employee_name,plan_talk_time,start_time,
+				                         end_time,talk_type,talk_place,talk_estimate,stable_process,create_time,survey_employee_num,
+				                         main_talk_employee_num)
+	    VALUES(#{companyId},#{talkNum},#{surveyType},#{talkToOrganizationId},#{talkToOrganizationName},
+			   #{talkToPostId},#{talkToPostName},#{talkToEmployee},#{talkToEmployeeName},#{relationships},
+			   #{surveyOrganizationId},#{surveyOrganizationName},#{surveyPostId},#{surveyPostName},#{surveyEmployee},
+			   #{surveyEmployeeName},#{mainTalkOrganizationId},#{mainTalkOrganizationName},#{mainTalkPostId},
+			   #{mainTalkPostName},#{mainTalkEmployee},#{mainTalkEmployeeName},#{planTalkTime},#{startTime},
+			   #{endTime},#{talkType},#{talkPlace},#{talkEstimate},#{stableProcess},#{createTime},#{surveyEmployeeNum},#{mainTalkEmployeeNum})
+	</insert>
+	
+	<!-- 新增谈话内容 -->
+	<insert id="addEmployeeTalkContent" parameterType="Map">
+		INSERT INTO employee_talk_content(talk_id,content_type,content)
+		                           VALUES(#{talkId},#{contentType},#{content})
+	</insert>
+	
+	<!-- 查询约谈信息总记录数 -->
+	<select id="queryCommunicationActivtyCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+          FROM employee_talk_record
+		 WHERE 1=1
+		 <if test="null != commStartTime and null != commEndTime">
+		   AND end_time BETWEEN #{commStartTime} AND #{commEndTime}
+		 </if>
+		 <if test="null != orgId and '' != orgId">
+		   AND (main_talk_organization_id=#{orgId} or survey_organization_id=#{orgId} or talk_to_organization_id=#{orgId})
+		 </if>
+		 <if test="null != postId and '' != postId">
+		   AND (main_talk_post_id=#{postId} or survey_post_id=#{postId} or talk_to_post_id=#{postId})
+		 </if>
+		 <if test="null != keyWord">
+		   AND (main_talk_employee_num like '%${keyWord}%' or survey_employee_num like '%${keyWord}%' or talk_to_employee_num like '%${keyWord}%' or
+		        main_talk_employee_name like '%${keyWord}%' or survey_employee_name like '%${keyWord}%' or talk_to_employee_name like '%${keyWord}%')
+		 </if>
+		 <if test="null != startTimeScope and '' != startTimeScope and null != endTimeScope and '' != endTimeScope">
+		   AND end_time BETWEEN #{startTimeScope} AND #{endTimeScope}
+		 </if>
+		 <if test="null != yesterDayTime and '' != yesterDayTime">
+		   AND end_time BETWEEN #{yesterDayTime} AND #{yesterDayTime}
+		 </if>
+	</select>
+	
+	<!-- 查询约谈信息列表 -->
+	<select id="queryCommunicationActivtyList" parameterType="Map" resultMap="employeeTalkRecordMap">
+		SELECT talk_id,talk_num,survey_type,talk_to_organization_id,talk_to_organization_name,talk_to_post_id,talk_to_post_name,
+			   talk_to_employee,talk_to_employee_num,talk_to_employee_name,relationships,survey_organization_id,survey_organization_name,
+			   survey_post_id,survey_post_name,survey_employee,survey_employee_num,survey_employee_name,main_talk_organization_id,
+			   main_talk_organization_name,main_talk_post_id,main_talk_post_name,main_talk_employee,main_talk_employee_num,main_talk_employee_name,
+			   plan_talk_time,start_time,end_time,talk_type,talk_place,talk_estimate,stable_process,create_time
+          FROM employee_talk_record
+		 WHERE 1=1
+		 <if test="null != commStartTime and null != commEndTime">
+		   AND end_time BETWEEN #{commStartTime} AND #{commEndTime}
+		 </if>
+		 <if test="null != orgId and '' != orgId">
+		   AND (main_talk_organization_id=#{orgId} or survey_organization_id=#{orgId} or talk_to_organization_id=#{orgId})
+		 </if>
+		 <if test="null != postId and '' != postId">
+		   AND (main_talk_post_id=#{postId} or survey_post_id=#{postId} or talk_to_post_id=#{postId})
+		 </if>
+		 <if test="null != keyWord">
+		   AND (main_talk_employee_num like '%${keyWord}%' or survey_employee_num like '%${keyWord}%' or talk_to_employee_num like '%${keyWord}%' or
+		        main_talk_employee_name like '%${keyWord}%' or survey_employee_name like '%${keyWord}%' or talk_to_employee_name like '%${keyWord}%')
+		 </if>
+		 <if test="null != startTimeScope and '' != startTimeScope and null != endTimeScope and '' != endTimeScope">
+		   AND end_time BETWEEN #{startTimeScope} AND #{endTimeScope}
+		 </if>
+		 <if test="null != yesterDayTime and '' != yesterDayTime">
+		   AND end_time BETWEEN #{yesterDayTime} AND #{yesterDayTime}
+		 </if>
+		 LIMIT ${limit}
+	</select>
+	<!-- Create SQL 覃启轩 End -->
+
+</mapper>

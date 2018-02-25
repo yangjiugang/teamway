@@ -1,0 +1,23 @@
+/* css3files.com | Christian Krammer
+Contact: ck@css3files.com
+
+General IE styles */
+
+textarea, input[type=text] {width: 74.6%}
+
+html {font-size: 68%}
+
+body {background: url("../images/bg_site.gif")}
+
+.wrapper {
+	min-width: 900px;
+	max-width: 1100px;
+	border: 0 solid #898989;
+	border-width: 0 8px; 
+	margin: 0 auto;
+	background: #fff;
+}
+
+.content_cat .val li b {height: 1.25em}
+
+.ex a.off, .ex a.st {display: none}

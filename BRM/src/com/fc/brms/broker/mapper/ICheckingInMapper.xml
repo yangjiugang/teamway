@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Liwj -->
+<mapper namespace="com.fc.brms.broker.mapper.ICheckingInMapper">
+
+	<resultMap type="EmployeeCheckingIn" id="EmployeeCheckingInMap">
+		<result property="employeeId" column="employee_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="startTime" column="start_time"/>
+		<result property="endTime" column="end_time"/>
+		<result property="checkingType" column="checking_type"/>
+		<result property="cause" column="cause"/>
+		<result property="duration" column="duration"/>
+		<result property="checkingStatus" column="checking_status"/>
+		
+		<result property="comeLateCNT" column="comeLateCNT"/>
+		<result property="leaveEarlyCNT" column="leaveEarlyCNT"/>
+		<result property="absentCNT" column="absentCNT"/>
+		<result property="leaveCNT" column="leaveCNT"/>
+		<result property="sickLeaveCNT" column="sickLeaveCNT"/>
+		<result property="marriageCNT" column="marriageCNT"/>
+		<result property="maternityLeaveCNT" column="maternityLeaveCNT"/>
+		<result property="funeralLeaveCNT" column="funeralLeaveCNT"/>
+		<result property="homeLeaveCNT" column="homeLeaveCNT"/>
+		<result property="annualLeaveCNT" column="annualLeaveCNT"/>
+		<result property="extraWorkCNT" column="extraWorkCNT"/>
+		<association property="employeeInfo" column="employee_id" javaType="EmployeeInfo">
+			<id property="employeeId" column="employee_id"/>
+			<result property="userId" column="user_id"/>
+			<result property="employeeNum" column="employee_num"/>
+			<result property="userName" column="user_name"/>
+			<result property="postId" column="post_id"/>
+			<result property="postName" column="post_name"/>
+			<result property="jobLevelId" column="job_level_id"/>
+			<result property="organizationName" column="organization_name"/>
+		</association>
+	</resultMap>
+
+	<resultMap type="EmployeeInfo" id="EmployeeInfoMap">
+		<result property="employeeId" column="employee_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="employeeNum" column="employee_num"/>
+		<result property="englishName" column="english_name"/>
+		<result property="userName" column="user_name"/>
+		<result property="userSex" column="user_sex"/>
+		<result property="userBirthday" column="user_birthday"/>
+		<result property="telephone" column="telephone"/>
+		<result property="officePhone" column="office_phone"/>
+		<result property="enterpriseMail" column="enterprise_mail"/>
+		<result property="photoPath" column="photo_path"/>
+		<result property="highestEducation" column="highest_education"/>
+		<result property="graduateSchool" column="graduate_school"/>
+		<result property="areaId" column="area_id"/>
+		<result property="hkPlace" column="hk_place"/>
+		<result property="socialSecurityNum" column="social_security_num"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="organizationName" column="organization_name"/>
+		<result property="postId" column="post_id"/>
+		<result property="postName" column="post_name"/>
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="jobGradeName" column="job_grade_name"/>
+		<result property="jobLevelId" column="job_level_id"/>
+		<result property="jobLevelName" column="job_level_name"/>
+		<result property="salaryLevelId" column="salary_level_id"/>
+		<result property="salaryLevelOrder" column="salary_level_order"/>
+		<result property="salaryTotal" column="salary_total"/>
+		<result property="structureType" column="structure_type"/>
+		<result property="socialSecurityId" column="social_security_id"/>
+		<result property="applyDate" column="apply_date"/>
+		<result property="isChange" column="is_change"/>
+		<result property="fpsgPost" column="fpsg_post"/>
+		<result property="entryDate" column="entry_date"/>
+		<result property="turnoverDate" column="turnover_date"/>
+		<result property="turnoverCause" column="turnover_cause"/>
+		<result property="submitId" column="submit_id"/>
+		<result property="bankId" column="bank_id"/>
+		<result property="bankNum" column="bank_num"/>
+		<result property="trainingCnt" column="training_cnt"/>
+		<result property="contactCnt" column="contact_cnt"/>
+		<result property="isConsultant" column="is_consultant"/>
+	</resultMap>
+	
+	<!-- under code by Liwj -->
+	<!-- function :  获得所有考勤记录(条件查询)-->
+	<select id="searchEmployeeCheckingIn" parameterType="EmployeeCheckingIn" resultMap="EmployeeCheckingInMap">
+		SELECT ei.user_name,ei.employee_num,ei.organization_name,ei.post_name,eci.employee_id,
+		   SUM(IF(checking_type=0,1,0))AS comeLateCNT,
+		   SUM(IF(checking_type=1,1,0))AS leaveEarlyCNT,
+		   SUM(IF(checking_type=2,eci.duration,0))AS absentCNT,
+		   SUM(IF(checking_type=3,eci.duration,0))AS leaveCNT,
+		   SUM(IF(checking_type=4,eci.duration,0))AS sickLeaveCNT,
+		   SUM(IF(checking_type=5,eci.duration,0))AS marriageCNT,
+		   SUM(IF(checking_type=5,eci.duration,0))AS maternityLeaveCNT,
+		   SUM(IF(checking_type=5,eci.duration,0))AS funeralLeaveCNT,
+		   SUM(IF(checking_type=5,eci.duration,0))AS homeLeaveCNT,
+		   SUM(IF(checking_type=5,eci.duration,0))AS annualLeaveCNT,
+		   SUM(IF(checking_type=5,eci.duration,0))AS extraWorkCNT
+		  FROM employee_checking_in eci,employee_info ei 
+         WHERE eci.employee_id = ei.employee_id
+           AND eci.checking_status=0
+          <if test="organizationName !=null and organizationName != ''">
+           AND ei.organization_name = #{organizationName}
+         </if>
+         <if test="idOrName !='' and idOrName !=null">
+           AND (ei.user_name=#{idOrName} OR ei.employee_num=#{idOrName})
+         </if>
+         <if test="searchTimeStart !='' and searchTimeStart !=null and searchTimeEnd !='' and searchTimeEnd != null">
+           AND start_time BETWEEN '${searchTimeStart}' AND '${searchTimeEnd}'
+         </if>
+	  GROUP BY ei.user_name,ei.employee_num,ei.organization_name,ei.post_name,eci.employee_id
+	  ORDER BY start_time DESC
+	  LIMIT ${Limit}
+	</select>
+   
+   <!-- function : 统计记录数 -->
+   <select id="countEmployeeCheckingIn" parameterType="EmployeeCheckingIn" resultType="int">
+   	SELECT COUNT(*) FROM (SELECT ei.user_name,ei.employee_num,ei.organization_name,ei.post_name,eci.employee_id,
+		   SUM(IF(checking_type=0,1,0))AS comeLateCNT,
+		   SUM(IF(checking_type=1,1,0))AS leaveEarlyCNT,
+		   SUM(IF(checking_type=2,eci.duration,0))AS absentCNT,
+		   SUM(IF(checking_type=3,eci.duration,0))AS leaveCNT,
+		   SUM(IF(checking_type=4,eci.duration,0))AS sickLeaveCNT,
+		   SUM(IF(checking_type=5,eci.duration,0))AS marriageCNT,
+		   SUM(IF(checking_type=5,eci.duration,0))AS maternityLeaveCNT,
+		   SUM(IF(checking_type=5,eci.duration,0))AS funeralLeaveCNT,
+		   SUM(IF(checking_type=5,eci.duration,0))AS homeLeaveCNT,
+		   SUM(IF(checking_type=5,eci.duration,0))AS annualLeaveCNT,
+		   SUM(IF(checking_type=5,eci.duration,0))AS extraWorkCNT
+		  FROM employee_checking_in eci,employee_info ei 
+         WHERE eci.employee_id = ei.employee_id
+          <if test="organizationName != '' and organizationName !=null">
+           AND ei.organization_name = #{organizationName}
+         </if>
+         <if test="idOrName !='' and idOrName !=null">
+           AND (ei.user_name=#{idOrName} OR ei.employee_num=#{idOrName})
+         </if>
+         <if test="searchTimeStart !='' and searchTimeStart !=null and searchTimeEnd !='' and searchTimeEnd != null">
+           AND start_time BETWEEN '${searchTimeStart}' AND '${searchTimeEnd}'
+         </if> 
+	   GROUP BY ei.user_name,ei.employee_num,ei.organization_name,ei.post_name,eci.employee_id
+	  ) AS a
+   </select>
+   
+   <!-- function : 根据id查找employeeInfo信息 -->
+   <select id="getEmployeeInfoById" resultMap="EmployeeInfoMap">
+   		SELECT employee_id,user_name FROM employee_info WHERE employee_id = #{id}   		
+   </select>
+   
+   <!-- function : 根据id查找employeeCheckingIn -->
+   <select id="getEmployeeCheckingInById" parameterType="EmployeeCheckingIn" resultMap="EmployeeCheckingInMap">
+   		SELECT eci.employee_id,start_time,end_time,checking_type,cause,ei.employee_num ,ei.user_name
+		  FROM employee_checking_in eci,employee_info ei 
+		 WHERE eci.employee_id = ei.employee_id AND checking_status = 0 AND eci.employee_id = ${employeeId}
+		 LIMIT ${Limit}
+   </select>
+   
+   <!-- function : 根据Id统计employeeCheckingIn -->
+   <select id="countEmployeeCheckingInById" parameterType="int" resultType="int">
+   		SELECT COUNT(*)
+		  FROM employee_checking_in eci,employee_info ei 
+		 WHERE eci.employee_id = ei.employee_id AND checking_status = 0 AND eci.employee_id = #{employeeId}
+   </select>
+</mapper>

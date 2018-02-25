@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<!-- changes from the defaults for testing -->
+		<setting name="cacheEnabled" value="false" />
+		<setting name="useGeneratedKeys" value="true" />
+		<setting name="defaultExecutorType" value="REUSE" />
+	</settings>
+	
+	<typeAliases>
+		<!-- yangjg QuestionTest start -->
+		
+		<typeAlias type="com.fc.brms.common.domain.QuestionTest" alias="QuestionTest"/>
+		<typeAlias type="com.fc.brms.common.domain.QuestionTestType" alias="QuestionTestType"/>
+		<typeAlias type="com.fc.brms.common.domain.QuestionPaperType" alias="QuestionPaperType"/>
+		<typeAlias type="com.fc.brms.common.domain.QuestionPapers" alias="QuestionPapers"/>
+		<typeAlias type="com.fc.brms.common.domain.QuestionPapersDetail" alias="QuestionPapersDetail"/>
+		<typeAlias type="com.fc.brms.common.domain.QuestionType" alias="QuestionType"/>
+		<typeAlias type="com.fc.brms.common.domain.QuestionLibrary" alias="QuestionLibrary"/>
+		<typeAlias type="com.fc.brms.common.domain.QuestionDifficultyLevel" alias="QuestionDifficultyLevel"/>
+		
+		<!-- yangjg QuestionTest end  -->
+		
+		<!-- qxqin add xml Start -->
+		<typeAlias alias="EmployeeTransactionInfo" type="com.fc.brms.common.domain.EmployeeTransactionInfo"/>
+		<typeAlias alias="SalarySocialSecuritySusbmit" type="com.fc.brms.common.domain.SalarySocialSecuritySusbmit"/>
+		<typeAlias alias="SalarySocialSecurity" type="com.fc.brms.common.domain.SalarySocialSecurity"/>
+		<typeAlias alias="EmployeeTalkRecord" type="com.fc.brms.common.domain.EmployeeTalkRecord"/>
+		<typeAlias alias="EmployeeTalkContent" type="com.fc.brms.common.domain.EmployeeTalkContent"/>
+		<typeAlias alias="FcSysMsg" type="com.fc.brms.common.domain.FcSysMsg"/>
+		<!-- qxqin add xml End -->
+		
+		
+		<!-- start alias FengH -->		
+			<typeAlias type="com.fc.brms.common.domain.EmployeeFamilyInfo" alias="EmployeeFamilyInfo"/>
+			<typeAlias type="com.fc.brms.common.domain.EmployeeInfo" alias="EmployeeInfo"/>
+			<typeAlias type="com.fc.brms.common.domain.EmployeePushCash" alias="EmployeePushCash"/>
+			<typeAlias type="com.fc.brms.common.domain.CfgJobGrade" alias="CfgJobGrade"/>
+			<typeAlias type="com.fc.brms.common.domain.CfgJobLevel" alias="CfgJobLevel"/>
+		<!-- end alias FengH -->
+		
+		<!-- Start Liwj -->
+			<typeAlias type="com.fc.brms.common.domain.EmployeeRewardPunishment" alias="EmployeeRewardPunishment"/>
+			<typeAlias type="com.fc.brms.common.domain.EmployeeCheckingIn" alias="EmployeeCheckingIn"/>
+		<!-- End Liwj -->
+		
+		<!-- start alias Gaoqf -->
+			<typeAlias type="com.fc.brms.common.domain.CfgOrganization" alias="CfgOrganization"/>
+			<typeAlias type="com.fc.brms.common.domain.CfgPost" alias="CfgPost"/>
+			<typeAlias type="com.fc.brms.common.domain.UserTrackRecord" alias="UserTrackRecord"/>
+			<typeAlias type="com.fc.brms.common.domain.UserResumeBelongto" alias="UserResumeBelongto"/>
+			<typeAlias type="com.fc.brms.common.domain.CfgCompany" alias="CfgCompany"/>
+			<typeAlias type="com.fc.brms.common.domain.FcSysRole" alias="FcSysRole"/>
+			<typeAlias type="com.fc.brms.common.domain.FcSysVisitorRole" alias="FcSysVisitorRole"/>
+			<typeAlias type="com.fc.brms.common.domain.FcSysFunc" alias="FcSysFunc"/>
+			<typeAlias type="com.fc.brms.common.domain.FcSysRoleFunc" alias="FcSysRoleFunc"/>
+		<!-- end alias Gaoqf -->
+		
+		<!-- xml code by zhenglh start -->
+			<typeAlias type="com.fc.brms.common.domain.UserResume" alias="UserResume"/>
+			<typeAlias type="com.fc.brms.common.domain.UserEduInfo" alias="UserEduInfo"/>
+			<typeAlias type="com.fc.brms.common.domain.UserWorkExperience" alias="UserWorkExperience"/>
+			<typeAlias type="com.fc.brms.common.domain.UserProjectExperience" alias="UserProjectExperience"/>
+			<typeAlias type="com.fc.brms.common.domain.UserSkills" alias="UserSkills"/>
+			<typeAlias type="com.fc.brms.common.domain.UserResumeExtend" alias="UserResumeExtend"/>
+			
+			<typeAlias type="com.fc.brms.common.domain.RecruitInterview" alias="RecruitInterview"/>
+			<typeAlias type="com.fc.brms.common.domain.RecruitInterviewProcess" alias="RecruitInterviewProcess"/>
+			<typeAlias type="com.fc.brms.common.domain.UserTrackRecordContent" alias="UserTrackRecordContent"/>
+			<typeAlias type="com.fc.brms.common.domain.RecruitOffer" alias="RecruitOffer"/>
+			
+		<!-- xml code by zhenglh start -->
+		
+		<!-- 招聘任务 邓祥 start -->
+			<typeAlias type="com.fc.brms.common.domain.RecruitTask" alias="RecruitTask"/>
+		<!-- 招聘任务 邓祥 end -->
+		
+		<!-- xml code gonghongjun start -->
+			<typeAlias type="com.fc.brms.common.domain.QuestionPaperEmployeeAnswer" alias="QuestionPaperEmployeeAnswer"/>
+			<typeAlias type="com.fc.brms.common.domain.QuestionPapersEmployees" alias="QuestionPapersEmployees"/>
+		<!-- xml code gonghongjun end -->
+		
+		<!-- code by huangshan start -->
+			<typeAlias type="com.fc.brms.common.domain.TrainingTask" alias="TrainingTask"/>
+			<typeAlias type="com.fc.brms.common.domain.TrainingUsers" alias="TrainingUsers"/>
+			<typeAlias type="com.fc.brms.common.domain.TrainingSchedule" alias="TrainingSchedule"/>
+			<typeAlias type="com.fc.brms.common.domain.TrainingRequirementProcess" alias="TrainingRequirementProcess"/>
+			<typeAlias type="com.fc.brms.common.domain.TrainingRequirement" alias="TrainingRequirement"/>
+			<typeAlias type="com.fc.brms.common.domain.TrainingContentType" alias="TrainingContentType"/>
+			<typeAlias type="com.fc.brms.common.domain.TrainingAttachment" alias="TrainingAttachment"/>
+		<!-- xml code by huangshan start -->
+		
+		<!-- songp start -->
+			<typeAlias type="com.fc.brms.common.domain.FcSysVisitor" alias="FcSysVisitor"/>
+			<typeAlias type="com.fc.brms.common.domain.FcSysFunc" alias="FcSysFunc"/>
+		<!-- songp end -->	
+		
+	</typeAliases>
+</configuration>

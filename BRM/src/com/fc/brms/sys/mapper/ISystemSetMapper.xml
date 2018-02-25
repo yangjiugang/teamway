@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fc.brms.sys.mapper.ISystemSetMapper">
+	<!-- Code By yangjg Start-->
+		<!-- 职系设置开始 -->
+	<!-- 查询职系对应岗位 ,此处返回值的类型设置为cfgPostMap，并且把CfgJobGrade放到cfgPostMap中，否则页面显示一条记录-->
+	<select id="selectJobGrade" resultMap="com.fc.brms.common.mapper.IOrgStructureMapper.cfgPostMap">
+		SELECT cjg.job_grade_id,cjg.job_grade_name,cjg.job_grade_desc,create_time,cp.post_name
+		FROM cfg_job_grade cjg,
+			 cfg_post cp
+		WHERE cjg.job_grade_id = cp.job_grade_id
+		LIMIT ${page.limit} 
+	</select>
+	<!-- 增加职系 -->
+	<insert id="insertJobGrade" parameterType="CfgJobGrade">
+		INSERT INTO cfg_job_grade(job_grade_id,job_grade_no,job_grade_name,job_grade_desc,create_time,create_user,
+			last_update_time,last_update_user,company_id)
+		VALUES(#{jobGradeId},#{jobGradeNo},#{jobGradeName},#{jobGradeDesc},#{createTime},#{createUser},#{lastUpdateTime},
+			#{lastUpdateUser},#{companyId}
+		)
+	</insert>
+	<!-- 删除职系 -->
+	<delete id="deleteJobGrade" parameterType="int">
+		DELETE
+		FROM cfg_job_grade
+		WHERE job_grade_id = #{jobGradeId}
+	</delete>
+	<!-- 修改职系功能 -->
+	<update id="updataJobGrade" parameterType="CfgJobGrade">
+		UPDATE
+			cfg_job_grade
+		SET
+			job_grade_name = #{jobGradeName},
+			job_grade_desc = #{jobGradeDesc},
+			last_update_time = #{lastUpdateTime},
+			last_update_user = #{lastUpdateUser}
+		WHERE job_grade_id = #{jobGradeId}
+	</update>
+	<!-- 根据id查询职系信息 -->
+	<select id="selectJobGradeById" parameterType="int" resultMap="com.fc.brms.common.mapper.IOrgStructureMapper.cfgJobGradeMap">
+		SELECT job_grade_id,job_grade_no,job_grade_name,job_grade_desc,create_time,create_user,company_id
+		FROM cfg_job_grade
+		WHERE job_grade_id=#{jobGradeId}
+	</select>
+	<!-- 查询所有记录 -->
+	<select id="selectJobGradeCount" resultType="int">
+		SELECT COUNT(1) FROM cfg_job_grade cjg,cfg_post cp
+		WHERE cjg.job_grade_id = cp.job_grade_id
+	</select>
+	<!-- 职系设置结束 -->
+	
+	<!-- 职等职级设置开始 -->
+	<!-- 查询职级对应岗位信息 -->
+	<select id="selectJobLevel" resultMap="com.fc.brms.common.mapper.IOrgStructureMapper.cfgPostMap">
+		SELECT cjl.job_level_id,cjl.job_level_name,cjl.job_level_order,cjl.highest_salary_level,cjl.lowest_salary_level,cjg.job_grade_name,cp.post_name
+		FROM cfg_job_grade cjg,
+			 cfg_post cp, 
+			 cfg_job_level cjl,
+			 cfg_post_joblevel cpj
+		WHERE cjg.job_grade_id = cjl.job_grade_id
+		AND  cjl.job_level_id = cpj.job_level_id
+		AND  cpj.post_id = cp.post_id
+		LIMIT ${page.limit}
+	</select>
+	<!-- 查询职级设置所有记录 -->
+	<select id="selectJobLevelCount" resultType="int">
+		SELECT COUNT(1) FROM 
+			 cfg_job_grade cjg,
+			 cfg_post cp, 
+			 cfg_job_level cjl,
+			 cfg_post_joblevel cpj
+		WHERE cjg.job_grade_id = cjl.job_grade_id
+		AND  cjl.job_level_id = cpj.job_level_id
+		AND  cpj.post_id = cp.post_id
+	</select>
+	<!-- 增加职等职级信息 -->
+	<insert id="insertJobLevel" parameterType="CfgJobLevel" useGeneratedKeys="true" keyProperty="jobLevelId">
+		INSERT INTO cfg_job_level(job_level_id,job_level_name,job_level_order,job_grade_id,lowest_salary_level,
+			highest_salary_level,create_time,create_user,last_update_time,last_update_user,company_id
+		)
+		VALUES(#{jobLevelId},#{jobLevelName},#{jobLevelOrder},#{jobGradeId},#{lowestSalaryLevel},
+			#{highestSalaryLevel},#{createTime},#{createUser},#{lastUpdateTime},#{lastUpdateUser},#{companyId}
+		)
+	</insert>
+	<!-- 删除职等职级信息 -->
+	<delete id="deleteJobLevel" parameterType="int">
+		DELETE
+		FROM cfg_job_level
+		WHERE job_level_id = #{jobLevelId}
+	</delete>
+	<!-- 修改职等职级信息 -->
+	<update id="updataJobLevel" parameterType="CfgJobLevel">
+		UPDATE
+			cfg_job_level
+		SET
+			job_level_name = #{jobLevelName},
+			job_level_order = #{jobLevelOrder},
+			job_grade_id = #{jobGradeId},
+			lowest_salary_level = #{lowestSalaryLevel},
+			highest_salary_level = #{highestSalaryLevel},
+			last_update_time = #{lastUpdateTime},
+			last_update_user = #{lastUpdateUser},
+		WHERE job_level_id =#{jobLevelId}
+	</update>
+	<!-- 根据id查询职等职级信息 -->
+	<select id="selectJobLevelById" parameterType="int" resultMap="com.fc.brms.common.mapper.IOrgStructureMapper.cfgJobLevelMap">
+		SELECT
+			job_level_id,
+			job_level_name,
+			job_level_order,
+			job_grade_id,
+			lowest_salary_level,
+			highest_salary_level,
+			create_time,
+			create_user,
+			last_update_time,
+			last_update_user,
+			company_id
+		FROM
+			cfg_job_level
+		WHERE job_level_id=#{jobLevelId}
+	</select>
+	<!-- 查询所有的职系名称，匹配职等职级中的下拉列表,没有where条件-->
+	<select id="selectJobGradeName" resultMap="com.fc.brms.common.mapper.IOrgStructureMapper.cfgJobGradeMap">
+		SELECT
+			job_grade_id,job_grade_no,job_grade_name,job_grade_desc,create_time,create_user,
+			last_update_time,last_update_user,company_id
+		FROM
+			cfg_job_grade
+	</select>
+	<!-- 保存职等职级信息到关系表cfg_post_joblevel中 -->
+	<insert id="insertPostJoblevel" parameterType="CfgPostJoblevel">
+		INSERT INTO cfg_post_joblevel(post_id,job_level_id,company_id)
+		VALUES(#{postId},#{jobLevelId},#{companyId})
+	</insert>
+	<!-- 修改 职等职级信息到关系表cfg_post_joblevel中-->
+	<update id="updataPostJoblevel" parameterType="CfgPostJoblevel">
+		UPDATE
+			cfg_post_joblevel
+		SET
+			post_id = #{postId},
+			job_level_id = #{jobLevelId},
+			<!-- company_id = #{companyId} -->
+		WHERE job_level_id =#{jobLevelId}
+	</update>
+	<!-- 职等职级设置结束-->
+	
+	
+	<!-- Code By yangjg End-->
+</mapper>

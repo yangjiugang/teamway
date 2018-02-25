@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.brms.external.mapper.IUserResumeMapper">
+	
+	<resultMap id="UserResumeMap" type="UserResume">
+		<result property="userId" column="user_id"/>
+		<result property="userNum" column="user_num"/>
+		<result property="userName" column="user_name"/>
+		<result property="userSex" column="user_sex"/>
+		<result property="userTelphone" column="user_telphone"/>
+		<result property="email" column="email"/>
+		<result property="userBirthday" column="user_birthday"/>
+		<result property="certificateType" column="certificate_type"/>
+		<result property="certificateNum" column="certificate_num"/>
+		<result property="userHeight" column="user_height"/>
+		<result property="photoPath" column="photo_path"/>
+		<result property="areaId" column="area_id"/>
+		<result property="hkPlace" column="hk_place"/>
+		<result property="birthPlace" column="birth_place"/>
+		<result property="userAddress" column="user_address"/>
+		<result property="highestEducation" column="highest_education"/>
+		<result property="professionId" column="profession_id"/>
+		<result property="profession" column="profession"/>
+		<result property="degree" column="degree"/>
+		<result property="graduateSchool" column="graduate_school"/>
+		<result property="graduateDate" column="graduate_date"/>
+		<result property="workYears" column="work_years"/>
+		<result property="isMarry" column="is_marry"/>
+		<result property="politicalConnection" column="political_connection"/>
+		<result property="businessId" column="business_id"/>
+		<result property="presentBusiness" column="present_business"/>
+		<result property="postId" column="post_id"/>
+		<result property="presentPost" column="present_post"/>
+		<result property="presentSalaryYear" column="present_salary_year"/>
+		<result property="workStatus" column="work_status"/>
+		<result property="resumeFrom" column="resume_from"/>
+		<result property="createDate" column="create_date"/>
+		<result property="contactCnt" column="contact_cnt"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+		<result property="lastUpdateDate" column="last_update_date"/>
+	</resultMap>
+	
+	<resultMap id="DimissionUserResumeMap" type="UserResume">
+		<id property="userId" column="user_id"/>
+		<result property="userNum" column="user_num"/>
+		<result property="userName" column="user_name"/>
+		<result property="userTelphone" column="user_telphone"/>
+		<result property="userBirthday" column="user_birthday"/>
+		<result property="userAddress" column="user_address"/>
+		<association  property="employeeInfo" column="employee_id" javaType="EmployeeInfo" >
+		    <id property="employeeId" column="employee_id"/>
+			<result property="employeeNum" column="employee_num"/>
+			<result property="entryDate" column="entry_date"/>
+			<result property="turnoverDate" column="turnover_date"/>
+			<result property="turnoverCause" column="turnover_cause"/>
+			<result property="highestEducation" column="highest_education"/>
+			<result property="organizationName" column="organization_name"/>
+			<result property="postName" column="post_name"/>
+		</association>
+	</resultMap>
+	
+	<!-- Code By Zhenglh Start-->
+		<!-- 查询外部外部经纪人 列表 -->
+		<select id="getUserResumeList" parameterType="map" resultMap="UserResumeMap">
+			SELECT ur.user_id,
+				   ur.user_num,
+				   ur.user_sex,
+				   ur.user_name,
+				   ur.user_birthday,
+				   ur.present_post,
+				   ur.area_id,
+				   ur.work_years,
+				   ur.highest_education,
+				   ur.graduate_school,
+				   ur.profession,
+				   ur.create_date,
+				   ur.contact_cnt,
+				   ur.last_update_user,
+				   ur.user_telphone 
+		      FROM user_resume ur,user_resume_belongto urb
+		     WHERE ur.user_id = urb.user_id
+		       AND urb.black_red_list=#{type}
+	<if test="null != isSubmit">		      
+		<if test="null != startTime and null != endTime">
+			   AND ur.last_update_date BETWEEN #{startTime} AND #{endTime}
+		</if>
+		<if test="null != contactCnt">
+			   AND ur.contact_cnt=#{contactCnt}
+		</if>
+		<if test="null != highestEducation">
+			   AND ur.highest_education=#{highestEducation}
+		</if>
+		<if test="null != keyWord">
+			   AND (ur.user_name = #{keyWord} OR ur.user_address = #{keyWord})
+			   
+		</if>
+	</if> 
+		     LIMIT ${limit}
+		</select>
+		
+		<!-- 查询外部外部经纪人 列表总记录数-->
+		<select id="getUserResumeListCount" parameterType="map" resultType="int">
+			SELECT COUNT(*) 
+			  FROM user_resume ur,user_resume_belongto urb
+		     WHERE ur.user_id = urb.user_id
+		       AND urb.black_red_list=#{type}
+	<if test="null != isSubmit">		      
+		<if test="null != startTime and null != endTime">
+			   AND ur.last_update_date BETWEEN #{startTime} AND #{endTime}
+		</if>
+		<if test="null != contactCnt">
+			   AND ur.contact_cnt=#{contactCnt}
+		</if>
+		<if test="null != highestEducation">
+			   AND ur.highest_education=#{highestEducation}
+		</if>
+		<if test="null != keyWord">
+			   AND (ur.user_name = #{keyWord} OR ur.user_address = #{keyWord})
+		</if>
+	</if> 
+		</select>
+		
+		<!-- 根据ID查询经纪人基础数据 -->
+		<select id="getUserResumeById" resultMap="UserResumeMap" resultType="UserResume" parameterType="int">
+			SELECT 
+					user_id,
+					resume_user_id,
+					user_num,
+					user_name,
+					user_sex,
+					user_telphone,
+					email,
+					user_birthday,
+					certificate_type,
+					certificate_num,
+					user_height,
+					photo_path,
+					area_id,
+					hk_place,
+					birth_place,
+					user_address,
+					highest_education_name,
+					highest_education,
+					profession_id,
+					profession,
+					degree,
+					graduate_school,
+					graduate_date,
+					work_years,
+					is_marry,
+					political_connection,
+					business_id,
+					present_business,
+					post_id,
+					present_post,
+					present_salary_month,
+					present_salary_year,
+					work_status,
+					resume_from,
+					create_date,
+					contact_cnt,
+					last_update_user,
+					last_update_date
+			  FROM	user_resume
+			 WHERE  user_id=#{userId}
+		</select>
+	<!-- Code By Zhenglh End-->
+	
+	<!-- Code By Gaoqf Start-->
+	
+	<!-- Code By Gaoqf End-->
+	
+	
+</mapper>

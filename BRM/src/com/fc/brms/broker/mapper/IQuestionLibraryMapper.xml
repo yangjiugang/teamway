@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fc.brms.broker.mapper.IQuestionLibraryMapper">
+
+	<resultMap id="questionLibraryMap" type="QuestionLibrary">
+		<result property="questionId" column="question_id"/>
+		<result property="questionNum" column="question_num"/>
+		<result property="questionType" column="question_type"/>
+		<result property="typeId" column="type_id"/>
+		<result property="levelId" column="level_id"/>
+		<result property="questionContent" column="question_content"/>
+		<result property="questionPoints" column="question_points"/>
+		<result property="questionStatus" column="question_status"/>
+		<result property="answer" column="answer"/>
+		<result property="isRight" column="is_right"/>
+		<result property="answer2" column="answer2"/>
+		<result property="isRight2" column="is_right2"/>
+		<result property="answer3" column="answer3"/>
+		<result property="isRight3" column="is_right3"/>
+		<result property="answer4" column="answer4"/>
+		<result property="isRight4" column="is_right4"/>
+		<result property="answer5" column="answer5"/>
+		<result property="isRight5" column="is_right5"/>
+		<result property="answer6" column="answer6"/>
+		<result property="isRight6" column="is_right6"/>
+		<result property="answer7" column="answer7"/>
+		<result property="isRight7" column="is_right7"/>
+		<result property="answer8" column="answer8"/>
+		<result property="isRight8" column="is_right8"/>
+		<result property="answer9" column="answer9"/>
+		<result property="isRight9" column="is_right9"/>
+		<result property="createTime" column="create_time" />
+		<result property="createUser" column="create_user"/>
+		<result property="questionOrder" column="questionOrder"/>
+		<result property="detailId" column="detailId"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+		<association property="questionTypeClass" javaType="QuestionType" column="type_id">
+		   <result property="typeName" column="type_name"/>
+		</association>
+		<association property="questionLevel" javaType="QuestionDifficultyLevel" column="level_id">
+		   <result property="levelName" column="level_name"/>
+		</association>
+	</resultMap>
+		
+	<resultMap id="questionTypeMap" type="QuestionType">
+		<result property="typeId" column="type_id"/>
+		<result property="typeName" column="type_name"/>
+		<result property="typeDesc" column="type_desc"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+	</resultMap>
+	
+	<!-- cobe by huangshan start -->
+	
+	<!-- 查询题目类别  -->
+	<select id="findQuestionType" resultMap="questionTypeMap">
+		SELECT type_id,type_name,type_desc,create_time,create_user,last_update_time,last_update_user
+	  	  FROM question_type
+	  	 WHERE type_status = 0
+	</select>
+	<!-- 保存题目 -->
+	<insert id="saveQuestion" parameterType="QuestionLibrary" useGeneratedKeys="true" keyProperty="questionId">
+		INSERT INTO question_library(question_num,question_type,type_id,level_id,question_content,question_points,question_status,answer,
+									is_right,answer2,is_right2,answer3,is_right3,answer4,is_right4,answer5,is_right5,answer6,is_right6,answer7,
+									is_right7,answer8,is_right8,answer9,is_right9,create_time,create_user,last_update_user,last_update_time,company_id)
+			VALUES(#{questionNum},#{questionType},#{typeId},#{levelId},#{questionContent},#{questionPoints},1,#{answer},#{isRight},
+			       #{answer2},#{isRight2},#{answer3},#{isRight3},#{answer4},#{isRight4},#{answer5},#{isRight5},#{answer6},#{isRight6},#{answer7},
+			       #{isRight7},#{answer8},#{isRight8},#{answer9},#{isRight9},#{createTime},#{createUser},#{createUser},#{createTime},1)
+	</insert>
+	<!-- 查询题目编号 -->
+	<select id="getQuestionLibraryNo" resultType="string">
+		SELECT MAX(question_num) FROM question_library WHERE question_num like '${today}%';
+	</select>
+	<!-- 根据问卷ID查找问卷问题 -->
+	<select id="findQuestionLibByPaperId" resultMap="questionLibraryMap">
+		SELECT qpd.id detailId,ql.question_id,ql.question_num,ql.question_content,ql.question_type,ql.type_id,qpd.question_points,ql.level_id,
+			   ql.create_time,ql.question_status,qpd.question_order questionOrder,ql.answer,ql.is_right,ql.answer2,ql.is_right2,ql.answer3,ql.is_right3,
+			   ql.answer4,ql.is_right4,ql.answer5,ql.is_right5,ql.answer6,ql.is_right6,ql.answer7,ql.is_right7,ql.answer8,ql.is_right8,ql.answer9,ql.is_right9
+		  FROM question_papers_detail qpd,
+		       question_library ql
+		 WHERE ql.question_id=qpd.question_id
+		   AND qpd.paper_id=#{paperId}
+  ORDER BY qpd.question_order
+  		<if test="limit != null">
+  		 LIMIT ${limit}
+  		</if>
+	</select>
+	<!-- 根据问卷ID查找问卷问题记录-->
+	<select id="findQuestionLibCountByPaperId" resultType="int">
+		SELECT COUNT(1) FROM question_papers_detail qpd, question_library ql
+		 WHERE ql.question_id=qpd.question_id
+		   AND qpd.paper_id=#{paperId}
+	</select>
+	<!-- 保存问卷问题 -->
+	<insert id="savePaperDetail"  parameterType="QuestionPapersDetail">
+		INSERT INTO question_papers_detail(company_id,paper_id,question_id,question_points,	question_order,create_time,create_user,last_update_time,last_update_user) 
+		VALUES(1,#{paperId},#{questionId},#{questionPoints},#{questionOrder},#{createTime},#{createUser},#{lastUpdateTime},#{lastUpdateUser})
+	</insert>
+	<!-- 查找题库所有问题 -->
+	<select id="findQuestionLibrary" resultMap="questionLibraryMap">
+		SELECT ql.question_id,ql.question_num,ql.question_content,ql.question_type,ql.type_id,ql.level_id,ql.create_time,ql.question_status,ql.question_points
+		  FROM question_library ql
+		 WHERE ql.question_status = 1
+		 <if test="library.questionType != 0">
+		   AND question_type = #{library.questionType}	  
+		 </if>
+		 <if test="library.levelId !=0 ">
+		   AND level_id = #{library.levelId}		 
+		 </if>
+		 <if test="library.typeId !=0 ">
+		   AND type_id = #{library.typeId}		 
+		 </if>
+		 <if test="library.questionContent !=null and library.questionContent !='' ">
+		   AND (question_content like '%${library.questionContent}%' OR question_num like '%${library.questionContent}%') 		 
+		 </if>
+      ORDER BY ql.question_id DESC
+		 LIMIT ${limit}
+	</select>
+	<!-- 查找题库所有问题记录-->
+	<select id="findQuestionLibraryCount" resultType="int">
+		SELECT COUNT(1) FROM question_library ql
+		 WHERE ql.question_status = 1
+		 <if test="questionType != 0">
+		   AND question_type = #{questionType}	  
+		 </if>
+		 <if test="levelId !=0 ">
+		   AND level_id = #{levelId}		 
+		 </if>
+		 <if test="typeId !=0 ">
+		   AND type_id = #{typeId}		 
+		 </if>
+		 <if test="questionContent !=null and questionContent !='' ">
+		   AND (question_content like '%${questionContent}%' OR question_num like '%${questionContent}%') 		 
+		 </if>
+	</select>
+	
+	<!-- 修改问卷问题分数 -->
+	<update id="updateQuestionPoint">
+		UPDATE question_papers_detail SET question_points = #{point} WHERE id = #{id}
+	</update>
+	<!-- 删除问卷问题 -->
+	<delete id="delQuestionPapersDetail">
+		DELETE FROM question_papers_detail WHERE id = #{id}
+	</delete>
+	<!-- 更新问卷问题排序 -->
+	<update id="updateQuestionOrder">
+		UPDATE question_papers_detail SET question_order = #{order} WHERE id = #{id}
+	</update>
+	<!-- 根据ID查找问题 -->
+	<select id="findQuestionLibraryById" resultMap="questionLibraryMap">
+		SELECT ql.question_id,ql.question_num,ql.question_points,ql.question_content,ql.question_type,ql.type_id,ql.level_id,ql.create_time,ql.question_status,
+			   ql.answer,ql.is_right,ql.answer2,ql.is_right2,ql.answer3,ql.is_right3,ql.answer4,ql.is_right4,ql.answer5,ql.is_right5,ql.answer6,
+			   ql.is_right6,ql.answer7,ql.is_right7,ql.answer8,ql.is_right8,ql.answer9,ql.is_right9
+		  FROM  question_library ql
+		 WHERE ql.question_id = #{id}
+	</select>
+	<!-- 删除问题 (逻辑删除) -->
+	<select id="updateLibraryState">
+		UPDATE question_library SET question_status = 0 WHERE question_id = #{id}
+	</select>
+	
+	<select id="updateLibrary">
+		update question_library set	question_type=#{questionType},type_id = #{typeId},level_id = #{levelId},question_content = #{questionContent},question_points = #{questionPoints},answer=#{answer},
+				is_right = #{isRight},answer2 = #{answer2},is_right2 = #{isRight2},answer3 = #{answer3},is_right3 = #{isRight3},answer4 = #{answer4},
+		       is_right4 = #{isRight4},answer5 = #{answer5},is_right5 = #{isRight5},answer6 = #{answer6},is_right6 = #{isRight6},answer7 = #{answer7},is_right7 = #{isRight7},answer8 = #{answer8},is_right8 = #{isRight8},
+		       answer9 = #{answer9},is_right9 = #{isRight9},last_update_time = #{lastUpdateTime},last_update_user = #{lastUpdateUser}
+		WHERE question_id = #{questionId}
+	</select>
+	
+	<!-- 保存问题类型 -->
+	<insert id="saveQuestionType">
+	  INSERT INTO question_type(type_status,company_id,type_name,type_desc,create_time,create_user,last_update_time,last_update_user)
+	   		VALUES(0,1,#{typeName},#{typeDesc},#{createTime},#{createUser},#{lastUpdateTime},#{lastUpdateUser})
+	</insert>
+	
+	<!-- 根据ID查找问题类型 -->
+	<select id="findQuestionTypeById" resultMap="questionTypeMap">
+	  SELECT type_id,company_id,type_name,type_desc
+		FROM question_type
+	   WHERE type_id = #{id} 
+	     AND type_status = 0
+	</select>
+	
+	<!-- 修改问题类型 -->
+	<update id="updateQuestionType">
+		UPDATE question_type
+		   SET type_name = #{typeName},
+			   type_desc = #{typeDesc},
+			   last_update_time = #{lastUpdateTime},
+			   last_update_user = #{lastUpdateUser}
+		WHERE type_id = #{typeId}
+	</update>
+	
+	<update id="delQuestionType">
+		UPDATE question_type set type_status = 1 WHERE type_id = #{typeId}
+	</update> 
+	
+	<!-- cobe by huangshan end -->
+	
+	<!-- cobe by gonghj start -->
+	<!-- 查看问卷的所有的题目 (分页)-->
+	<select id="findQuestionLibraryByPaperId" resultMap="questionLibraryMap">
+		SELECT ql.question_id,ql.question_num,ql.question_content,ql.question_type,ql.type_id,qt.type_name,ql.question_points,ql.level_id,qdl.level_name,ql.create_time,ql.question_status
+		  FROM question_papers_detail qpd,
+		       question_library ql,
+		       question_type qt,
+		       question_difficulty_level qdl
+		 WHERE ql.question_id=qpd.question_id
+		   AND qt.type_id=ql.type_id
+		   AND qdl.level_id=ql.level_id
+		   AND qpd.paper_id=#{paperId}
+	  order by ql.type_id
+		 LIMIT ${limit}
+	</select>
+	<!-- 查看问卷的所有的题目总条数-->
+	<select id="findQuestionLibraryByPaperIdCount" resultType="int">
+	    SELECT COUNT(*)
+		  FROM question_papers_detail qpd
+		 WHERE qpd.paper_id=#{paperId}
+	</select>
+	
+	<!-- 调查参与统计 -->
+	<select id="findSurveyStatistics" resultType="int">
+	  SELECT COUNT(*) 
+        FROM question_papers_employees 
+       WHERE test_id=#{testId}
+        <if test="isSubmit!=9">
+         AND is_submit=#{isSubmit}
+        </if>
+        <if test="isAvailabe!=9">
+         AND is_availabe=#{isAvailabe}
+        </if>
+	</select>
+	
+	<select id="findScoreStatistice" resultType="int">
+	    SELECT COUNT(*) 
+		  FROM question_papers_employees 
+		 WHERE test_id=#{testId}
+		   AND is_submit=1
+		   AND is_availabe=1
+		   <if test="bigScore!=0 and smallScore!=0">
+			   <![CDATA[
+			     AND #{smallScore} < score and score <= #{bigScore}
+			   ]]>
+	       </if>
+	</select>
+	
+	<!-- 根据问卷id查找问题 -->
+	<select id="findQuestionLibraryByPapersId" resultMap="questionLibraryMap">
+	SELECT ql.question_id,ql.company_id,ql.question_num,ql.question_type,ql.type_id,ql.level_id,ql.question_content,ql.question_status,
+           ql.answer,ql.is_right,ql.answer2,ql.is_right2,ql.answer3,ql.is_right3,ql.answer4,ql.is_right4,ql.answer5,ql.is_right5,ql.answer6,ql.is_right6,ql.answer7,
+           ql.is_right7,ql.answer8,ql.is_right8,ql.answer9,ql.is_right9,ql.create_time,ql.create_user,ql.last_update_time,ql.last_update_user,qpd.question_points
+      FROM question_library ql,
+           question_papers_detail qpd
+     WHERE qpd.paper_id=#{paperId}
+       AND qpd.question_id=ql.question_id   
+  order by ql.question_type   
+     LIMIT ${limit}
+	</select>
+	
+	<!-- 根据问卷id查找问题 -->
+	<select id="findQuestionLibraryByPapersIdCount" resultType="int">
+	SELECT COUNT(*)
+      FROM question_library ql,
+           question_papers_detail qpd
+     WHERE qpd.paper_id=#{paperId}
+       AND qpd.question_id=ql.question_id     
+	</select>
+	<!-- cobe by gonghj end -->
+	
+</mapper>

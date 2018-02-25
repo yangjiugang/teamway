@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fc.brms.broker.mapper.IQuestionPaperMapper">
+
+	<resultMap id="questionPaperTypeMap" type="QuestionPaperType">
+		<result property="typeId" column="type_id"/>
+		<result property="typeName" column="type_name"/>
+		<result property="typeDesc" column="type_desc"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+	</resultMap>
+
+	<resultMap id="questionPapersMap" type="QuestionPapers">
+		<result property="paperId" column="paper_id"/>
+		<result property="paperNum" column="paper_num"/>
+		<result property="paperName" column="paper_name"/>
+		<result property="typeId" column="type_id"/>
+		<result property="paperDesc" column="paper_desc"/>
+		<result property="totalPoints" column="total_points"/>
+		<result property="paperQuestions" column="paper_questions"/>
+		<result property="paperStatus" column="paper_status"/>
+		<result property="paperUsed" column="paper_used"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+	</resultMap>
+	
+	<!-- cobe by huangshan start -->
+	<!-- 查询所有问卷类型 -->
+	<select id="getPaperType" resultMap="questionPaperTypeMap">
+		SELECT type_id,type_name,type_desc,	create_time,create_user,last_update_time,last_update_user
+		  FROM question_paper_type
+		 WHERE type_status = 0
+	</select>
+	<!-- 查下一个问卷编号(自动生成编号) -->
+	<select id="getQuestionPaperNo" resultType="string">
+		SELECT MAX(paper_num) FROM question_papers WHERE paper_num like '${today}%';
+	</select>
+	<!-- 保存问卷 -->
+	<insert id="saveQuestionPaper" useGeneratedKeys="true" keyProperty="paperId">
+	INSERT INTO question_papers(paper_num,paper_name,type_id,paper_desc,total_points,paper_questions,paper_status,paper_used,create_time,create_user,last_update_time,last_update_user,company_id)
+		 VALUES(#{paperNum},#{paperName},#{typeId},#{paperDesc},0,0,1,#{paperUsed},#{createTime},#{createUser},now(),0,1)
+	</insert>
+	<!-- 查询所有问卷 -->
+	<select id="getQuestionPapers" resultMap="questionPapersMap" parameterType="QuestionPapers" >
+		SELECT paper_id,paper_num,paper_name,type_id,paper_desc,total_points,paper_questions,paper_status,paper_used,
+	     	   create_time,create_user
+		  FROM question_papers
+		 WHERE paper_status !=0
+		 <if test="paper.paperName != null and paper.paperName != ''">
+		   AND (paper_name like '%${paper.paperName}%' OR paper_num like '%${paper.paperName}%')
+		 </if>
+		 <if test="paper.createUser !=0">
+		   AND create_user = #{paper.createUser}
+		 </if>
+		 <if test="paper.typeId != 0">
+		   AND type_id = #{paper.typeId}
+		 </if>
+		 <choose>
+		 	<when test="page.sidx==null">
+		 		ORDER BY paper_id DESC
+		 	</when>
+		 	<otherwise>
+		 		ORDER BY ${page.sidx} ${page.sord}	
+		 	</otherwise>
+		 </choose>
+		 LIMIT ${page.limit}
+	</select>
+	<!-- 查询所有问卷总记录 -->
+	<select id="getQuestionPapersCount" resultType="int">
+		SELECT COUNT(1)
+		  FROM question_papers
+		 WHERE paper_status !=0
+		<if test="paperName != null and paperName != ''">
+		   AND (paper_name like '%${paperName}%' OR paper_num like '%${paperName}%')
+		 </if>
+		 <if test="createUser !=0">
+		   AND create_user = #{createUser}
+		 </if>
+		 <if test="typeId != 0">
+		   AND type_id = #{typeId}
+		 </if>
+	</select>
+	<!-- 根据ID查询问卷 -->
+	<select id="getQuestionPaperById" resultMap="questionPapersMap">
+		SELECT paper_id,paper_num,paper_name,type_id,paper_desc,total_points,paper_questions,paper_status,paper_used,
+	     	   create_time,create_user
+		  FROM question_papers
+		 WHERE paper_id = #{id}
+	</select>
+	<!-- 更新问卷　-->
+	<update id="updateQuestionPaper" parameterType="QuestionPapers">
+		UPDATE question_papers 
+		   SET paper_name = #{paperName},type_id = #{typeId},	paper_desc = #{paperDesc}
+		 WHERE paper_id = #{paperId}
+	</update>
+	<!-- 逻辑删除问卷　-->
+	<update id="delQuestionPapers">
+		UPDATE question_papers SET paper_status = 0 WHERE paper_id = #{id}
+	</update>
+	<!-- 查询问卷下问题的数量　-->
+	<select id="findQuestionPaperDetailCount" resultType="int">
+		SELECT COUNT(1) FROM question_papers_detail WHERE paper_id = #{paperId}
+	</select>
+	<!-- 更新问卷问题的数量　-->
+	<select id="updatePaperQuestions">
+		UPDATE question_papers SET paper_questions = #{count} WHERE paper_id = #{paperId}
+	</select>
+	
+	<!-- 保存问卷类型 -->
+	<insert id="saveQuestionPaperType">
+	  INSERT INTO question_paper_type(type_status,company_id,type_name,type_desc,create_time,create_user,last_update_time,last_update_user)
+	   		VALUES(0,1,#{typeName},#{typeDesc},#{createTime},#{createUser},#{lastUpdateTime},#{lastUpdateUser})
+	</insert>
+	
+	<!-- 根据ID查找问卷类型 -->
+	<select id="findQuestionPaperTypeById" resultMap="questionPaperTypeMap">
+	  SELECT type_id,company_id,type_name,type_desc
+		FROM question_paper_type
+	   WHERE type_id = #{id} 
+	     AND type_status = 0
+	</select>
+	
+	<!-- 修改活动类型 -->
+	<update id="updateQuestionPaperType">
+		UPDATE question_paper_type
+		   SET type_name = #{typeName},
+			   type_desc = #{typeDesc},
+			   last_update_time = #{lastUpdateTime},
+			   last_update_user = #{lastUpdateUser}
+		WHERE type_id = #{typeId}
+	</update>
+	<!-- 逻辑删除问卷类型　-->
+	<update id="delQuestionPaperType" >
+		UPDATE question_paper_type set type_status = 1 WHERE type_id = #{typeId}
+	</update> 
+	<!-- 查询状态不为0的问卷Id和名称 -->
+	<select id="getPaperName" resultMap="questionPapersMap">
+		SELECT paper_id,paper_name
+		  FROM question_papers
+		 WHERE paper_status !=0
+	  ORDER BY paper_id DESC
+	</select>
+	<!-- cobe by huangshan end -->
+</mapper>

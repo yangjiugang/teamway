@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fc.brms.broker.mapper.IBirthdayRemindMappeer">
+	<resultMap id="employeeInfoMap" type="EmployeeInfo">
+		<id property="employeeId" column="employee_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="employeeNum" column="employee_num"/>
+		<result property="englishName" column="english_name"/>
+		<result property="userName" column="user_name"/>
+		<result property="userSex" column="user_sex"/>
+		<result property="userBirthday" column="user_birthday"/>
+		<result property="birthday" column="birthday" />
+		<result property="telephone" column="telephone"/>
+		<result property="officePhone" column="office_phone"/>
+		<result property="enterpriseMail" column="enterprise_mail"/>
+		<result property="photoPath" column="photo_path"/>
+		<result property="highestEducation" column="highest_education"/>
+		<result property="graduateSchool" column="graduate_school"/>
+		<result property="areaId" column="area_id"/>
+		<result property="hkPlace" column="hk_place"/>
+		<result property="socialSecurityNum" column="social_security_num"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="organizationName" column="organization_name"/>
+		<result property="postId" column="post_id"/>
+		<result property="postName" column="post_name"/>
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="jobGradeName" column="job_grade_name"/>
+		<result property="jobLevelId" column="job_level_id"/>
+		<result property="jobLevelName" column="job_level_name"/>
+		<result property="salaryLevelId" column="salary_level_id"/>
+		<result property="salaryLevelOrder" column="salary_level_order"/>
+		<result property="salaryTotal" column="salary_total"/>
+		<result property="structureType" column="structure_type"/>
+		<result property="socialSecurityId" column="social_security_id"/>
+		<result property="applyDate" column="apply_date"/>
+		<result property="isChange" column="is_change"/>
+		<result property="fpsgPost" column="fpsg_post"/>
+		<result property="entryDate" column="entry_date"/>
+		<result property="turnoverDate" column="turnover_date"/>
+		<result property="turnoverCause" column="turnover_cause"/>
+		<result property="submitId" column="submit_id"/>
+		<result property="bankId" column="bank_id"/>
+		<result property="bankNum" column="bank_num"/>
+		<result property="trainingCnt" column="training_cnt"/>
+		<result property="contactCnt" column="contact_cnt"/>
+		<result property="isConsultant" column="is_consultant"/>
+	</resultMap>
+
+	<resultMap id="employeeFamilyInfoMap" type="EmployeeFamilyInfo">
+		<id property="id" column="id" />
+		<result property="employeeId" column="employee_id" />
+		<result property="memberName" column="member_name" />
+		<result property="relationship" column="relationship" />
+		<result property="memberBirthday" column="member_birthday" />
+		<result property="birthday" column="birthday" />
+		<result property="memberUnit" column="member_unit" />
+		<result property="memberPost" column="member_post" />
+		<result property="telephone" column="telephone" />
+		<association property="employeeInfo" column="emplyee_id"
+		             javaType="EmployeeInfo"
+		             resultMap="employeeInfoMap">
+		</association>
+	</resultMap>
+	
+	<!-- 查询(当天、明天、后天)生日的经纪人  -->
+	<select id="todayBirthday" parameterType="java.util.Map" resultMap="employeeFamilyInfoMap">
+         SELECT ei.user_id,ei.employee_id,ei.user_name,ei.user_sex,ei.employee_num,ei.organization_name,ei.post_name,
+		        ei.apply_date,ei.user_birthday birthday,ei.user_name,1000 relationship
+		   FROM employee_info ei
+		  WHERE ei.user_birthday  
+		   LIKE CONCAT('%',#{birth})
+		  UNION
+		 SELECT ei.user_id,ei.employee_id,ei.user_name,ei.user_sex,ei.employee_num,ei.organization_name,ei.post_name,
+	            ei.apply_date,efi.member_birthday birthday,efi.member_name,efi.relationship 
+	       FROM employee_info ei,
+	            employee_family_info efi	            
+	      WHERE ei.employee_id=efi.employee_id 
+	        AND efi.member_birthday 
+		   LIKE CONCAT('%',#{birth})
+      <if test="limit!=null">
+		  LIMIT ${limit}
+      </if>       
+	</select>
+	
+	<!-- 明天生日 -->
+	<!-- <select id="tomorrowBirthday" parameterType="java.util.Map" resultMap="employeeInfoMap">
+			SELECT ei.employee_id,ei.user_name,ei.user_sex,ei.employee_num,co.organization_name,cp.post_name,
+			ei.apply_date,ei.user_birthday,efi.member_name,efi.member_birthday,efi.relationship
+			  FROM employee_info ei,
+			       cfg_post cp,
+			       cfg_organization co
+		 LEFT JOIN employee_family_info 
+	            ON ei.employee_id=efi.employee_id 
+			 WHERE ei.post_id=cp.post_id
+			   AND ei.user_birthday 
+			  LIKE CONCAT('%',#{tomorrow})
+			 	OR (efi.member__birthday 
+		            LIKE CONCAT('%',#{tomorrow}))
+		 <if test="limit!=null">
+		     LIMIT ${limit}
+         </if>       
+	</select>	 -->
+	
+	<!-- 后天生日 -->
+	<!-- <select id="bermorgenBirthday" parameterType="java.util.Map" resultMap="employeeInfoMap">
+			SELECT ei.employee_id,ei.user_name,ei.user_sex,ei.employee_num,co.organization_name,cp.post_name,
+			ei.apply_date,ei.user_birthday,efi.member_name,efi.member_birthday,efi.relationship 			       
+			  FROM employee_info ei,
+			       cfg_post cp,
+			       cfg_organization co
+ 		 LEFT JOIN employee_family_info 
+	            ON ei.employee_id=efi.employee_id 
+			 WHERE ei.post_id=cp.post_id
+			   AND ei.user_birthday 
+			  LIKE CONCAT('%',#{bermorgen}))
+			    OR (efi.member__birthday 
+		            LIKE CONCAT('%',#{bermorgen}))
+		 <if test="limit!=null">
+		     LIMIT ${limit}
+         </if>          
+	</select> -->
+	
+	<!-- 本周(本月)生日 -->
+	<select id="thisWeekBirthday" parameterType="java.util.Map" resultMap="employeeFamilyInfoMap">
+		  SELECT ei.user_id,ei.employee_id,ei.user_name,ei.user_sex,ei.employee_num,ei.organization_name,ei.post_name,
+		         ei.apply_date,ei.user_birthday  birthday,ei.user_name,1000 relationship
+			FROM employee_info ei
+		   WHERE DATE_FORMAT(ei.user_birthday,'%m-%d ') BETWEEN #{startBirth} AND #{endBirth} UNION 
+	      SELECT ei.user_id,ei.employee_id,ei.user_name,ei.user_sex,ei.employee_num,ei.organization_name,ei.post_name,
+	             ei.apply_date,efi.member_birthday birthday,efi.member_name,efi.relationship
+			FROM employee_info ei, employee_family_info efi
+		   WHERE ei.employee_id=efi.employee_id 
+			 AND DATE_FORMAT(efi.member_birthday,'%m-%d ') BETWEEN #{startBirth} AND #{endBirth} 
+	   <if test="limit!=null">
+		   LIMIT ${limit}
+       </if>        
+	</select>
+	
+	<!-- 条件查询 -->
+	<select id="checkBirthdayTerm" parameterType="java.util.Map" resultMap="employeeFamilyInfoMap">		  
+           SELECT ei.user_id,ei.employee_id,ei.user_name,ei.user_sex,ei.employee_num,ei.organization_name,ei.post_name,
+          ei.apply_date,ei.user_birthday birthday,ei.user_name,1000 relationship
+	        FROM employee_info ei
+	       WHERE ei.company_id=1
+	      <if test="startBirth != null and endBirth != null">
+	         AND ei.user_birthday BETWEEN #{startBirth} AND #{endBirth}
+	      </if>
+	       <if test="term!=null and term!=''">
+	          AND (ei.user_name LIKE CONCAT('%',#{term},'%')
+	          OR ei.employee_num LIKE CONCAT('%',#{term},'%'))	
+	       </if>      	
+	       UNION 
+	      SELECT ei.user_id,ei.employee_id,ei.user_name,ei.user_sex,ei.employee_num,ei.organization_name,ei.post_name,
+	      ei.apply_date,efi.member_birthday birthday,efi.member_name,efi.relationship
+	        FROM employee_info ei,
+	             employee_family_info efi
+	       WHERE ei.employee_id=efi.employee_id 
+	       <if test="startBirth != null and endBirth != null">
+	         AND efi.member_birthday BETWEEN #{startBirth} AND #{endBirth} 
+	       </if> 	       
+	       <if test="term!=null and term!=''">
+	         AND (ei.user_name LIKE CONCAT('%',#{term},'%')
+	          OR ei.employee_num LIKE CONCAT('%',#{term},'%'))	 
+	       </if>   
+	   <if test="limit != null">
+		   LIMIT ${limit}
+       </if>      	
+	</select>
+	
+	<!-- 根据ID查询信息 -->
+	<select id="findEmployeeForID" parameterType="java.util.Map" resultMap="employeeFamilyInfoMap">
+     SELECT ei.user_id,ei.employee_id,ei.user_name,ei.user_sex,ei.employee_num,
+            ei.user_name,1000 relationship,ei.user_birthday birthday
+       FROM employee_info ei 
+      WHERE ei.employee_id=#{employeeId}
+        AND ei.user_birthday LIKE CONCAT('%',#{birth})   
+     UNION 
+     SELECT ei.user_id,ei.employee_id,ei.user_name,ei.user_sex,ei.employee_num,
+            ei.user_name,efi.relationship,efi.member_birthday birthday
+       FROM employee_info ei,
+            employee_family_info efi                     
+      WHERE ei.employee_id=efi.employee_id 
+        AND efi.employee_id=#{employeeId}
+        AND efi.member_birthday LIKE CONCAT('%',#{birth})
+	</select>
+	<!-- 查询本月生日 -->
+<!-- 	<select id="thisMonthBirthday" parameterType="java.util.Map" resultMap="employeeInfoMap">
+		  SELECT ei.employee_id,ei.user_name,ei.user_sex,ei.employee_num,co.organization_name,cp.post_name,
+	             ei.apply_date,ei.user_birthday,efi.member_name,efi.member_birthday,efi.relationship
+	        FROM employee_info ei,
+	             cfg_post cp,
+	             cfg_organization co 
+	   LEFT JOIN employee_family_info 
+	          ON ei.employee_id=efi.employee_id 
+	       WHERE ei.post_id=cp.post_id
+	         AND cp.organization_id=co.organization_id
+	         AND DATE_FORMAT(ei.user_birthday,'%c-%e ') 
+	     BETWEEN #{startBirth}   
+	         AND #{endBirth}
+	          OR (DATE_FORMAT(efi.member_birthday,'%c-%e ') 
+	              BETWEEN #{startBirth}  
+	              AND #{endBirth}); 
+	   <if test="limit!=null">
+		   LIMIT ${limit}
+       </if>        
+	</select> -->
+	
+	<!-- 查询生日员工的信息 -->
+	<select id="EmployeeBirthToday" resultMap="employeeInfoMap" parameterType="java.util.Map">
+		SELECT ei.user_id,ei.employee_id,ei.user_name,ei.user_sex,ei.employee_num,ei.organization_name,ei.post_name,
+		        ei.apply_date,ei.user_birthday,ei.user_name,ei.enterprise_mail
+		   FROM employee_info ei
+		  WHERE ei.user_birthday
+		   LIKE CONCAT('%',#{birth})
+		    AND ei.employee_id=#{employeeId}
+	</select>
+	
+	<!-- 查询生日家属的信息 -->
+	<select id="EmployeeFamilyBirthToday" resultMap="employeeFamilyInfoMap" parameterType="java.util.Map">
+		SELECT ei.user_id,ei.employee_id,ei.user_name,ei.user_sex,ei.employee_num,ei.organization_name,ei.post_name,
+	            ei.apply_date,efi.member_birthday,efi.member_name,efi.relationship,ei.enterprise_mail
+	       FROM employee_info ei,
+	            employee_family_info efi	            
+	      WHERE ei.employee_id=efi.employee_id
+	        AND efi.member_birthday  
+		   LIKE CONCAT('%',#{birth})
+		    AND ei.employee_id=#{employeeId}
+	</select>
+</mapper>

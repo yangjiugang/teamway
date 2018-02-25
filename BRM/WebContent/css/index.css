@@ -1,0 +1,264 @@
+@charset "utf-8";
+/* CSS Document */
+/*员工档案管理*/
+.R_top { margin-bottom:20px; overflow:hidden; height:45px; background:url(../images/R_topimg.jpg) repeat-x; border-bottom:#dfecf6 1px solid;}
+.R_top ul{ overflow:hidden; margin:10px 0 0 0px; }
+.s_font{loat:left; }/*收索查询字体--*/
+.s_font li{ float:left; height:25px; line-height:25px; margin-left:10px; display:inline;}
+.s_font li select{ width:95px; _width:80px;}
+.s_font li a{ color:#000;}
+.s_font li input{ font-size:12px; _border:medium none;}
+.s_font .time select {width: 95px;}
+
+.t_but{float:right;}/*打印按钮UL*/
+.t_but li{ float:left; width:29px; height:29px; margin-left:10px; display:inline;}
+
+.r_but{ clear:both; overflow:hidden; _margin:10px 0px;}/*添加按钮排*/
+.r_but05{ clear:both; overflow:hidden; _margin:10px 0px;}/*添加按钮排*/
+.but1{ border:medium none; background:url(../images/but_bg.jpg) repeat-x; height:26px; border:#7fb5dc 1px solid; padding:0 5px; color:#0160a1;_width:auto;_font-size:12px;}/*按钮公共样式*/
+.r_but input{ float:left; margin-right:5px; }
+
+.font_ul{ clear:both; margin-top:40px; width:100%; overflow:hidden; margin:50px 0 0 0;}
+.f_ul li{ float:left; width:6.1%; text-align:center; font-family:"新宋体", "宋体"; line-height:25px;}
+.f_ul input{ margin-top:15px;}
+
+.nul1 li{ border-top:#d2e5f3 1px solid; height:45px; line-height:45px;}
+.nul1 .f_ul li{ border:none;}
+.nul1 .f_ul li a{ color:#0160a1;}
+/*end员工档案管理*/
+
+/*招聘管理*/
+.zp_ltop li{ width:143px;}
+.left1{width:287px;}
+.left1 dl{ margin:20px 0 0 10px;}
+.left1 dt{ height:30px; line-height:30px;}
+.left1 dt img{ margin-right:5px;}
+.left1 dd{ margin-left:30px; height:30px; line-height:30px;}
+.zp_font li select{ width:60px;}
+.left1 dt a{ color:#0160A1;}
+/*end招聘管理*/
+
+/*员工关系管理*/
+.yg_span{float:left; display:block; margin-top:-2px; margin-left:5px;}
+.hj{ color:#3662b4; display:block; margin-left:25px; float:left;}
+.yd_font li{ height:26px;}
+/*end员工关系管理*/
+
+/*绩效管理&薪酬福利管理*/
+.year dd{ margin-left:80px;}
+.year dd a{ color:#000;}
+.hj2 font{ margin-left:15px; color:#3662b4; width:90px; font-size:12px;}
+/*当月福利报表生成*/
+.xcdl1{ margin:50px;}
+.sc_but{ width:196px; height:57px; border:medium none; background-image:url(../images/baobiao_but.jpg); margin:0 0 20px 155px;}
+.jd_but{ width:296px; height:58px; border:medium none; background-image:url(../images/dengdai_img.jpg);margin:30px 0 20px 120px;}
+.xcdl1 p{ line-height:20px; font-size:14px; color:#466fb1;}
+.xcdl1 span{ display:block; width:600px;overflow:hidden; margin:30px 0 30px 120px;}
+.jx_but,.fq_but{ width:120px; height:57px; float:left; border:medium none;}
+.jx_but{ background-image:url(../images/jx_but.jpg);}
+.fq_but{ background-image:url(../images/fanqi_but.jpg); margin-left:60px;}
+/*end绩效管理&薪酬福利管理*/
+
+/*顾问管理*/
+.gw_right{ width:100%; height:100%;}
+/*end顾问管理*/
+
+/*index*/
+.middle{padding-top:1px;}
+.left3{ width:60%; float:left;}
+.right3{ width:20%; border-left:#7fb5dc 1px solid; float:right; position:relative; height:100%}
+.top_right font{  font-size:12px; color:#FFF; display:block; margin:10px 10px 0; float:left;}/*欢迎回来*/
+/*中间--图标列表*/
+.M_pic{ margin:10px 0 30px 0; overflow:hidden;}
+.M_pic li{ width:300px; float:left; margin:50px 0 0 50px; _display:inline;}
+.M_pic li img{ float:left;}
+.M_font{ margin:9px 0 0 10px; width:200px; float:left;}
+.M_font li{ line-height:20px; width:200px; margin:0px;}
+.M_font li h2{ color:#022259; font-size:18px; font-family:"微软雅黑","黑体"; font-weight:normal; line-height:25px;}
+.M_font li a{ color:#858585;}
+.M_font li p{ width:200px; height:60px;}
+
+/*右边--头像*/
+.touxiang{ width:178px; height:157px; background-image:url(../images/aa.jpg); background-repeat:no-repeat; background-position:center center; margin:10px 0 0 40px;}
+.kuang{ width:178px; height:157px; background-image:url(../images/kuang.gif); background-repeat:no-repeat;}
+
+.tongxun{ display:block; position:absolute; top:10px; right:20px; color:#1470b9;}/*通讯录*/
+
+/*个人简介*/
+.grjj{ clear:both; color:#1470b9;}
+.grjj li{ width:60%; margin:5px auto;}
+.grjj li font{ display:block; width:65px; float:left;}
+
+/*今日面试*/
+.index_li{ clear:both; margin-top:30px; border-top:#D2E5F3 1px solid;}
+.index_li li{ text-align:center; line-height:25px; height:25px; margin:3px 0; border-bottom:#D2E5F3 1px solid;}
+.index_li li a{ color:#000;}
+
+.right_dowm{ width:100%; margin-top:30px; border-top:#7fb5dc 1px solid;}
+.right_dowm li{ width:100%; clear:both; border-bottom:#7fb5dc 1px solid; background-image:url(../images/righ_bg.jpg);height:30px; line-height:30px; text-align:center;}
+.right_dowm li a{color:#0463a5;}
+/*End index*/
+.px1 li{ margin-left:5px; display:inline;}
+
+.px2{ width:138px;}
+.px2 li{ margin-left:5px; display:inline;}
+
+/*答题开始*/
+.dt_out{ width:60%; margin:30px auto;}
+.dt_out h1{ font-size:14px; font-weight:normal;}
+.dt_out span{ display:block; margin:30px 0 0 0; line-height:30px;}
+.dt_out span font{ font-size:12px;}
+.dt_out span input{ border:medium none; border-bottom:#000 1px solid; background-color:#fff; height:20px;}
+
+.dt2{ float:right; display:block; margin:30px 150px 30px 0;}
+.dt2_but{ border-bottom:#7fb5dc 1px solid; margin:0 20px;}
+.dt2_input{ border:medium none; border-bottom:#000 1px solid; background-color:#fff; height:20px;}
+.tm{ clear:both; width:80%; margin:auto;}
+.tm font{ display:block; width:100%; border-bottom:#7fb5dc 1px solid; height:22px;}
+.tm font span{ color:#0160A1;}
+.tm dl{ margin:10px 0 20px 30px; border-bottom:1px solid #D8E9F4; padding-bottom:10px;}
+.tm dt{ font-size:14px;}
+.tm dd{ margin:5px 0 0 20px;}
+
+.updwon { margin-left:150px;}
+.updwon input{ margin-left:30px; margin-top:20px;}
+/*End答题开始*/
+
+/*DT4*/
+.dt4{ clear:both; width:80%; margin:30px auto 0 auto; color:#0160A1; font-size:18px;}
+/*End DT4*/
+/*简历搜索*/
+.jl_right{ width:100%; height:100%;}
+.jl_right a{ color:#000;}
+.glwz{ width:100%; height:50px; background-color:#e6e6e6; line-height:50px;}
+.glwz font{ margin-left:20px; float:left;}
+.glwz ul{ float:left; margin-top:5px; width:35%;}
+.glwz li{ float:left; margin-left:10px;}
+.glwz li input{ margin:15px 5px; float:left; _width:15px;_height:15px; _display:inline;}
+.glwz li font{ margin:0px; margin-top:-4px;}
+.glwz span{ display:block; width:80px; float:left; text-align:center;}
+
+.jl_tab{ width:100%; height:40px; background-color:#f0f0f0; overflow:hidden; line-height:40px;}
+.jl_tab ul{ float:left; margin-top:5px; width:500px;}
+.jl_tab li{ float:left; border:#d8d9db 1px solid; background-color:#f4f7fc; width:100px; height:28px; line-height:28px; margin-left:5px;}
+.jl_tab li img{ margin:6px 10px; float:left;}
+
+.jl_seach,.jl_seach1{ width:80%; margin:20px auto; }
+.jl_seach font{ width:100%; display:block; line-height:25px; margin-top:50px; border-bottom:#f1f1f1 1px solid; text-indent:15px;}
+.jl_seach span{ display:block; margin:10px 25px; height:30px; line-height:30px;}
+.span_bg{ background-color:#F0F0F0;}
+
+.xuanz{ background-color:#FFF;}
+
+.JL_ts{ height:26px; border:#40b3ff 1px solid; background-color:#e5f5ff; width:500px; float:left; margin-top:10px; line-height:27px; font-size:12px;}
+.JL_ts img{ margin:5px; float:left;}
+.JL_ts a{ text-decoration:underline; color:#0160a2; margin-left:50px;}
+
+/*精准搜索*/
+.s_ul1 { width:70%; margin:auto; overflow:hidden;}
+.s_ul1 li{ float:left; font-size:12px;}
+.s_ul1 li a{ color:#6699cc;}
+.s_ul1 .xian1{ color:#cab2ca; margin:0 5px;}
+.label1{ clear:both; width:100%; margin-top:30px;}
+.label1 li{ margin:30px 0; height:20px; line-height:20px;}
+.label1 label{ width:80px; display:block; float:left;}
+.label1 select{ width:100px;}
+.label1 .checkboxInput{ margin:0 5px 0 10px;}
+.xiugai{ border:medium none; width:68px; height:18px; background-image:url(../images/xiugai1.jpg); margin:0 10px;}
+
+.down_s{ margin-top:30px;}
+.down_s  font{ width:100%; display:block; border-bottom:#3398cc 1px solid; text-indent:15px; line-height:22px;}
+.down_s  font a{color: #0160A2; margin-left: 50px;text-decoration: underline;}
+
+
+.baocun_s{ margin:50px 10px;}
+/*End简历搜索*/
+
+/*招聘列表*/
+.HR_ZhaopinSOSO{ width:98.6%; margin-bottom:-40px; padding:15px 0 0 20px;}
+.HR_ZhaopinSOSO i{ font-style:normal; color:#F00;}
+.HR_ZhaopinSOSO span{ float:right; height:30px; margin-right:10px;}
+.HR_ZhaopinList{ width:91.5%; height:30px; background:#F0F0F0; clear:both; padding-left:120px;}
+.HR_ZhaopinList li{ float:left; padding:7px 10px 0 10px; margin-right:5px;}
+.HR_ZhaopinListX{ background:#fff; color:#0566AD; height:23px;}
+/*End招聘列表*/
+
+/*招聘详情*/
+.HR_zhaopinDetail{ width:100%; clear:both;}
+.HR_zhaopinDetailT{ width:97.2%; border-bottom:1px solid #7FB5DC; padding:15px 20px;}
+.HR_zhaopinDetailT span{ float:right; height:30px;}
+.HR_zhaopinDetailT input{ margin-right:10px;}
+.HR_zhaopinDetailL{ float:left; width:9.1%; margin-left:20px; padding-top:10px;}
+.HR_zhaopinDetailL h4{ width:130px; height:30px; line-height:30px; font-size:12px; border-bottom:1px solid #E6E6E6;}
+.HR_zhaopinDetailL h4 input{ width:20px; height:20px;}
+.HR_zhaopinDetailL dl{ clear:both;}
+.HR_zhaopinDetailL dl dt{ float:left; height:22px; border-bottom:1px solid #E6E6E6; padding-top:5px;}
+.HR_zhaopinDetailL dl dt input{ width:20px; height:20px;}
+.HR_zhaopinDetailL dl dd{ float:left; width:105px; height:22px; line-height:20px; border-bottom:1px solid #E6E6E6; padding:5px 0 0 4px;}
+.HR_zhaopinDetailR{ float:left; border-left:1px solid #E6E6E6; padding:10px 0 0 10px;}
+.HR_zhaopinDetailRTop{ color:#989898; border-bottom:1px solid #E1E1E1; padding-bottom:5px;}
+.HR_zhaopinDetailRTop span{ padding-left:30px;}
+.HR_zhaopinDetailRAvatar{ float:left; clear:both; margin:10px 0;}
+.HR_zhaopinDetailRAvatarL{ float:left;}
+.HR_zhaopinDetailRAvatarL img{ border:1px solid #8C8C8C}
+.HR_zhaopinDetailRAvatarR{ float:left; margin-left:10px; line-height:1.8em;}
+.HR_zhaopinDetailRAvatarR h4{ font-size:12px; font-weight:normal;}
+.HR_zhaopinDetailRContent{ float:left; width:800px; clear:both; margin:10px 0 20px 0; border-bottom:1px solid #CACACA; padding-bottom:5px;}
+.HR_zhaopinDetailRContent li{ float:left; width:43%; line-height:1.7em; border-left:1px solid #DFDFDF; padding-left:20px;}
+.HR_zhaopinDetailRContent li h4{ color:#256FB8; font-size:12px;}
+.HR_zhaopinDetailRContent li h4 span{ color:#676767;}
+.HR_zhaopinDetailRContent1{ width:700px; clear:both; padding-top:10px;}
+.HR_zhaopinDetailRContent1 dt{ float:left; width:60px; height:50px;}
+.HR_zhaopinDetailRContent1 dd{ float: right; width:640px;}
+.HR_zhaopinDetailRContent1 dd h4{ height:20px; line-height:20px; color:#2670B7; font-size:12px; border-bottom:1px solid #D8D8D8;}
+.HR_zhaopinDetailRContent1 dd p{ line-height:1.7em; padding-top:7px;}
+/*End招聘详情*/
+
+/*2012.3.12*/
+.t_but12{float:right;}/*打印按钮UL*/
+.t_but12 li{ float:left; height:29px; margin-left:5px; display:inline;}
+
+/*未回应的约谈*/
+/*.table_out{ width:100%; border-top:#D2E5F3 1px solid; margin-top:20px;}*/
+/*End未回应的约谈*/
+
+/*在线抓取简历tabl 2012.03.21*/
+.HR_ListSOSO{ width:98.6%; padding:15px 0 0 20px;}
+.HR_ListSOSO i{ font-style:normal; color:#F00;}
+.HR_ListSOSO span{ float:right; height:30px; margin-right:10px;}
+
+
+.ListBg{ background:#EAF4FD;}
+/*表体*/
+.ListTableBody
+{
+	table-layout: fixed;
+	font-size: 12px;
+	border-collapse: collapse;
+	padding: 0px; border-top:1px solid #A8CBFE;
+}
+
+.ListTableBody TD
+{
+	border-right: #a8cbfe 1px inset;
+	border-left: #a8cbfe 1px outset;
+	border-bottom: #a8cbfe 1px inset;
+	border-top-style: none;
+	border-collapse: collapse;
+	padding:0 0 5px 3px;	 
+	line-height: 1.7em;
+	
+}
+/*表体*/
+
+/*表尾*/
+.ListTableFoot
+{ padding-top:7px;
+	height: 22px;
+	width: 100%;
+	text-indent: 30pt;
+}
+/*表尾*/
+
+/*在线抓取简历tabl 2012.03.21 end*/
+

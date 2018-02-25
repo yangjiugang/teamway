@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fc.brms.common.mapper.IOrgStructureMapper">
+	<resultMap id="cfgCompanyMap" type="CfgCompany">
+		<id property="companyId" column="company_id"/>
+		<result property="companyName" column="company_name"/>
+		<result property="companyShortName" column="company_short_name"/>
+		<result property="areaId" column="area_id"/>
+		<result property="companyCity" column="company_city"/>
+		<result property="companyAddress" column="company_address"/>
+		<result property="companyEmail" column="company_email"/>
+		<result property="companyPhone" column="company_phone"/>
+		<result property="companyFax" column="company_fax"/>
+		<result property="companyLogo" column="company_logo"/>
+		<result property="companyUrl" column="company_url"/>
+		<result property="companyPopulationScale" column="company_population_scale"/>
+		<result property="companyDesc" column="company_desc"/>
+		<result property="companyLegalPerson" column="company_legal_person"/>
+		<result property="createDate" column="create_date"/>
+		<result property="createUser" column="create_user"/>
+	</resultMap>
+	
+	<resultMap id="cfgJobLevelMap" type="CfgJobLevel">
+		<id property="jobLevelId" column="job_level_id"/>
+		<result property="jobLevelName" column="job_level_name"/>
+		<result property="jobLevelOrder" column="job_level_order"/>
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="lowestSalaryLevel" column="lowest_salary_level"/>
+		<result property="highestSalaryLevel" column="highest_salary_level"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+		<result property="companyId" column="company_id"/>
+	</resultMap>
+
+	<resultMap id="cfgJobGradeMap" type="CfgJobGrade">
+		<id property="jobGradeId" column="job_grade_id"/>
+		<result property="jobGradeNo" column="job_grade_no"/>
+		<result property="jobGradeName" column="job_grade_name"/>
+		<result property="jobGradeDesc" column="job_grade_desc"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+		<result property="companyId" column="company_id"/>
+	</resultMap>
+	
+	<resultMap id="cfgOrganizationMap" type="CfgOrganization">
+		<id property="organizationId" column="organization_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="organizationNum" column="organization_num"/>
+		<result property="organizationName" column="organization_name"/>
+		<result property="organizationLevel" column="organization_level"/>
+		<result property="higherOrganizationId" column="higher_organization_id"/>
+		<result property="postPreparation" column="post_preparation"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+	</resultMap>
+	
+	 <resultMap id="cfgPostMap" type="CfgPost">
+		<id property="postId" column="post_id"/>
+		<result property="postNo" column="post_no"/>
+		<result property="postName" column="post_name"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="postPersons" column="post_persons"/>
+		<result property="isFpsg" column="is_fpsg"/>
+		<result property="lowestSalaryLevel" column="lowest_salary_level"/>
+		<result property="highestSalaryLevel" column="highest_salary_level"/>
+		<result property="higherPostId" column="higher_post_id"/>
+		<result property="createDate" column="create_date"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+		<association property="cfgJobGrade" javaType="CfgJobGrade" column="job_grade_id">
+			<result property="jobGradeNo" column="job_grade_no"/>
+			<result property="jobGradeName" column="job_grade_name"/>
+			<result property="jobGradeDesc" column="job_grade_desc"/>
+			<result property="createTime" column="create_time"/>
+			<result property="createUser" column="create_user"/>
+			<result property="lastUpdateTime" column="last_update_time"/>
+			<result property="lastUpdateUser" column="last_update_user"/>
+			<result property="companyId" column="company_id"/>
+		</association>
+		<association property="cfgJobLevel" javaType="CfgJobLevel" column="job_level_id">
+			<id property="jobLevelId" column="job_level_id"  />
+			<result property="jobLevelName" column="job_level_name"/>
+			<result property="jobLevelOrder" column="job_level_order"/>
+			<result property="jobGradeId" column="job_grade_id"/>
+			<result property="lowestSalaryLevel" column="lowest_salary_level"/>
+			<result property="highestSalaryLevel" column="highest_salary_level"/>
+			<result property="createTime" column="create_time"/>
+			<result property="createUser" column="create_user"/>
+			<result property="lastUpdateTime" column="last_update_time"/>
+			<result property="lastUpdateUser" column="last_update_user"/>
+			<result property="companyId" column="company_id"/>
+		</association>
+		<association property="cfgPostJobLevel" javaType="CfgPostJoblevel" column="company_id">
+			<result property="jobLevelId" column="job_level_id"/>
+			<result property="companyId" column="company_id"/>
+		</association>
+	</resultMap>
+	
+	<!-- Code By Gaoqf Start-->
+	<!-- 查询公司简单信息 -->
+	<select id="selectCompanyInfoById" resultMap="cfgCompanyMap" parameterType="int">
+		SELECT company_id,company_name,company_email 
+		  FROM cfg_company 
+		 WHERE company_id = #{companyId} 
+	</select>
+	
+	<!-- 查询公司部门 -->
+	<select id="selectOrganizationByCompanyId" resultMap="cfgOrganizationMap" >		
+	      SELECT organization_id,organization_name 
+	      	FROM cfg_organization
+	       WHERE  company_id = #{companyId}    
+	</select>
+	<!-- Code By Gaoqf End-->
+	
+	<!-- Start FengH -->
+	<!-- 查询职系 -->
+	<select id="findJobGrade" resultMap="cfgJobGradeMap">
+		  SELECT job_grade_id,job_grade_name FROM cfg_job_grade    
+	</select>
+	
+	<!-- 查询职级 -->
+	<select id="findJobLevelForGrade" parameterType="int" resultMap="cfgJobLevelMap">	
+	      SELECT job_level_id,job_level_name FROM cfg_job_level WHERE job_grade_id=#{jobGradeId}
+	</select>
+	
+	<!-- 查询部门 -->
+	<select id="findOrganization" resultMap="cfgOrganizationMap">		
+	      SELECT organization_id,organization_name FROM cfg_organization
+	</select>
+	
+	<!-- 查询岗位 -->
+	<select id="findPostForOrganization" parameterType="int" resultMap="cfgPostMap">
+		  SELECT post_id,post_name FROM cfg_post WHERE organization_id=#{organizationId}
+	</select>
+	<!-- End FengH -->
+	
+	<!-- SQL Code BY Lufoz Start -->
+	<select id="getOrgLever1ByCompanyId" parameterType="int" resultMap="cfgOrganizationMap">
+		SELECT organization_id,organization_num,organization_name 
+		FROM cfg_organization 
+		WHERE company_id=#{companyId} AND higher_organization_id=0
+	</select>
+	
+	<select id="getChildOrg" parameterType="Map" resultMap="cfgOrganizationMap">
+		SELECT organization_id,organization_num,organization_name 
+		FROM cfg_organization 
+		WHERE company_id=#{companyId} AND higher_organization_id=#{higherOrganizationId}
+	</select>
+	
+	<select id="getFinalChildOrgByCompanyId" parameterType="int" resultMap="cfgOrganizationMap">
+		SELECT organization_id,organization_num,organization_name
+		FROM cfg_organization
+		WHERE company_id=#{companyId} AND 
+			organization_id NOT IN (
+				SELECT DISTINCT higher_organization_id 
+				FROM cfg_organization 
+				WHERE company_id=#{companyId}
+			)
+	</select>
+	
+	<select id="getFinalChildOrgById" parameterType="int" resultMap="cfgOrganizationMap">
+		SELECT organization_id,organization_num,organization_name
+		FROM cfg_organization
+		WHERE organization_level_path LIKE CONCAT((SELECT organization_level_path FROM cfg_organization WHERE organization_id=#{organizationId}), "%") AND 
+			organization_id NOT IN (
+				SELECT DISTINCT higher_organization_id 
+				FROM cfg_organization 
+				WHERE organization_level_path LIKE CONCAT((SELECT organization_level_path FROM cfg_organization WHERE organization_id=#{organizationId}), "%")
+			)
+	</select>
+	
+	<select id="getPostByKeyword" parameterType="Map" resultMap="cfgPostMap">
+		SELECT post_id,post_no,post_name
+		FROM cfg_post 
+		<if test="keyword != null">
+		WHERE post_no LIKE CONCAT("%", #{keyword}, "%") OR post_name LIKE CONCAT("%", #{keyword}, "%")
+		</if>
+	</select>
+	
+	<select id="getPostByCompanyId" parameterType="int" resultMap="cfgPostMap">
+		SELECT post_id,post_no,post_name
+		FROM cfg_post 
+		WHERE company_id=#{companyId}
+	</select>
+	
+	<select id="getPostByOrgId" parameterType="int" resultMap="cfgPostMap">
+		SELECT post_id,post_no,post_name
+		FROM cfg_post p
+			INNER JOIN
+			(
+			SELECT organization_id FROM cfg_organization
+			WHERE organization_level_path LIKE CONCAT((SELECT organization_level_path FROM cfg_organization WHERE organization_id = #{organizationId}), "%")
+			) o ON o.organization_id = p.organization_id
+	</select>
+	
+	<select id="getPostById" parameterType="int" resultMap="cfgPostMap">
+		SELECT post_id,post_no,post_name
+		FROM cfg_post
+		WHERE post_id=#{postId}
+	</select>
+	<!-- SQL Code BY Lufoz End -->
+	
+	<select id="selectCompanyEmailById" resultMap="cfgCompanyMap" parameterType="int">
+		SELECT company_id,company_name,company_email 
+		  FROM cfg_company 
+		 WHERE company_id = #{companyId} 
+	</select>
+</mapper>

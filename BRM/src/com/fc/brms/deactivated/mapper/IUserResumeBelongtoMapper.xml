@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fc.brms.deactivated.mapper.IUserResumeBelongtoMapper">
+	<resultMap id="userResumeBelongtoMap" type="UserResumeBelongto">
+		<result property="userId" column="user_id"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="userType" column="user_type"/>
+		<result property="blackRedList" column="black_red_list"/>
+	</resultMap>
+	
+	<!-- Code By Gaoqf Start-->
+	<!-- 更新经济人所属名单(红、黑名单） -->
+	<update id="updateDimissionUserToBlack" >
+		UPDATE user_resume_belongto
+		   SET black_red_list =#{redBlack}
+		 WHERE company_id =#{companyId}
+		   AND user_id IN 
+		<foreach collection="userIds" item="item" open="(" separator="," close=")">
+			   #{item}
+		</foreach>
+	</update>
+	<!-- Code By Gaoqf End-->
+</mapper>

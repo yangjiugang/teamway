@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.brms.external.mapper.IRecruitInterviewMapper">
+	<resultMap id="RecruitInterviewMap" type="RecruitInterview">
+		<result property="interviewId" column="interview_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="taskId" column="task_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="interviewCnt" column="interview_cnt"/>
+		<result property="interviewResult" column="interview_result"/>
+		<result property="entryNotice" column="entry_notice"/>
+		<result property="entryDate" column="entry_date"/>
+		<result property="entryStatus" column="entry_status"/>
+		
+		<association  property="userResume" column="user_id" javaType="UserResume" >
+			<id property="userId" column="user_id"/>
+			<result property="userNum" column="user_num"/>
+			<result property="userName" column="user_name"/>
+			<result property="userSex" column="user_sex"/>
+			<result property="userTelphone" column="user_telphone"/>
+			<result property="email" column="email"/>
+			<result property="userBirthday" column="user_birthday"/>
+			<result property="certificateType" column="certificate_type"/>
+			<result property="certificateNum" column="certificate_num"/>
+			<result property="userHeight" column="user_height"/>
+			<result property="photoPath" column="photo_path"/>
+			<result property="areaId" column="area_id"/>
+			<result property="hkPlace" column="hk_place"/>
+			<result property="birthPlace" column="birth_place"/>
+			<result property="userAddress" column="user_address"/>
+			<result property="highestEducation" column="highest_education"/>
+			<result property="professionId" column="profession_id"/>
+			<result property="profession" column="profession"/>
+			<result property="degree" column="degree"/>
+			<result property="graduateSchool" column="graduate_school"/>
+			<result property="graduateDate" column="graduate_date"/>
+			<result property="workYears" column="work_years"/>
+			<result property="isMarry" column="is_marry"/>
+			<result property="politicalConnection" column="political_connection"/>
+			<result property="businessId" column="business_id"/>
+			<result property="presentBusiness" column="present_business"/>
+			<result property="postId" column="post_id"/>
+			<result property="presentPost" column="present_post"/>
+			<result property="presentSalaryYear" column="present_salary_year"/>
+			<result property="workStatus" column="work_status"/>
+			<result property="resumeFrom" column="resume_from"/>
+			<result property="createDate" column="create_date"/>
+			<result property="contactCnt" column="contact_cnt"/>
+			<result property="highestEducationName" column="highest_education_name"/>
+			<result property="lastUpdateUser" column="last_update_user"/>
+			<result property="lastUpdateDate" column="last_update_date"/>
+		</association>
+				
+		<association  property="recruitInterviewProcess" column="interview_id" javaType="RecruitInterviewProcess" >
+			<result property="processId" column="process_id"/>
+			<result property="companyId" column="company_id"/>
+			<result property="trackId" column="track_id"/>
+			<result property="interviewId" column="interview_id"/>
+			<result property="interviewTime" column="interview_time"/>
+			<result property="interviewType" column="interview_type"/>
+			<result property="interviewersId" column="interviewers_id"/>
+			<result property="interviewersName" column="interviewers_name"/>
+			<result property="interviewers" column="interviewers"/>
+			<result property="interviewAddress" column="interview_address"/>
+			<result property="interviewResult" column="interview_result"/>
+			<result property="notifyEmployeeId" column="notify_employee_id"/>
+			<result property="notifyEmployeeName" column="notify_employee_name"/>
+			<result property="notifyEmployeePhone" column="notify_employee_phone"/>
+			<result property="notifyTime" column="notify_time"/>
+			<association  property="userTrackRecord" column="trackId" javaType="UserTrackRecord" >
+				<result property="trackId" column="track_id"/>
+				<result property="companyId" column="company_id"/>
+				<result property="userId" column="user_id"/>
+				<result property="talkNum" column="talk_num"/>
+				<result property="mainTalkOrganizationId" column="main_talk_organization_id"/>
+				<result property="mainTalkOrganizationName" column="main_talk_organization_name"/>
+				<result property="mainTalkPostId" column="main_talk_post_id"/>
+				<result property="mainTalkPostName" column="main_talk_post_name"/>
+				<result property="mainTalkEmployee" column="main_talk_employee"/>
+				<result property="mainTalkEmployeeName" column="main_talk_employee_name"/>
+				<result property="startTime" column="start_time"/>
+				<result property="endTime" column="end_time"/>
+				<result property="talkType" column="talk_type"/>
+				<result property="talkPlace" column="talk_place"/>
+				<result property="talkEstimate" column="talk_estimate"/>
+				<result property="createTime" column="create_time"/>
+			</association>
+		</association>
+	</resultMap>
+	
+	
+	<resultMap id="UserTrackRecordContentMap" type="UserTrackRecordContent">
+		<result property="contentId" column="content_id"/>
+		<result property="trackId" column="track_id"/>
+		<result property="contentType" column="content_type"/>
+		<result property="content" column="content"/>
+	</resultMap>
+	
+	<resultMap id="RecruitOfferMap" type="RecruitOffer">
+		<result property="offerId" column="offer_id"/>
+		<result property="taskId" column="task_id"/>
+		<result property="interviewId" column="interview_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="resumeId" column="resume_id"/>
+		<result property="userName" column="user_name"/>
+		<result property="userTelphone" column="user_telphone"/>
+		<result property="email" column="email"/>
+		<result property="userDept" column="user_dept"/>
+		<result property="organizationName" column="organization_name"/>
+		<result property="userPost" column="user_post"/>
+		<result property="postName" column="post_name"/>
+		<result property="probationDate" column="probation_date"/>
+		<result property="positiveDate" column="positive_date"/>
+		<result property="probationSalary" column="probation_salary"/>
+		<result property="positiveSalary" column="Positive_salary"/>
+		<result property="contactId" column="contact_id"/>
+		<result property="contactUser" column="contact_user"/>
+		<result property="contactUserEmail" column="contact_user_email"/>
+		<result property="contactPhone" column="contact_phone"/>
+		<result property="offerStatus" column="offer_status"/>
+		<result property="arriveDate" column="arrive_date"/>
+	</resultMap>
+	
+	<resultMap id="UserResumeExtendMap" type="UserResumeExtend">
+		<result property="userId" column="user_id"/>
+		<result property="nationId" column="nation_id"/>
+		<result property="nation" column="nation"/>
+		<result property="politicalConnection" column="political_connection"/>
+		<result property="foreignLanguages1" column="foreign_languages1"/>
+		<result property="foreignLanguageLevel1" column="foreign_language_level1"/>
+		<result property="foreignLanguages2" column="foreign_languages2"/>
+		<result property="foreignLanguageLevel2" column="foreign_language_level2"/>
+		<result property="drivingCertificateType" column="driving_certificate_type"/>
+		<result property="computerLevel" column="computer_level"/>
+		<result property="userHomeAddress" column="user_home_address"/>
+		<result property="hobbies" column="hobbies"/>
+		<result property="msn" column="msn"/>
+		<result property="qQ" column="QQ"/>
+	</resultMap>
+	
+	<!-- SQL CODE BY ZHENGLH -->
+	<!-- 查询用户面试交谈记录 -->
+	<select id="getInterviewByUserId" parameterType="int" resultMap="RecruitInterviewMap">
+		SELECT ur.user_name,rip.interviewers_name,rip.interview_address,utr.start_time,utr.end_time,utr.talk_estimate,rip.interview_result,rip.track_id 
+		  FROM user_resume ur,recruit_interview ri,recruit_interview_process rip,user_track_record utr
+		 WHERE ur.user_id = ri.user_id
+		   AND ri.interview_id = rip.interview_id
+		   AND rip.track_id = utr.track_id
+		   AND ri.user_id=#{userId}
+	</select>
+	
+	<select id="getTrackContentById" resultMap="UserTrackRecordContentMap" parameterType="int">
+		SELECT content_id,track_id,content_type,content 
+		  FROM user_track_record_content 
+		 WHERE track_id=#{trackId}
+	</select>
+	
+	<!-- 新增面试 -->
+	<insert id="addNewInterview" parameterType="RecruitInterviewProcess" >
+		INSERT INTO recruit_interview_process (company_id,track_id,interview_id,interview_time,interview_type,interviewers_id,
+		  interviewers_name,interviewers,interview_address,interview_result,notify_employee_id,notify_employee_name,notify_employee_phone,notify_time) 
+		VALUES  (#{companyId},#{trackId},#{interviewId},#{interviewTime},#{interviewType},#{interviewersId},#{interviewersName},
+		    #{interviewers},#{interviewAddress},#{interviewResult},#{notifyEmployeeId},#{notifyEmployeeName},#{notifyEmployeePhone},#{notifyTime})
+	</insert>
+	
+	<!-- 新增面试 -->
+	<insert id="addNewInterviewByRipId" parameterType="RecruitInterview" useGeneratedKeys="true" keyProperty="interviewId">
+		INSERT INTO recruit_interview (company_id,task_id,user_id,interview_cnt,interview_result,entry_notice,entry_date,entry_status) 
+		VALUES  (#{companyId},#{taskId},#{userId},#{interviewCnt},#{interviewResult},#{entryNotice},#{entryDate},#{entryStatus})
+	</insert>
+	
+	<!-- 是否已经发送过招聘面试 -->
+	<select id="isInInterview" parameterType="map" resultType="String">
+		SELECT interview_id FROM recruit_interview WHERE user_id=#{userId} AND task_id=#{taskId}
+	</select>
+	
+	<!-- 更新当前面试次数 -->
+	<update id="updateInterviewCnt" parameterType="int">
+		UPDATE recruit_interview SET interview_cnt = interview_cnt+1 WHERE interview_id = #{interviewId} 
+	</update>
+	
+	<!-- 根据用户查询面试 -->
+	<select id="findInterviewByUserId" parameterType="map" resultMap="RecruitInterviewMap" resultType="RecruitInterview">
+		SELECT interview_id,company_id,task_id,user_id,interview_cnt,interview_result,entry_notice,entry_date,entry_status 
+		  FROM recruit_interview
+		 WHERE user_id = #{userId}
+		   AND task_id = #{taskId}
+		 LIMIT 0,1
+	</select>
+	
+	<!-- 更新面试过程 -->
+	<update id="updateInterviewProcess" parameterType="RecruitInterviewProcess">
+		UPDATE recruit_interview_process 
+		   SET interviewers_id = #{interviewersId},interviewers_name = #{interviewersName},
+		       interview_address = #{interviewAddress},interview_result = #{interviewResult}
+		 WHERE company_id = #{companyId}
+		   AND interview_id = #{interviewId}
+		   AND interviewers_id = 0
+	</update>
+	
+	<!-- 查询已发起的面试通知 -->
+	<select id="findIsStutsProcessById" parameterType="RecruitInterviewProcess" resultType="int">
+		SELECT COUNT(1) FROM recruit_interview_process
+		 WHERE company_id = #{companyId}
+		   AND interview_id = #{interviewId}
+		   AND interviewers_id = 0
+	</select>
+	
+	<!-- 插入面试过程 -->
+	<insert id="addNewUserTrackRecord" parameterType="UserTrackRecord" useGeneratedKeys="true" keyProperty="trackId">
+		INSERT INTO user_track_record (company_id,user_id,talk_num,main_talk_organization_id,main_talk_organization_name,
+		  main_talk_post_id,main_talk_post_name,main_talk_employee,main_talk_employee_name,start_time,end_time,talk_type,
+		  talk_place,talk_estimate,create_time) 
+		VALUES  (#{companyId},#{userId},#{talkNum},#{mainTalkOrganizationId},#{mainTalkOrganizationName},#{mainTalkPostId},
+			 #{mainTalkPostName},#{mainTalkEmployee},#{mainTalkEmployeeName},#{startTime},#{endTime},#{talkType},#{talkPlace},
+			 #{talkEstimate},#{createTime})
+	</insert>
+	
+	<!-- 新增问题-回答 -->
+	<insert id="addNewTrackContent" parameterType="UserTrackRecordContent" useGeneratedKeys="true" keyProperty="interviewId">
+		INSERT INTO user_track_record_content (track_id,content_type,content) 
+		VALUES  (#{trackId},#{contentType},#{content})
+	</insert>
+	
+	<!-- 更新免谈记录标示 -->
+	<update id="updateTrackId" parameterType="RecruitInterviewProcess">
+		UPDATE recruit_interview_process SET track_id = #{trackId} WHERE process_id = #{processId} AND company_id = #{companyId}
+	</update>
+	
+	<!-- 匹配 -->
+	<insert id="updateInterviewByTtask" parameterType="RecruitInterview">
+		INSERT INTO recruit_interview (company_id,task_id,user_id,interview_cnt,interview_result,entry_notice,entry_date,entry_status) 
+		VALUES  (#{companyId},#{taskId},#{userId},#{interviewCnt},#{interviewResult},#{entryNotice},#{entryDate},#{entryStatus})
+	</insert>
+	
+	<!-- 匹配简历数+1 -->
+	<update id="updateTaskMatchCnt" parameterType="int">
+   			UPDATE recruit_task SET match_users = match_users+1 WHERE task_id = #{taskId}	 
+   	</update>
+   	
+   	<!-- 新增面试通知 -->
+   	<insert id="addNewOffer" parameterType="RecruitOffer">
+			INSERT INTO recruit_offer (task_id,interview_id,company_id,resume_id,user_name,user_telphone,email,user_dept,
+			  organization_name,user_post,post_name,probation_date,positive_date,probation_salary,Positive_salary,contact_id,contact_user,
+			  contact_user_email,contact_phone,offer_status,arrive_date) 
+			VALUES  (#{taskId},#{interviewId},#{companyId},#{resumeId},#{userName},#{userTelphone},#{email},#{userDept},#{organizationName},
+			    #{userPost},#{postName},#{probationDate},#{positiveDate},#{probationSalary},#{positiveSalary},#{contactId},#{contactUser},
+			    #{contactUserEmail},#{contactPhone},#{offerStatus},#{arriveDate})
+	</insert>
+	
+	<!-- 获得经纪人的兴趣爱好 -->
+	<select id="getUserHobbiesById" parameterType="int" resultType="UserResumeExtend">
+		SELECT user_id,hobbies FROM user_resume_extend WHERE user_id=#{userId}
+	</select>
+	
+	<!-- SQL CODE BY ZHENGLH -->
+	
+	<!-- 根据招聘任务ID 得到相关简历 -->
+	<select id="getInterviewByTaskId" parameterType="int" resultMap="RecruitInterviewMap">
+		SELECT 
+			r.user_id,r.user_num,r.user_name,r.user_sex,r.resume_from ,r.hk_place,r.highest_education, r.user_birthday,r.user_telphone,r.highest_education_name,
+			r.create_date,r.graduate_school,r.contact_cnt,last_update_user,r.work_years,r.present_post,r.profession,
+			i.interview_cnt,i.interview_result,i.entry_date,i.entry_status,i.entry_notice ,i.task_id
+		FROM  recruit_interview i ,user_resume r 
+		WHERE 
+		i.user_id = r.user_id 
+		<if test="taskId!=0">
+	   	AND  i.task_id = ${taskId}
+	   </if>
+	   <if test="companyId!=null">
+	   	AND  i.company_id = ${companyId}
+	   </if>
+		
+	</select>
+	
+	
+	<!--得到相关简历 -->
+	<select id="getUserResume" resultMap="RecruitInterviewMap">
+		SELECT 
+			r.user_id,r.user_num,r.user_name,r.user_sex,r.resume_from ,r.hk_place,r.highest_education, r.user_birthday,r.user_telphone,r.highest_education_name,
+			r.create_date,r.graduate_school,r.contact_cnt,last_update_user,r.work_years,r.present_post,r.profession
+		FROM  user_resume r 
+		
+		
+	</select>
+	
+</mapper>

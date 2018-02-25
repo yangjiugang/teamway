@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fc.brms.broker.mapper.IEmployeePushMapper">
+	<resultMap type="EmployeePushCash" id="EmployeePushCashMap">
+		<id column="push_id" property="pushId"/>
+		<result property="companyId" column="company_id"/>
+		<result property="employeeId" column="employee_id"/>
+		<result property="pushStartDate" column="push_start_date"/>
+		<result property="pushEndDate" column="push_end_date"/>
+		<result property="pushMoney" column="push_money"/>
+		<result property="pushDesc" column="push_desc"/>
+		<result property="createDate" column="create_date"/>
+		<result property="createUser" column="create_user"/>
+		<association property="employeeInfo" column="employee_id"
+					 javaType="EmployeeInfo" 
+				 	 resultMap="com.fc.brms.broker.mapper.IBirthdayRemindMappeer.employeeInfoMap">
+	    </association>
+	</resultMap>
+	
+	<!-- Start FengH -->
+	<select id="findPushForDate" parameterType="java.util.Map" resultMap="EmployeePushCashMap">
+		SELECT ei.employee_id,ei.employee_num,ei.user_name,ei.organization_name,ei.post_name,epc.push_money,epc.push_start_date,epc.push_end_date
+	      FROM employee_push_cash epc,
+	           employee_info ei
+	     WHERE epc.employee_id=ei.employee_id  
+	     <if test="employeeId!=null">
+	       AND ei.employee_id=#{employeeId}
+	     </if>  
+	     <if test="startDate!=null and endDate!=null">
+	       AND epc.push_start_date=#{startDate} 
+	       AND epc.push_end_date=#{endDate}
+	     </if>
+	     <if test="pushDate!=null and pushDate!=''">
+	       AND epc.push_start_date LIKE CONCAT(#{pushDate},'%') 
+	       AND epc.push_end_date LIKE CONCAT(#{pushDate},'%')
+	     </if>
+	     <if test="postId!=null">
+	       AND ei.post_id=#{postId}
+	      <!--  AND ei.post_name=#{postName} -->
+	     </if>
+	     <if test="organizationId!=null">
+	       AND ei.organization_id=#{organizationId}
+	      <!--  AND ei.organization_name=#{organizationName} -->
+	     </if>
+	     <if test="jobGradeId!=null">
+	       AND ei.job_grade_id=#{jobGradeId}
+	      <!--  AND ei.job_grade_name=#{jobGradeName} -->
+	     </if>
+	     <if test="jobLevelId!=null">
+	       AND ei.job_level_id=#{jobLevelId}
+	     <!--   AND ei.job_level_name=#{jobLevelName} -->
+	     </if>
+	     <if test="term!=null">
+	       AND ei.user_name LIKE CONCAT('%',#{term},'%')
+	       AND ei.employeeNum LIKE CONCAT('%',#{term},'%')
+	     </if>
+	   <if test="limit!=null">
+	   	 LIMIT ${limit}	
+	   </if>
+	</select>
+	
+	<select id="findPushForPushId" parameterType="java.util.Map" resultMap="EmployeePushCashMap">
+		SELECT ei.employee_id,ei.employee_num,ei.user_name,ei.organization_name,ei.post_name,epc.push_money,epc.push_start_date,epc.push_end_date
+	      FROM employee_push_cash epc,
+	           employee_info ei
+	     WHERE epc.employee_id=ei.employee_id   
+	       AND epc.push_start_date=#{pushStartDate}
+	       AND epc.push_end_date=#{pushEndDate}
+	       AND epc.employee_Id=#{employeeId}
+	</select>
+	
+	<!-- 提成调整 -->
+	<update id="updatePush" parameterType="EmployeePushCash">
+		  UPDATE employee_push_cash 
+		     SET push_money = #{pushMoney}
+	       WHERE push_start_date=#{pushStartDate}
+	         AND push_end_date=#{pushEndDate}
+	         AND employee_Id=#{employeeId}
+	</update>
+	
+	<select id="findEmployeeId" parameterType="int" resultType="int">
+		  SELECT employee_id FROM employee_push_cash WHERE push_id=#{pushId}
+	</select>
+	
+	<select id="findPushForEmployeeId" parameterType="int" resultMap="EmployeePushCashMap">
+		SELECT ei.employee_id,ei.employee_num,ei.user_name,ei.organization_name,ei.post_name,epc.push_money,epc.push_start_date,epc.push_end_date
+	      FROM employee_push_cash epc,
+	           employee_info ei
+	     WHERE epc.employee_id=ei.employee_id    
+	       AND epc.employee_id=#{employeeId}
+	</select>
+	
+	<!-- 根据EmploeeId查询  -->
+	<select id="findEmployeeForEployeeId" parameterType="String" resultMap="com.fc.brms.broker.mapper.IBirthdayRemindMappeer.employeeInfoMap">
+		SELECT user_name,employee_id 
+		  FROM employee_info
+		 WHERE employee_id IN 
+		 <foreach collection="employeeId" index="index" item="item" open="(" separator="," close=")">
+		       #{item}
+		   </foreach> 
+	</select>
+	<!-- 新增提成 -->
+	<insert id="insertPushCash" parameterType="java.util.Map">
+		INSERT INTO employee_push_cash(company_id,employee_id,push_start_date,push_end_date,push_money,push_desc,create_date,create_user) 
+		                         VALUE(#{companyId},#{employeeId},#{pushStartDate},#{pushEndDate},#{pushMoney},#{pushDesc},#{createDate},#{createUser})
+	</insert>	
+	
+	<!-- 判断该提成是否已经存在 -->
+	<select id="findEmployeePushIsTrue" parameterType="java.util.Map" resultMap="EmployeePushCashMap">
+		SELECT employee_Id 
+		  FROM employee_push_cash 
+		 WHERE employee_id=#{employeeId} 
+		   AND push_Start_Date=#{pushStartDate} 
+		   AND push_End_Date=#{pushEndDate}
+	</select>
+	
+	<select id="findOrganizationId" resultType="int" parameterType="int">
+		SELECT organization_id 
+		  FROM employee_info
+		 WHERE employee_id=#{employeeId} 
+	</select>
+	
+	<!-- 历史提成结构分析 -->
+	<select id="historyPushAnalyse" parameterType="java.util.Map" resultMap="EmployeePushCashMap">
+	     SELECT ei.user_name,ei.organization_name,ei.post_name,epc.push_money,epc.push_start_date,epc.push_end_date
+	       FROM employee_push_cash epc,
+	            employee_info ei 
+	      WHERE epc.employee_id=ei.employee_id 
+	      <if test="organizationId!=null">
+	        AND ei.organization_id=#{organizationId}  
+	      </if>  
+	      <if test="organizationName!=null">
+	        AND ei.organization_name=#{organizationName}  	      
+	      </if>
+	      <if test="postId!=null and postName!=null">
+	        AND ei.post_id=#{postId}  
+	        AND ei.post_name=#{postName}  
+	      </if>  
+	      <if test="date!=null">
+	        AND epc.push_start_date LIKE CONCAT(#{date},'%')
+	         OR epc.push_end_date LIKE CONCAT(#{date},'%')
+	      </if> 
+	      <if test="startDate!=null and endDate!=null">
+	      	AND epc.push_start_date=#{startDate} 
+	      	AND epc.push_end_date=#{endDate}
+	      </if>
+	</select>
+	
+	<select id="historyPushAnalyseAvg" parameterType="java.util.Map" resultType="String">
+	     SELECT AVG(epc.push_money)
+	       FROM employee_push_cash epc,
+	            employee_info ei 
+	      WHERE epc.employee_id=ei.employee_id 
+	      <if test="organizationId!=null">
+	        AND ei.organization_id=#{organizationId}  
+	      </if>  
+	      <if test="organizationName!=null">
+	        AND ei.organization_name=#{organizationName}  	      
+	      </if>
+	      <if test="postId!=null and postName!=null">
+	        AND ei.post_id=#{postId}  
+	        AND ei.post_name=#{postName}  
+	      </if>  
+	      <if test="date!=null">
+	        AND epc.push_start_date LIKE CONCAT(#{date},'%')
+	         OR epc.push_end_date LIKE CONCAT(#{date},'%')
+	      </if> 
+	      <if test="startDate!=null and endDate!=null">
+	      	AND epc.push_start_date=#{startDate} 
+	      	AND epc.push_end_date=#{endDate}
+	      </if>
+	</select>
+	
+	<select id="historyPushAnalyseSum" parameterType="java.util.Map" resultType="String">
+	     SELECT SUM(epc.push_money)
+	       FROM employee_push_cash epc,
+	            employee_info ei 
+	      WHERE epc.employee_id=ei.employee_id 
+	      <if test="organizationId!=null">
+	        AND ei.organization_id=#{organizationId}  
+	      </if>  
+	      <if test="organizationName!=null">
+	        AND ei.organization_name=#{organizationName}  	      
+	      </if>
+	      <if test="postId!=null and postName!=null">
+	        AND ei.post_id=#{postId}  
+	        AND ei.post_name=#{postName}  
+	      </if>  
+	      <if test="date!=null">
+	        AND epc.push_start_date LIKE CONCAT(#{date},'%')
+	         OR epc.push_end_date LIKE CONCAT(#{date},'%')
+	      </if> 
+	      <if test="startDate!=null and endDate!=null">
+	      	AND epc.push_start_date=#{startDate} 
+	      	AND epc.push_end_date=#{endDate}
+	      </if>
+	</select>
+	<!-- End FengH -->
+</mapper>

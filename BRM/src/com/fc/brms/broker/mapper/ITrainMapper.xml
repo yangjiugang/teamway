@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fc.brms.broker.mapper.ITrainMapper">
+
+	<resultMap id="trainingTaskMap" type="TrainingTask">
+		<result property="taskId" column="task_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="taskNum" column="task_num"/>
+		<result property="taskName" column="task_name"/>
+		<result property="taskType" column="task_type"/>
+		<result property="taskPlace" column="task_place"/>
+		<result property="taskPurpose" column="task_purpose"/>
+		<result property="trainingContentTypeId" column="training_content_type_id"/>
+		<result property="testId" column="test_id"/>
+		<result property="trainingStartTime" column="training_start_time"/>
+		<result property="trainingEndTime" column="training_end_time"/>
+		<result property="trainingDesc" column="training_desc"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="organizationalUnit" column="organizational_unit"/>
+		<result property="sponsorId" column="sponsor_id"/>
+		<result property="sponsor" column="sponsor"/>
+		<result property="userId" column="user_id"/>
+		<result property="contactPersonName" column="contact_person_name"/>
+		<result property="contactPersonPhone" column="contact_person_phone"/>
+		<result property="taskStatus" column="task_status"/>
+		<result property="planEmployees" column="plan_employees"/>
+		<result property="actualEmployees" column="actual_employees"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+		<result property="teacher" column="teacher"/>
+	</resultMap>
+	
+	<resultMap id="trainingContentTypeMap" type="TrainingContentType">
+		<result property="typeId" column="type_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="typeName" column="type_name"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+	</resultMap>
+	
+	<resultMap id="trainingAttachmentMap" type="TrainingAttachment">
+		<result property="attachmentId" column="attachment_id"/>
+		<result property="taskId" column="task_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="fileName" column="file_name"/>
+		<result property="attachmentPath" column="attachment_path"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+	</resultMap>
+	
+	<resultMap id="trainingScheduleMap" type="TrainingSchedule">
+		<result property="scheduleId" column="schedule_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="taskId" column="task_id"/>
+		<result property="courseName" column="course_name"/>
+		<result property="teacher" column="teacher"/>
+		<result property="teacherDesc" column="teacher_desc"/>
+		<result property="scheduleStartTime" column="schedule_start_time"/>
+		<result property="scheduleEndTime" column="schedule_end_time"/>
+	</resultMap>
+      
+    <resultMap id="trainingUsersMap" type="TrainingUsers">
+		<result property="id" column="id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="employeeId" column="employee_id"/>
+		<result property="taskId" column="task_id"/>
+		<result property="trainingSignInTime" column="training_sign_in_time"/>
+		<result property="trainingSummarize" column="training_summarize"/>
+		<result property="examResults" column="exam_results"/>
+		<result property="trainingEstimate" column="training_estimate"/>
+		<result property="userName" column="userName"/>
+		<result property="employeeNum" column="employeeNum"/>
+		<result property="organizationName" column="organizationName"/>
+		<result property="postName" column="postName"/>
+	</resultMap>
+	
+   <!-- code by huangshan start -->
+   <!-- 查询所有培训任务 -->
+   <select id="findTrainingTasks" resultMap="trainingTaskMap">
+   		SELECT tt.task_id,tt.company_id,tt.task_num,tt.task_place,tt.task_name,tt.task_type,tt.task_purpose,tt.training_content_type_id,tt.test_id,tt.training_start_time,
+   		       tt.training_end_time,tt.training_desc,tt.organization_id,tt.organizational_unit,tt.sponsor_id,tt.sponsor,tt.user_id,tt.contact_person_name,
+   		       tt.contact_person_phone,tt.task_status,tt.plan_employees,tt.actual_employees,tt.create_time,tt.create_user,tt.last_update_time,tt.last_update_user,
+   			   GROUP_CONCAT(ts.teacher) teacher
+		  FROM training_task tt 
+     LEFT JOIN training_schedule ts ON tt.task_id = ts.task_id
+		 WHERE 1=1
+		<if test="task.taskName != null">
+		    AND  (task_name LIKE '%${task.taskName}%' OR task_num LIKE '%${task.taskName}%')
+		</if>
+		<if test="task.trainingStartTime != null or task.trainingEndTime != null">
+		<![CDATA[ 
+		    AND  (training_start_time >= #{task.trainingStartTime} OR training_end_time <= #{task.trainingEndTime})
+		]]>
+		</if>
+		<if test="task.trainingStartTime != null and task.trainingEndTime != null">
+		<![CDATA[
+		    AND training_start_time >= #{task.trainingStartTime} 
+		    AND training_end_time <= #{task.trainingEndTime}
+		]]>
+		</if>
+		<if test="task.taskStatus !=-1">
+			AND task_status = ${task.taskStatus}
+		</if>
+		<if test="task.flag == 'yes'">
+		<![CDATA[
+			AND task_status = 1 
+			AND training_start_time < NOW()
+		]]>
+		</if>
+		<if test="task.flag == 'no'">
+		<![CDATA[
+			AND task_status = 1 
+			AND training_start_time > NOW()
+		]]>
+		</if>
+		<if test="task.organizationId !=0">
+			AND organization_id = #{task.organizationId}
+		</if>
+  GROUP BY tt.task_id
+		  LIMIT ${limit} 
+   </select>
+   <!-- 查询培训任务数量 -->
+   <select id="findTrainingTaskCount" resultType="int">
+   		SELECT COUNT(1) FROM training_task
+   		WHERE 1=1
+   		<if test="task.taskName != null">
+		    AND  (task_name LIKE '%${task.taskName}%' OR task_num LIKE '%${task.taskName}%')
+		</if>
+		<if test="task.trainingStartTime != null or task.trainingEndTime != null">
+		<![CDATA[ 
+		    AND  (training_start_time >= #{task.trainingStartTime} OR training_end_time <= #{task.trainingEndTime})
+		]]>
+		</if>
+		<if test="task.trainingStartTime != null and task.trainingEndTime != null">
+		<![CDATA[
+		    AND training_start_time >= #{task.trainingStartTime} 
+		    AND training_end_time <= #{task.trainingEndTime}
+		]]>
+		</if>
+		<if test="task.taskStatus !=-1">
+			AND task_status = ${task.taskStatus}
+		</if>
+		<if test="task.flag == 'yes'">
+		<![CDATA[
+			AND task_status = 1 
+			AND training_start_time < NOW()
+		]]>
+		</if>
+		<if test="task.flag == 'no'">
+		<![CDATA[
+			AND task_status = 1 
+			AND training_start_time > NOW()
+		]]>
+		</if>
+		<if test="task.organizationId !=0">
+			AND organization_id = #{task.organizationId}
+		</if>
+   </select>
+   <!-- 查询培训类型 -->
+   <select id="findTrainTypeList" resultMap="trainingContentTypeMap">
+   		SELECT	type_id,company_id,type_name,create_time,create_user,last_update_time,last_update_user
+		  FROM	training_content_type
+		 WHERE type_status = 0
+		 <if test="limit != null">
+		 LIMIT ${limit}
+		 </if>
+   </select>
+   
+    <!-- 查询培训类型总记录 -->
+   <select id="findTrainTypeCount" resultType="int">
+   		SELECT COUNT(1) FROM training_content_type WHERE type_status = 0
+   </select>
+   <!-- 保存培训类型 -->
+   <select id="saveTrainType">
+   		INSERT INTO training_content_type(company_id,type_name,create_time,create_user,last_update_time,last_update_user)
+		VALUES(1,#{typeName},#{createTime},#{createUser},#{createTime},#{createUser})
+   </select>
+   <!-- 更新培训类型 -->
+   <update id="updateTrainType">
+   		UPDATE training_content_type
+		   SET type_name = #{typeName},
+			   last_update_time = #{lastUpdateTime},
+			   last_update_user = #{lastUpdateUser}
+		 WHERE type_id = #{typeId} 
+   </update>
+   <!-- 逻辑删除培训类型 -->
+   <update id="delTrainType">
+   		UPDATE training_content_type
+		   SET type_status = 1
+		 WHERE type_id = #{typeId} 
+   </update>
+   
+   <select id="findTrainTypeById" resultMap="trainingContentTypeMap">
+   		SELECT type_id,type_name FROM training_content_type WHERE type_id = #{typeId}
+   </select>
+   <!-- 保存附件 -->
+   <insert id="saveAttachment" useGeneratedKeys="true" keyProperty="attachmentId">
+   	  INSERT INTO training_attachment(task_id,company_id,file_name,attachment_path,create_time,create_user,last_update_time,last_update_user)
+		VALUES(#{taskId},#{companyId},#{fileName},#{attachmentPath},#{createTime},#{createUser},#{createTime},#{createUser})
+   </insert>
+   <!-- 保存培训任务 -->
+   <insert id="saveTrainTask" useGeneratedKeys="true" keyProperty="taskId">
+   	  INSERT INTO training_task(task_place,company_id,task_num,task_name,task_type,task_purpose,training_content_type_id,test_id,training_start_time,training_end_time,training_desc,
+   	  			organization_id,organizational_unit,sponsor_id,sponsor,user_id,contact_person_name,contact_person_phone,task_status,plan_employees,actual_employees,create_time,create_user,last_update_time,last_update_user)
+   	  VALUES(#{taskPlace},#{companyId},#{taskNum},#{taskName},#{taskType},#{taskPurpose},#{trainingContentTypeId},#{testId},#{trainingStartTime},#{trainingEndTime},#{trainingDesc},
+		   	 #{organizationId},#{organizationalUnit},#{sponsorId},#{sponsor},#{userId},#{contactPersonName},#{contactPersonPhone},#{taskStatus},#{planEmployees},#{actualEmployees},#{createTime},#{createUser},#{createTime},#{createUser})
+   </insert>
+   
+   <!-- 保存课题 -->
+   <insert id="saveTrainingSchedule">
+	  INSERT INTO training_schedule(company_id,task_id,course_name,teacher,teacher_desc,schedule_start_time,schedule_end_time)
+	  VALUES(#{companyId},#{taskId},#{courseName},#{teacher},#{teacherDesc},#{scheduleStartTime},#{scheduleEndTime})
+   </insert>
+   
+   <!-- 查询培训活动编号 -->
+   <select id="findTrainTaskNextNo" resultType="string">
+   	  SELECT MAX(task_num) FROM training_task WHERE task_num like '${today}%'
+   </select>
+   
+   <!-- 修改附件的taskId -->
+   <update id="updateAttachment">
+   	   UPDATE training_attachment SET task_id = ${taskId} WHERE attachment_id = ${id}
+   </update>
+   <!-- 根据培训任务Id查询 相关附件 -->
+   <select id="findAttachmentByTaskId" resultMap="trainingAttachmentMap">
+   	   SELECT attachment_id,task_id,company_id,file_name,attachment_path
+		FROM training_attachment 
+	   WHERE task_id = #{taskId}
+   </select>
+   <!-- 根据培训任务Id查询 课题 -->
+   <select id="findTrainingScheduleByTaskId" resultMap="trainingScheduleMap">
+   	   SELECT schedule_id,company_id,task_id,course_name,teacher,teacher_desc,schedule_start_time,schedule_end_time
+		 FROM training_schedule
+		WHERE task_id = #{taskId}
+   </select>
+   <!-- 根据ID查询培训任务 -->
+   <select id="findTaskById" resultMap="trainingTaskMap">
+   		SELECT task_id,company_id,task_num,task_name,task_type,task_place,task_purpose,training_content_type_id,test_id,training_start_time,
+   		       training_end_time,training_desc,organization_id,	organizational_unit,sponsor_id,sponsor,	user_id,contact_person_name,
+   		       contact_person_phone,task_status,plan_employees,actual_employees,create_time,create_user,last_update_time,last_update_user
+		 FROM  training_task
+		WHERE  task_id = #{id}
+   </select>
+   <!-- 根据Id删除附件 -->
+   <delete id="delTrainingAttachmentById">
+   		DELETE FROM training_attachment WHERE attachment_id = #{id}
+   </delete>
+   <!-- 修改培训活动 -->
+   <update id="updateTrainTask">
+   		UPDATE
+			training_task
+		SET
+			task_name = #{taskName},
+			task_type = #{taskType},
+			task_place = #{taskPlace},
+			task_purpose = #{taskPurpose},
+			training_content_type_id = #{trainingContentTypeId},
+			contact_person_name = #{contactPersonName},
+			user_id = #{userId},
+			plan_employees = #{planEmployees},
+			training_start_time = #{trainingStartTime},
+			training_end_time = #{trainingEndTime},
+			training_desc = #{trainingDesc},
+			last_update_time = #{lastUpdateTime},
+			last_update_user = #{lastUpdateUser}
+	  WHERE task_id = #{taskId}	
+   </update>
+   <!-- 修改培训安排 -->
+   <update id="updateTrainingSchedule">
+   		UPDATE
+			training_schedule
+		SET
+			course_name = #{courseName},
+			teacher = #{teacher},
+			schedule_start_time = #{scheduleStartTime},
+			schedule_end_time = #{scheduleEndTime}
+	  WHERE schedule_id = #{scheduleId}
+   </update>
+   <!-- 修改状态 -->
+   <update id="updateTrainingTaskStatus">
+   		UPDATE  training_task
+		       SET task_status = #{status}
+		 WHERE  task_id = #{taskId}
+   </update>
+   <!-- 保存培训对象 -->
+   <insert id="saveTrainUser">
+   		INSERT INTO training_users(company_id,employee_id,task_id)
+   		 VALUES(#{companyId},#{employeeId},#{taskId})
+   </insert>
+   <!-- 查询培训对象 -->
+   <select id="findTrainingUsers" resultMap="trainingUsersMap">
+   		SELECT tu.id,tu.employee_id,tu.task_id,tu.training_sign_in_time,tu.training_summarize,tu.exam_results,tu.training_estimate,
+   			   ei.user_name userName,ei.employee_num employeeNum,ei.organization_name organizationName,ei.post_name postName
+   		  FROM training_users tu,
+   		       employee_info ei
+		 WHERE tu.task_id = #{taskId}
+		   AND tu.employee_id = ei.employee_id
+   </select>
+   <!-- 更新培训关联活动ID -->
+   <update id="updateTrainTestTestId">
+   		UPDATE training_task SET test_id = ${testId} WHERE task_id = ${taskId}
+   </update>
+   <!-- 发布活动 -->
+   <update id="trainPublish">
+   		UPDATE training_task
+   		   SET training_end_time = #{trainingEndTime},
+   		   	   training_start_time = #{trainingStartTime},
+   		   	   task_status = 1
+   		 WHERE task_id = #{taskId}
+   </update>
+   <!--  删除培训对象 -->
+   <delete id="delTrainingUsersById">
+   		DELETE FROM training_users WHERE id = #{id}
+   </delete>
+   <!-- code by huangshan start -->
+   
+    <!-- add SQL 覃启轩    Start -->
+    <insert id="insertTrainEmployee" parameterType="Map">
+		INSERT INTO training_users(company_id,employee_id,task_id)
+		                    VALUES(#{companyId},#{employeeId},#{taskId})
+    </insert>
+    <!-- add SQL 覃启轩    End -->
+   
+</mapper>

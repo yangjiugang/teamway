@@ -1,0 +1,169 @@
+/* css3files.com | Christian Krammer
+Contact: ck@css3files.com
+
+IE6 styles */
+
+img {-ms-interpolation-mode: bicubic}
+
+audio, canvas, video {display: inline; zoom: 1}
+
+legend {margin-left: -7px}
+
+button, input {overflow: visible}
+
+button, input, select, textarea {vertical-align: middle}
+
+table button, table input {overflow: auto}
+
+.content_cat .val li, pre, footer.gen, .content aside section li, article li {height: 1%}
+
+textarea, input {
+	background: url("../images/bg_code.gif") #f2f2f2;
+	font-size: 1.4em;
+	padding: .3em .5em;
+	width: 69%;
+}
+
+.wrapper {width: 988px}
+
+header.gen h1, header.gen #top img, header.gen form label, header.gen form button, footer.gen h2, .content_cat h1, .content_cat nav h2, .content aside h2, .content_blog h1, .content_blog nav h2 {display: none}
+
+header.gen {width: 1000px}
+
+header.gen #top {
+	display: block;
+	width: 140px; height: 90px;
+	background: url("../images/logo.gif");
+}
+
+header.gen li, .content_cat nav li {
+	float: left;
+	font-size: 2.4em;
+	background: #e1e1e1;
+	margin-right: 6px;
+	text-align: center;
+	line-height: 1.2;
+}
+
+header.gen form .ui-autocomplete {height: 41.3em}
+
+header.gen form li, .content_cat article nav li {
+	float: none;
+	font-size: 1.3em;
+	background: none;
+	margin: 0;
+	text-align: left;
+	line-height: 1.2;
+}
+
+header.gen .subNav {right: 27%}
+
+footer.gen {padding: 1.5em 5em 0}
+
+.content {padding: 11.9em 5em 4em}
+
+.content p a, .content article li a, footer.gen a {border-bottom: 1px dotted #ff6100}
+
+.content_blog_start p a, .content_blog_start article li a {border-color: #000}
+
+.content pre, .content pre code {width: 35em}
+
+footer.gen a {border-bottom-color: #888}
+
+.content p a:hover, .content article li a:hover, footer.gen a:hover {border-bottom-style: solid}
+
+.content_cat article h1 {display: block}
+
+.content_cat nav {
+	position: absolute;
+	left: 13.3em; top: 7.5em;
+}
+
+.content_cat nav li {float: left; padding: 0 .3em}
+
+.content_cat article nav {
+	width: 180px;
+	left: auto; right: 5em; top: 5em;
+}
+
+.content_cat article nav li {float: none}
+
+.content_cat article nav li a, .content aside li a {border: 0}
+
+.content_cat article nav li li {font-size: 1.1em}
+
+.content_cat .comp ul {float: none}
+
+.content_cat .comp li {border-top: 1px dotted #a6a6a6}
+
+.content_cat .comp li b {
+	display: block;
+	float: right;
+}
+
+.content_cat .comp p, .content_cat .comp p.fa {background: none}
+
+.content_cat .val .cd strong {margin-top: .8em}
+
+.content_cat .val ul {width: 64%}
+
+.content_cat .val li b {height: 1.2em}
+
+.content aside {right: 5em}
+
+.content_blog_sing aside {right: -4em}
+
+.content_cat .val .ex {right: 5em}
+
+.content .share {margin-top: -5em}
+
+.content .share li {
+	display: inline;
+	float: left;
+	width: 100px;
+}
+
+.content .share li a {padding: 0}
+
+.comm li .in {width: 30em; padding: 0 3em 0 10em}
+
+.comm li p {width: 30em}
+
+.comm li .feat span {margin-bottom: 0em}
+
+.comm li li .in {width: 27em; padding: 0 3em 0 11.5em}
+
+.comm li li .feat span {margin-bottom: 0}
+
+.comm header a {bottom: 1.1em}
+
+.comm form div em {margin-bottom: 0}
+
+.content_blog article {
+	padding-left: 13em;
+	width: 48em;
+	padding-right: 3em;
+}
+
+.content_blog article h1 {display: block}
+
+.content_blog article footer img {width: 80px}
+
+.content_blog article figure img {width: 100%}
+
+.content_blog_sing {height: 90em}
+
+.content_blog_sing article footer img {width: 100px}
+
+.content_blog nav a {width: 47%}
+
+.content_blog article blockquote b {position: static}
+
+.content_contact, .content_404 {height: 60em}
+
+.content_contact .in {
+	padding-left: 14em;
+	width: 45em;
+}
+
+.content_contact img {width: 17%}

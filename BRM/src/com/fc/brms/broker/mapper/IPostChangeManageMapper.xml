@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.fc.brms.broker.mapper.IPostChangeManageMapper">
+
+	<resultMap id="employeeTransactionInfoMap" type="EmployeeTransactionInfo">
+		<id property="infoId" column="info_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="employeeId" column="employee_id"/>
+		<result property="transactionDate" column="transaction_date"/>
+		<result property="transactionType" column="transaction_type"/>
+		<result property="transactionDesc" column="transaction_desc"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="organizationName" column="organization_name"/>
+		<result property="postId" column="post_id"/>
+		<result property="postName" column="post_name"/>
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="jobGradeName" column="job_grade_name"/>
+		<result property="jobLevelId" column="job_level_id"/>
+		<result property="jobLevelName" column="job_level_name"/>
+		<result property="structureType" column="structure_type"/>
+		<result property="salaryLevelId" column="salary_level_id"/>
+		<result property="totalSalary" column="total_salary"/>
+		<result property="ssCompanyId" column="ss_company_id"/>
+		<result property="ssAreaId" column="ss_area_id"/>
+		<result property="ssBase" column="ss_base"/>
+		<result property="ssType" column="ss_type"/>
+		<result property="transactionStatus" column="transaction_status"/>
+		
+		<result property="beforOrganizationName" column="befor_organization_name"/>
+		<result property="beforPostName" column="befor_post_name"/>
+		<result property="beforAreaId" column="befor_areaId"/>
+		<result property="beforCompanyId" column="befor_companyId"/>
+		
+		<association property="employeeInfo" column="employee_info" javaType="com.fc.brms.common.domain.EmployeeInfo">
+			<id property="employeeId" column="employee_id"/>
+			<result property="userId" column="user_id"/>
+			<result property="companyId" column="company_id"/>
+			<result property="employeeNum" column="employee_num"/>
+			<result property="englishName" column="english_name"/>
+			<result property="userName" column="user_name"/>
+			<result property="userSex" column="user_sex"/>
+			<result property="userBirthday" column="user_birthday"/>
+			<result property="telephone" column="telephone"/>
+			<result property="officePhone" column="office_phone"/>
+			<result property="enterpriseMail" column="enterprise_mail"/>
+			<result property="photoPath" column="photo_path"/>
+			<result property="highestEducation" column="highest_education"/>
+			<result property="graduateSchool" column="graduate_school"/>
+			<result property="areaId" column="area_id"/>
+			<result property="hkPlace" column="hk_place"/>
+			<result property="socialSecurityNum" column="social_security_num"/>
+			<result property="organizationId" column="organization_id"/>
+			<result property="organizationName" column="organization_name"/>
+			<result property="postId" column="post_id"/>
+			<result property="postName" column="post_name"/>
+			<result property="jobGradeId" column="job_grade_id"/>
+			<result property="jobGradeName" column="job_grade_name"/>
+			<result property="jobLevelId" column="job_level_id"/>
+			<result property="jobLevelName" column="job_level_name"/>
+			<result property="salaryLevelId" column="salary_level_id"/>
+			<result property="salaryLevelOrder" column="salary_level_order"/>
+			<result property="salaryTotal" column="salary_total"/>
+			<result property="structureType" column="structure_type"/>
+			<result property="socialSecurityId" column="social_security_id"/>
+			<result property="applyDate" column="apply_date"/>
+			<result property="isChange" column="is_change"/>
+			<result property="fpsgPost" column="fpsg_post"/>
+			<result property="entryDate" column="entry_date"/>
+			<result property="turnoverDate" column="turnover_date"/>
+			<result property="turnoverCause" column="turnover_cause"/>
+			<result property="submitId" column="submit_id"/>
+			<result property="bankId" column="bank_id"/>
+			<result property="bankNum" column="bank_num"/>
+			<result property="trainingCnt" column="training_cnt"/>
+			<result property="contactCnt" column="contact_cnt"/>
+			<result property="isConsultant" column="is_consultant"/>
+		</association>
+		
+		<association property="salarySocialSecuritySusbmit" column="salary_social_security_susbmit" javaType="com.fc.brms.common.domain.SalarySocialSecuritySusbmit">
+			<id property="submitId" column="submit_id"/>
+			<result property="companyId" column="company_id"/>
+			<result property="companyName" column="company_name"/>
+			<result property="areaId" column="area_id"/>
+			<result property="submitPlace" column="submit_place"/>
+			<result property="socialSecurityBase" column="social_security_base"/>
+			<result property="houseFundBase" column="house_fund_base"/>
+			<result property="isChange" column="is_change"/>
+			<result property="submitName" column="submit_name"/>
+		</association>
+		
+		<association property="salarySocialSecurity" column="salary_social_security" javaType="com.fc.brms.common.domain.SalarySocialSecurity">
+			<id property="socialSecurityId" column="social_security_id"/>
+			<result property="companyId" column="company_id"/>
+			<result property="ssName" column="ss_name"/>
+			<result property="ssDesc" column="ss_desc"/>
+			<result property="areaId" column="area_id"/>
+			<result property="areaName" column="area_name"/>
+			<result property="hkType" column="hk_type"/>
+			<result property="endowmentInsuranceRate" column="endowment_insurance_rate"/>
+			<result property="endowmentInsurancePersonRate" column="endowment_insurance_person_rate"/>
+			<result property="endowmentInsuranceCompanyRate" column="endowment_insurance_company_rate"/>
+			<result property="endowmentInsurancePlus" column="endowment_insurance_plus"/>
+			<result property="unemploymentRate" column="unemployment_rate"/>
+			<result property="unemploymentPersonRate" column="unemployment_person_rate"/>
+			<result property="unemploymentCompanyRate" column="unemployment_company_rate"/>
+			<result property="unemploymentPlus" column="unemployment_plus"/>
+			<result property="healthInsuranceRate" column="health_insurance_rate"/>
+			<result property="healthInsurancePersonRate" column="health_insurance_person_rate"/>
+			<result property="healthInsuranceCompanyRate" column="health_insurance_company_rate"/>
+			<result property="healthInsurancePlus" column="health_insurance_plus"/>
+			<result property="injuryInsuranceRate" column="injury_insurance_rate"/>
+			<result property="injuryInsurancePersonRate" column="injury_insurance_person_rate"/>
+			<result property="injuryInsuranceCompanyRate" column="injury_insurance_company_rate"/>
+			<result property="injuryInsurancePlus" column="injury_insurance_plus"/>
+			<result property="birthInsuranceRate" column="birth_insurance_rate"/>
+			<result property="birthInsurancePersonRate" column="birth_insurance_person_rate"/>
+			<result property="birthInsuranceCompanyRate" column="birth_insurance_company_rate"/>
+			<result property="birthInsurancePlus" column="birth_insurance_plus"/>
+			<result property="housingFundRate" column="housing_fund_rate"/>
+			<result property="housingFundPersonRate" column="housing_fund_person_rate"/>
+			<result property="housingFundCompanyRate" column="housing_fund_company_rate"/>
+			<result property="housingFundPlus" column="housing_fund_plus"/>
+			<result property="others1" column="others1"/>
+			<result property="others2" column="others2"/>
+			<result property="others3" column="others3"/>
+			<result property="others4" column="others4"/>
+			<result property="isChange" column="is_change"/>
+		</association>
+	</resultMap>
+	
+	<!-- 薪酬 -->
+	<resultMap id="CfgSalaryLevelMap" type="CfgSalaryLevel">
+		<result property="salaryLevelId" column="salary_level_id"/>
+		<result property="salaryLevelOrder" column="salary_level_order"/>
+		<result property="salary" column="salary"/>
+		<result property="salaryLevelDiff" column="salary_level_diff"/>
+		<result property="jobGradeId" column="job_grade_id"/>
+		<result property="jobLevelId" column="job_level_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+		<result property="companyId" column="company_id"/>
+	</resultMap>
+
+    <!-- Create SQL 覃启轩 Start -->
+    <!--  -->
+    <select id="getSalaryLevel" resultMap="CfgSalaryLevelMap">
+    	SELECT salary_level_order,salary,salary_level_id
+    	  FROM cfg_salary_level
+    </select>
+   	<!-- 社保标识信息      (下拉框) -->
+   	<select id="getSalarySocialSecuritySubmit" resultMap="employeeTransactionInfoMap">
+   		SELECT submit_id,submit_name,company_name,submit_place,social_security_base 
+   		  FROM salary_social_security_susbmit
+   		 WHERE company_id=#{companyId}
+   	</select>
+   	<!-- 社保类型查询   (下拉框) -->
+   	<select id="getSalarySocialSecurity" resultMap="employeeTransactionInfoMap">
+   		SELECT social_security_id,company_id,ss_name,ss_desc,area_id,area_name,hk_type,endowment_insurance_rate,endowment_insurance_person_rate,
+			   endowment_insurance_company_rate,endowment_insurance_plus,unemployment_rate,unemployment_person_rate,unemployment_company_rate,
+			   unemployment_plus,health_insurance_rate,health_insurance_person_rate,health_insurance_company_rate,health_insurance_plus,
+			   injury_insurance_rate,injury_insurance_person_rate,injury_insurance_company_rate,injury_insurance_plus,birth_insurance_rate,
+			   birth_insurance_person_rate,birth_insurance_company_rate,birth_insurance_plus,housing_fund_rate,housing_fund_person_rate,
+			   housing_fund_company_rate,housing_fund_plus,others1,others2,others3,others4,is_change
+   		  FROM salary_social_security
+   		 WHERE company_id=#{companyId}
+   	</select>
+   	<!-- 查询异动信息总记录数 -->
+	<select id="queryEmployeePostChangeCount" resultType="int" parameterType="Map">
+		SELECT COUNT(*)
+		  FROM employee_transaction_info eti,employee_info ei 
+		 WHERE eti.employee_id=ei.employee_id
+		 <if test="null != startTime and '' != startTime and null != endTime and '' != endTime">
+		   AND eti.transaction_date BETWEEN #{startTime} AND #{endTime}
+		 </if>
+		 <if test="null != keyWord">
+		   AND (ei.employee_num LIKE '%${keyWord}%' OR ei.user_name LIKE '%${keyWord}%')
+		 </if>
+		 <if test="null != postChangeType">
+		   AND transaction_type IN 
+		   <foreach collection="postChangeType" index="index" item="item" open="(" separator="," close=")">
+		       #{item}
+		   </foreach>
+		 </if>
+	</select>
+   	
+   	<!-- 查询异动信息列表 -->
+   	<select id="queryEmployeePostChangeList" resultMap="employeeTransactionInfoMap" parameterType="Map">
+		SELECT eti.info_id,ei.employee_id,ei.user_id,ei.employee_num,ei.user_name,ei.user_sex,ei.entry_date,
+		       ei.user_birthday,eti.transaction_date,eti.transaction_type,eti.organization_name befor_organization_name,eti.post_name befor_post_name,
+		       ei.organization_name,ei.post_name,eti.transaction_desc
+		  FROM employee_info ei,employee_transaction_info eti
+		 WHERE ei.employee_id=eti.employee_id
+		 <if test="null != startTime and '' != startTime and null != endTime and '' != endTime">
+		   AND eti.transaction_date BETWEEN #{startTime} AND #{endTime}
+		 </if>
+		 <if test="null != keyWord">
+		   AND (ei.employee_num LIKE '%${keyWord}%' OR ei.user_name LIKE '%${keyWord}%')
+		 </if>
+		 <if test="null != postChangeType">
+		   AND transaction_type IN
+		   <foreach collection="postChangeType" index="index" item="item" open="(" separator="," close=")">
+		       #{item}
+		   </foreach>
+		 </if>
+		 LIMIT ${limit}
+   	</select>
+   	
+   	<!-- 根据ID查找人员异动信息 -->
+   	<select id="getEmployeePostChangeById" resultMap="employeeTransactionInfoMap" parameterType="int">
+		SELECT eti.info_id,ei.employee_id,ei.user_id,ei.employee_num,ei.user_name,ei.user_sex,ei.entry_date,
+		       ei.user_birthday,eti.transaction_date,eti.transaction_type,eti.organization_name befor_organization_name,eti.post_name befor_post_name,
+		       ei.organization_name,ei.post_name,eti.transaction_desc
+		  FROM employee_info ei,employee_transaction_info eti
+		 WHERE ei.employee_id=eti.employee_id
+		   AND info_id=#{infoId}
+   	</select>
+   	
+   	<!-- 查询员工异动前的所有信息 -->
+   	<select id="queryEmployeeAllInfo" resultMap="employeeTransactionInfoMap" parameterType="int">
+	   	SELECT ei.organization_id,ei.organization_name,ei.post_id,ei.post_name,ei.job_grade_id,ei.job_grade_name,ei.structure_type,
+	   	       ei.job_level_id,ei.job_level_name,ei.structure_type,ei.salary_level_order,ei.salary_total,ssss.company_name,ssss.submit_name,ssss.submit_id,
+	   	       ssss.submit_place,ssss.social_security_base,sss.ss_name,ssss.area_id befor_areaId,ssss.company_id befor_companyId,ei.salary_level_id
+		FROM employee_info ei,salary_social_security_susbmit ssss,salary_social_security sss 
+		WHERE ei.social_security_id = sss.social_security_id 
+		  AND ei.submit_id = ssss.submit_id 
+		  AND ei.employee_id = #{employeeId}
+    </select>
+    
+    <!-- 添加员工异动信息 -->
+   	<insert id="addPostChangeInfo" parameterType="Map">
+   		INSERT INTO employee_transaction_info(company_id,employee_id,transaction_date,transaction_type,transaction_desc,organization_id,
+    	                                      organization_name,post_id,post_name,job_grade_id,job_grade_name,job_level_id,job_level_name,
+    	                                      structure_type,salary_level_id,total_salary,ss_company_id,ss_area_id,ss_base,ss_type,transaction_status)
+    	VALUES(#{companyId},#{employeeId},#{transactionDate},#{transactionType},#{transactionDesc},#{beforOrganizationId},
+    	       #{beforOrganizationName},#{postId},#{postName},#{beforJobGradeId},#{beforJobGradeName},#{beforJobLevelId},#{beforJobLevelName},
+    	       #{structureType},#{salaryLevelId},#{beforSalaryTotal},#{beforCompanyId},#{beforAreaId},#{beforSocialSecurityBase},#{beforSsName},#{transactionStatus})
+   	</insert>
+   	
+   	<!-- 根据infoId查询需要删除的异动信息 -->
+   	<select id="getPostChangeByInfoId" parameterType="Map" resultMap="employeeTransactionInfoMap">
+   		SELECT eti.info_id,eti.company_id,eti.employee_id,eti.transaction_date,eti.transaction_type,eti.transaction_desc,
+			   eti.organization_id,eti.organization_name,eti.post_id,eti.post_name,eti.job_grade_id,eti.job_grade_name,eti.job_level_id,
+			   eti.job_level_name,eti.structure_type,eti.salary_level_id,eti.total_salary,eti.ss_company_id,eti.ss_area_id,eti.ss_base,
+			   eti.ss_type,eti.transaction_status,csl.salary_level_order
+		  FROM employee_transaction_info eti,cfg_salary_level csl
+	     WHERE eti.salary_level_id=csl.salary_level_id
+	     <if test="null != infoIds">
+		   AND info_id IN
+		   <foreach collection="infoIds" index="index" item="item" open="(" separator="," close=")">
+		       #{item}
+		   </foreach>
+		 </if>
+   	</select>
+   	
+   	<!-- 删除异动信息 -->
+   	<delete id="deletePostChange" parameterType="Map">
+   		DELETE FROM employee_transaction_info 
+   		 WHERE info_id IN
+   		<foreach collection="infoIds" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+   	</delete>
+   	<!-- Create SQL 覃启轩 End -->
+</mapper>

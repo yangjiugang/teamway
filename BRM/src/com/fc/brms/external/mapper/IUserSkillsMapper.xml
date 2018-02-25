@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.brms.external.mapper.IUserSkillsMapper">
+	<resultMap id="UserSkillsMap" type="UserSkills">
+		<result property="skillId" column="skill_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="skillDesc" column="skill_desc"/>
+	</resultMap>
+	
+	<!-- SQL Code By Zhenglh Start -->
+	
+	<!-- 根据ID查找用户专长信息 列表 -->
+	<select id="getUseSkillsById" parameterType="map" resultMap="UserSkillsMap">
+		SELECT skill_id,user_id,skill_desc
+		  FROM user_skills
+		 WHERE user_id=#{userId} 
+		 LIMIT ${limit}
+	</select>
+	
+	<!-- 根据ID查找用户专长信息 列表 总记录数 -->
+	<select id="getUseSkillsCountById" parameterType="int" resultType="int">
+		SELECT COUNT(1)
+		  FROM user_skills
+		 WHERE user_id=#{userId}
+	</select>
+	
+	<!-- SQL Code By Zhenglh End -->
+</mapper>

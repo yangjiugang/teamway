@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fc.brms.broker.mapper.ISendMsgMangeMappeer">
+	<resultMap id="fcSysMsgMap" type="FcSysMsg">
+		<result property="msgId" column="msg_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="msgType" column="msg_type"/>
+		<result property="msgContent" column="msg_content"/>
+		<result property="receiveEmployeeId" column="receive_employee_id"/>
+		<result property="sendEmployeeId" column="send_employee_id"/>
+		<result property="sendTime" column="send_time"/>
+	</resultMap>
+	
+	<!-- qqx add SQL Start -->
+	<!-- 添加约谈提醒信息 -->
+	<insert id="addCommRemindMsg" parameterType="Map">
+		INSERT INTO fc_sys_msg(
+			company_id,
+			msg_type,
+			msg_content,
+			receive_employee_id,
+			send_employee_id,
+			send_time
+		)
+		VALUES(
+			#{companyId},
+			#{msgType},
+			#{msgContent},
+			#{receiveEmployeeId},
+			#{sendEmployeeId},
+			#{sendTime}
+		)
+	</insert>
+	<!-- qqx add SQL Start -->
+	
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fc.brms.deactivated.mapper.IUserTrackRecordMapper">
+	<resultMap id="userTrackRecordMap" type="UserTrackRecord">
+		<result property="trackId" column="track_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="talkNum" column="talk_num"/>
+		<result property="mainTalkOrganizationId" column="main_talk_organization_id"/>
+		<result property="mainTalkOrganizationName" column="main_talk_organization_name"/>
+		<result property="mainTalkPostId" column="main_talk_post_id"/>
+		<result property="mainTalkPostName" column="main_talk_post_name"/>
+		<result property="mainTalkEmployee" column="main_talk_employee"/>
+		<result property="mainTalkEmployeeName" column="main_talk_employee_name"/>
+		<result property="startTime" column="start_time"/>
+		<result property="endTime" column="end_time"/>
+		<result property="talkType" column="talk_type"/>
+		<result property="talkPlace" column="talk_place"/>
+		<result property="talkEstimate" column="talk_estimate"/>
+		<result property="createTime" column="create_time"/>
+	</resultMap>
+	
+	<!-- Code By Gaoqf Start-->
+	<!-- 查询最近交流信息 -->
+	<select id="selectLastUserTrackRecord" resultMap="userTrackRecordMap">
+		SELECT user_id,main_talk_employee_name,start_time
+	 	  FROM user_track_record 
+		 WHERE user_id=#{userId}
+		   AND company_id=#{companyId}
+	  ORDER BY start_time DESC
+	     LIMIT 1;
+	</select>
+	<!-- Code By Gaoqf End-->
+</mapper>

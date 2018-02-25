@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.fc.brms.broker.mapper.IQuestionTestMapper">
+
+	<resultMap type="QuestionTest" id="questionTestMap">
+		<result property="testId" column="test_id" />
+		<result property="paperId" column="paper_id" />
+		<result property="testNum" column="test_num" />
+		<result property="testName" column="test_name" />
+		<result property="typeId" column="type_id" />
+		<result property="testStartTime" column="test_start_time" />
+		<result property="testEndTime" column="test_end_time" />
+		<result property="testDuration" column="test_duration" />
+		<result property="testMethod" column="test_method" />
+		<result property="testDesc" column="test_desc" />
+		<result property="testStatus" column="test_status" />
+		<result property="testUserCnt" column="test_user_cnt" />
+		<result property="testEnableCnt" column="test_enable_cnt" />
+		<result property="testInitiateId" column="test_initiate_id" />
+		<result property="testInitiator" column="test_initiator" />
+		<result property="initiateDeptId" column="initiate_dept_id" />
+		<result property="initiateDeptName" column="initiate_dept_name" />
+		<result property="contactUserId" column="contact_user_id" />
+		<result property="contactUserName" column="contact_user_name" />
+		<result property="createTime" column="create_time" />
+		<result property="createUser" column="create_user" />
+		<result property="publishTime" column="publish_time" />
+		<result property="publishUser" column="publish_user" />
+		<result property="enableRate" column="enable_rate" />
+		<result property="testAnswer" column="test_answer" />
+		<association property="questionTestType" javaType="QuestionTestType" column="type_id">
+		    <result property="typeName" column="type_name"/>
+			<result property="typeDesc" column="type_desc"/>
+			<result property="createTime" column="create_time"/>
+			<result property="createUser" column="create_user"/>
+			<result property="lastUpdateTime" column="last_update_time"/>
+			<result property="lastUpdateUser" column="last_update_user"/>
+		</association>
+		<association property="questionPapers" javaType="QuestionPapers" column="paper_id">
+		     <result property="paperNum" column="paper_num"/>
+		     <result property="paperName" column="paper_name"/>
+		     <result property="typeId" column="type_id"/>
+		     <result property="paperDesc" column="paper_desc"/>
+		     <association property="questionPaperType" javaType="QuestionPaperType" column="type_id">
+		         <result property="typeName" column="paper_type_name"/>
+		     </association>
+		</association>
+	</resultMap>
+	
+	<resultMap id="questionTestTypeMap" type="QuestionTestType">
+		<result property="typeId" column="type_id"/>
+		<result property="typeName" column="type_name"/>
+		<result property="typeDesc" column="type_desc"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+	</resultMap>
+	
+	<resultMap id="employeeInfoMap" type="EmployeeInfo">
+		<result property="employeeId" column="employee_id"/>
+		<result property="employeeNum" column="employee_num"/>
+		<result property="userName" column="user_name"/>
+		<result property="organizationName" column="organization_name"/>
+		<result property="postName" column="post_name"/>
+		<result property="submitTime" column="submit_time"/>
+		<result property="score" column="score"/>
+		<result property="isSubmit" column="is_submit"/>
+	</resultMap>
+	
+	<resultMap id="questionPapersMap" type="QuestionPapers">
+		<result property="paperId" column="paper_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="paperNum" column="paper_num"/>
+		<result property="paperName" column="paper_name"/>
+		<result property="typeId" column="type_id"/>
+		<result property="paperDesc" column="paper_desc"/>
+		<result property="totalPoints" column="total_points"/>
+		<result property="paperQuestions" column="paper_questions"/>
+		<result property="paperStatus" column="paper_status"/>
+		<result property="paperUsed" column="paper_used"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+		<association property="questionPaperType" javaType="QuestionPaperType" column="type_id">
+		         <result property="typeName" column="paper_type_name"/>
+		</association>
+	</resultMap>
+
+   <!-- 在活动类型表中查询活动类型 -->
+   <select id="getQuestionTestType" resultMap="questionTestTypeMap">
+   		SELECT
+			type_id,type_name,type_desc,create_time,create_user,last_update_time,last_update_user
+		FROM
+			question_test_type
+		WHERE type_status = 0	
+   </select> 
+  <!-- 添加问卷 -->
+   <insert id="insertQuestionTest" useGeneratedKeys="true" keyProperty="testId" >
+   		INSERT INTO question_test(paper_id,company_id,test_num,test_duration, test_status,test_initiate_id, initiate_dept_name,test_initiator, initiate_dept_id,contact_user_id,create_user,publish_user,
+    			    test_name,type_id,test_start_time,test_end_time,test_method,test_desc,test_user_cnt,test_enable_cnt,contact_user_name,publish_time,create_time)
+		   	 VALUES(#{paperId},1,#{testNum},30,0,1,'fbbm','zhangsa',1,1,2,2,#{testName},#{typeId},#{testStartTime},#{testEndTime},#{testMethod},#{testDesc},#{testUserCnt},#{testEnableCnt},#{contactUserName},now(),now())
+   
+   </insert>
+   
+   	<!-- 查询调查活动列表 -->
+   	<select id="getQuestionTest" resultMap="questionTestMap">
+   		SELECT
+			test_id,paper_id,test_num,test_name,type_id,test_start_time,test_end_time,test_duration,test_method,test_desc,
+			test_status,test_user_cnt,test_enable_cnt,test_initiate_id,test_initiator,initiate_dept_id,initiate_dept_name,
+			contact_user_id,contact_user_name,create_time,create_user,publish_time,publish_user,enable_rate,test_answer
+		FROM
+			question_test
+		WHERE 1=1 
+			<if test="testStartTime != null and testEndTime !='' ">
+		   	  AND test_start_time BETWEEN #{testStartTime} AND  #{testEndTime}
+		 	</if>
+		 	<if test="testEndTime != null and testStartTime !='' ">
+		   	  AND test_end_time  BETWEEN #{testStartTime} and #{testEndTime}
+		 	</if>
+			<if test="initiateDeptName !=null">
+			  AND initiate_dept_name =#{initiateDeptName}
+			</if>
+			<if test="testInitiator !=null">
+			  AND test_initiator =#{testInitiator}
+			</if>
+			<if test="contactUserName !=null">
+			  AND contact_user_name =#{contactUserName}
+			</if>
+			<if test="testName !='请输入关键字' and testName !=null">
+			  AND test_name LIKE '%#{testName}%'
+			</if> 
+			<if test="testStatus!=9">
+	           AND test_status =#{testStatus}
+	        </if>
+		LIMIT ${limit}
+   	</select>
+   	<!-- 根据活动编号查询活动详细 -->
+   	<select id="getQuestionTestByTestNum" resultMap="questionTestMap">
+   	    SELECT qt.test_id,qt.paper_id,qt.test_num,qt.test_name,qt.test_start_time,qt.test_end_time,qt.test_duration,qt.test_method,qt.test_desc,
+			  qt.test_status,qt.test_user_cnt,qt.test_enable_cnt,qt.test_initiate_id,qt.test_initiator,qt.initiate_dept_id,qt.initiate_dept_name,
+			  qt.contact_user_id,qt.contact_user_name,qt.create_time,qt.create_user,qt.publish_time,qt.publish_user,qt.enable_rate,qt.test_answer,qtt.type_name
+         FROM question_test qt,
+              question_test_type qtt
+        WHERE qt.type_id=qtt.type_id
+          AND qt.test_id =${testId} 
+      <!-- SELECT qt.test_id,qt.paper_id,qt.test_num,qt.test_name,qt.test_start_time,qt.test_end_time,qt.test_duration,qt.test_method,qt.test_desc,
+			  qt.test_status,qt.test_user_cnt,qt.test_enable_cnt,qt.test_initiate_id,qt.test_initiator,qt.initiate_dept_id,qt.initiate_dept_name,
+			  qt.contact_user_id,qt.contact_user_name,qt.create_time,qt.create_user,qt.publish_time,qt.publish_user,qt.enable_rate,qt.test_answer,qtt.type_name,
+		      qp.paper_name,qp.paper_num,qp.type_id,qp.paper_desc,qpt.type_name AS paper_type_name
+		 FROM question_test qt,
+		      question_test_type qtt,
+		      question_papers qp,
+		      question_paper_type qpt
+		WHERE qt.type_id=qtt.type_id
+		  AND qp.paper_id=qt.paper_id
+		  AND qpt.type_id=qp.type_id
+		  AND qt.test_id =${testId}-->
+   	</select>
+   	
+   	<update id="updateQuestionTestByTestNum" parameterType="int">
+   		UPDATE
+			question_test
+		SET
+			paper_id = #{paperId},test_name = #{testName},type_id = #{typeId},
+			test_start_time = #{testStartTime},test_end_time = #{testEndTime},test_method = #{testMethod},
+			test_desc = #{testDesc},test_user_cnt = #{testUserCnt},test_enable_cnt = #{testEnableCnt}
+			<!-- test_answer = #{testAnswer} -->
+		WHERE
+			test_id = ${testId}
+   	</update>
+   	<delete id="delQuestionTestByTestNum" parameterType="int">
+   		DELETE
+		  FROM question_test
+		 WHERE test_id = ${testId}
+   	</delete>
+   	<!-- 查询总记录  -->
+   	<select id="getQuestionTestCount" resultType="int">
+   		SELECT COUNT(1) FROM question_test	
+   	</select>
+   	<!-- 查询最大编号 -->
+   	<select id="getQuestionTestNextNo" resultType="string">
+   		SELECT MAX(test_num) FROM question_test	WHERE test_num like '${today}%'
+   	</select>
+   	<!-- 终止活动 -->
+   	<update id="updateTestStatusByTestNum" parameterType="map">
+   		UPDATE
+			question_test
+		SET
+			test_status = ${testStatus}
+		WHERE
+			test_id = ${testId}	
+   	</update>
+   	<!-- 发布调查活动 -->
+   	<update id="updateQuestionTest" parameterType="int">
+   		UPDATE
+			question_test
+		SET
+			test_status = ${testStatus},test_start_time = #{testStartTime},test_end_time = #{testEndTime},publish_time=#{publishTime}
+		WHERE
+			test_id = ${testId}
+   	</update>
+   	<select id="getTestStatusCount"  resultType="int">
+   		SELECT COUNT(1) FROM question_test WHERE test_status = #{testStatus}
+   	</select>
+	<!-- yangjg end -->
+	
+	<!-- gonghj start -->
+	<!-- 根据活动id查询活动详细 -->
+   	<select id="getQuestionTestByTestId" resultMap="questionTestMap">
+   	   SELECT qt.test_id,qt.paper_id,qt.test_num,qt.test_name,qt.test_start_time,qt.test_end_time,qt.test_duration,qt.test_method,qt.test_desc,
+			  qt.test_status,qt.test_user_cnt,qt.test_enable_cnt,qt.test_initiate_id,qt.test_initiator,qt.initiate_dept_id,qt.initiate_dept_name,
+			  qt.contact_user_id,qt.contact_user_name,qt.create_time,qt.create_user,qt.publish_time,qt.publish_user,qt.enable_rate,qt.test_answer,qtt.type_name
+         FROM question_test qt,
+              question_test_type qtt
+        WHERE qt.type_id=qtt.type_id
+          AND qt.test_id =#{testId} 
+	</select>
+	
+	<!-- 查找活动的参加人 -->
+	<select id="findEmployee" resultMap="employeeInfoMap" parameterType="map">
+	   SELECT ei.employee_num,ei.user_name,ei.post_name,ei.organization_name,qpe.submit_time,qpe.score,qpe.is_submit 
+         FROM question_papers_employees qpe,
+              employee_info ei        
+        WHERE qpe.test_id=#{testId}
+         <if test="userName != '' ">
+	   	  AND ei.user_name LIKE '%#{userName}%'
+	 	 </if>
+	     <if test="organizationName!='' ">
+	   	  AND ei.organization_name LIKE '%#{organizationName}%'
+	 	 </if>
+	 	 <if test="bigScore!=0 ">
+	 	  <![CDATA[ 
+	   	    AND qpe.score < #{bigScore}
+	   	  ]]>
+	 	 </if>
+	 	  <if test="smallScore!=0 ">
+	 	  <![CDATA[ 
+	   	    AND qpe.score > #{smallScore}
+	   	  ]]>
+	 	 </if>
+	 	  <if test="bigTime!=null ">
+	   	  <![CDATA[ 
+	   	  AND qpe.submit_time < #{bigTime}
+	   	  ]]>
+	 	 </if>
+	 	  <if test="smallTime!=null ">
+	   	  <![CDATA[ 
+	   	  AND qpe.submit_time > #{smallTime}
+	   	  ]]>
+	 	 </if>
+          AND ei.employee_id=qpe.visitor_id
+	    LIMIT ${limit}
+	</select>
+	<!-- 查找活动的参加人总数 -->
+	<select id="findEmployeeCount" resultType="int">
+	   SELECT COUNT(*)
+         FROM question_papers_employees qpe,
+              employee_info ei
+        WHERE qpe.test_id=#{testId}
+          AND ei.employee_id=qpe.visitor_id 
+         <if test="userName!='' ">
+	   	  AND ei.user_name LIKE '%${userName}%'
+	 	 </if>
+	 	 <if test="organizationName!='' ">
+	   	    AND ei.organization_name LIKE '%#{organizationName}%'
+	 	 </if> 
+	 	<if test="bigScore!=0 ">
+		 	  <![CDATA[ 
+		   	    AND qpe.score < #{bigScore}
+		   	  ]]>
+	 	 </if>
+	 	  <if test="smallScore!=0 ">
+		 	  <![CDATA[ 
+		   	  AND qpe.score > #{smallScore}
+		   	  ]]>
+	 	 </if>
+		 	  <if test="bigTime!=null ">
+		   	  <![CDATA[ 
+		   	  AND qpe.submit_time < #{bigTime}
+		   	  ]]>
+	 	 </if>
+	 	  <if test="smallTime!=null ">
+		   	  <![CDATA[ 
+		   	  AND qpe.submit_time > #{smallTime}
+		   	  ]]>
+	 	 </if>
+	</select>
+	
+	<!-- 查调查活动的问卷详情！ -->
+   	<select id="findQuertionpapers" resultMap="questionPapersMap">
+   	   SELECT qp.paper_id,qp.company_id,qp.paper_num,qp.paper_name,qp.type_id,qp.paper_desc,qp.total_points,qp.paper_questions,qp.paper_status,
+              qp.paper_used,qp.create_time,qp.create_user,qp.last_update_time,qp.last_update_user,qpt.type_name 
+		 FROM question_papers qp,
+		      question_paper_type qpt
+		WHERE qpt.type_id=qp.type_id
+		  AND qp.paper_id=#{paperId}
+   	</select>
+	<!-- gonghj end -->
+	
+	<!-- huangshan start -->
+	
+	<!-- 保存活动类型 -->
+	<insert id="saveQuestionTestType">
+	  INSERT INTO question_test_type(type_status,company_id,type_name,type_desc,create_time,create_user,last_update_time,last_update_user)
+	   		VALUES(0,1,#{typeName},#{typeDesc},#{createTime},#{createUser},#{lastUpdateTime},#{lastUpdateUser})
+	</insert>
+	<!-- 根据ID查找活动类型 -->
+	<select id="findQuestionTestTypeById" resultMap="questionTestTypeMap">
+	  SELECT type_id,company_id,type_name,type_desc
+		FROM question_test_type
+	   WHERE type_id = #{id} 
+	     AND type_status = 0
+	</select>
+	<!-- 修改活动类型 -->
+	<update id="updateQuestionTestType">
+		UPDATE question_test_type
+		   SET type_name = #{typeName},
+			   type_desc = #{typeDesc},
+			   last_update_time = #{lastUpdateTime},
+			   last_update_user = #{lastUpdateUser}
+		WHERE type_id = #{typeId}
+	</update>
+	
+	<update id="delQuestionTestType">
+		UPDATE question_test_type set type_status = 1 WHERE type_id = #{typeId}
+	</update>
+	
+	<select id="findQuestionTestByPaperId" resultMap="questionTestMap">
+		SELECT test_id,paper_id,test_num,test_name,type_id,test_start_time,test_end_time,test_duration,test_method,test_desc,
+			   test_status,test_user_cnt,test_enable_cnt,test_initiate_id,test_initiator,initiate_dept_id,initiate_dept_name,
+			   contact_user_id,contact_user_name,create_time,create_user,publish_time,publish_user,enable_rate,test_answer
+		 FROM question_test
+		<![CDATA[  
+	    WHERE test_status <> 4
+	      AND paper_id = #{paperId}
+	     ]]>
+	    LIMIT ${limit}
+	</select>
+	
+	<select id="findQuestionTestCountByPaperId" resultType="int">
+		SELECT COUNT(1)
+		 FROM question_test
+		<![CDATA[
+	    WHERE test_status <> 4
+	      AND paper_id = #{paperId}
+	     ]]>
+	</select>
+	
+	<!-- huangshan end -->
+	
+	<!-- add SQL 覃启轩  Start -->
+	<!-- 员工参加调查活动，发送通知 -->
+	<insert id="insertQuestionPaperEmployee" parameterType="Map">
+		INSERT INTO question_papers_employees(company_id,test_id,visitor_id)
+		                               VALUES(#{companyId},#{testId},#{employeeId})
+	</insert>
+	<!-- add SQL 覃启轩  End -->
+</mapper>

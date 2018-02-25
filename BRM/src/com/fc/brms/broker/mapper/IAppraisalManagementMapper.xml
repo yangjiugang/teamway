@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- Liwj -->
+<mapper namespace="com.fc.brms.broker.mapper.IAppraisalManagementMapper">
+	<resultMap type="EmployeeAppraisal" id="EmployeeAppraisalMap">
+		<result property="employeeId" column="employee_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="appraisalStartDate" column="appraisal_start_date"/>
+		<result property="appraisalEndDate" column="appraisal_end_date"/>
+		<result property="appraisalResult" column="appraisal_result"/>
+		<result property="appraisalRate" column="appraisal_rate"/>
+		<result property="createDate" column="create_date"/>
+		<result property="createUser" column="create_user"/>
+		<association property="employeeInfo" column="employee_id" javaType="EmployeeInfo">
+			<id property="employeeId" column="employee_id"/>
+			<result property="userId" column="user_id"/>
+			<result property="employeeNum" column="employee_num"/>
+			<result property="userName" column="user_name"/>
+			<result property="postId" column="post_id"/>
+			<result property="postName" column="post_name"/>
+			<result property="jobLevelId" column="job_level_id"/>
+			<result property="organizationName" column="organization_name"/>
+			<result property="organizationId" column="organization_id"/>
+		</association>		
+	</resultMap>
+
+	<!-- function : 查询绩效(默认本月,条件) -->
+	<select id="searchEmployeeAppraisal" parameterType="EmployeeInfo" resultMap="EmployeeAppraisalMap">
+		SELECT ei.employee_id,ei.employee_num,ei.user_name,ei.organization_name,ei.post_name,appraisal_rate,appraisal_result,appraisal_start_date,appraisal_end_date 
+		  FROM employee_appraisal ea,employee_info ei 
+		 WHERE ei.employee_id = ea.employee_id
+		<if test="organizationName !='' and organizationName !=null">
+		   AND organization_name = #{organizationName}
+		</if>
+		<if test="postName !='' and postName !=null">
+		   AND post_name = #{postName}
+		</if>
+		<if test="jobGradeName !='' and jobGradeName !=null">
+		   AND job_grade_name  = #{jobGradeName}
+		</if>
+		<if test="jobLevelName !='' and jobLevelName !=null">
+		   AND job_level_name  = #{jobLevelName}
+		</if>
+		 <if test="idOrName !='' and idOrName !=null">
+		   AND (ei.employee_num = #{idOrName} OR ei.user_name = #{idOrName})
+		 </if>
+		 <if test="startTime !=null and startTime !='' and endTime !=null and endTime != ''">
+		   AND appraisal_start_date like '${startTime}%'
+		   AND appraisal_end_date like '${endTime}%'
+		 </if>
+		 LIMIT ${Limit}
+	</select>
+	
+	<!-- function : 统计查询记录数 -->
+	<select id="countSearchEmployeeAppraisal" parameterType="EmployeeInfo" resultType="int">
+		SELECT COUNT(*)
+		  FROM employee_appraisal ea,employee_info ei 
+		 WHERE ei.employee_id = ea.employee_id
+		<if test="organizationName !='' and organizationName !=null">
+		   AND organization_name = #{organizationName}
+		</if>
+		<if test="postName !='' and postName !=null">
+		   AND post_name = #{postName}
+		</if>
+		<if test="jobGradeName !='' and jobGradeName !=null">
+		   AND job_grade_name  = #{jobGradeName}
+		</if>
+		<if test="jobLevelName !='' and jobLevelName !=null">
+		   AND job_level_name  = #{jobLevelName}
+		</if>
+		 <if test="idOrName !='' and idOrName !=null">
+		   AND (ei.employee_num = #{idOrName} OR ei.user_name = #{idOrName})
+		 </if>
+		 <if test="startTime !=null and startTime !='' and endTime !=null and endTime != ''">
+		   AND appraisal_start_date like '${startTime}%'
+		   AND appraisal_end_date like '${endTime}%'
+		 </if>
+	</select>
+	
+	<!-- function : 根据Id查找EmployeeAppraisal -->
+	<select id="getEmployeeAppraisalById" resultMap="EmployeeAppraisalMap">
+		SELECT ei.employee_id,ei.employee_num,ei.user_name,ei.organization_name,ei.post_name,appraisal_rate,appraisal_result,appraisal_start_date,appraisal_end_date 
+		 FROM employee_appraisal ea,employee_info ei 
+		WHERE ei.employee_id = ea.employee_id
+		  AND ei.employee_id = #{employeeId}
+		LIMIT ${Limit}
+	</select>	
+	
+	<!-- function : 统计 根据Id查找EmployeeAppraisal -->
+	<select id="countEmployeeAppraisalById" parameterType="int" resultType="int">
+	   SELECT COUNT(*)
+		 FROM employee_appraisal ea,employee_info ei 
+		WHERE ei.employee_id = ea.employee_id
+		  AND ei.employee_id = #{employeeId}
+	</select>
+	
+	<!-- function : 检查新增的绩效是否在本月重复 -->
+	<select id="countEmployeeAppraisalByIdStartTimeEndTime" parameterType="EmployeeAppraisal" resultType="int">
+		SELECT COUNT(*) 
+		  FROM employee_appraisal 
+		 WHERE employee_id = #{employeeId}
+		   AND appraisal_start_date = #{appraisalStartDate} 
+		   AND appraisal_end_date = #{appraisalEndDate}
+	</select>
+	
+	<!-- function : 新增绩效 -->
+	<select id="insertEmployeeAppraisal" parameterType="EmployeeAppraisal">
+   INSERT INTO employee_appraisal(employee_id,company_id,appraisal_start_date,appraisal_end_date,appraisal_result,appraisal_rate,create_date,create_user) 
+		VALUES(#{employeeId},#{companyId},#{appraisalStartDate},#{appraisalEndDate},#{appraisalResult},#{appraisalRate},#{createDate},#{createUser});
+	</select>
+	
+	<!-- function : 根据id 和 时间查看绩效信息 -->
+	<select id="getEmployeeAppraisalByIdAndStartTime" parameterType="EmployeeAppraisal" resultMap="EmployeeAppraisalMap">
+		SELECT ei.employee_id,ei.employee_num,ei.user_name,ei.organization_name,ei.post_name,appraisal_rate,appraisal_result,appraisal_start_date,appraisal_end_date
+		  FROM employee_appraisal ea,employee_info ei 
+		 WHERE ei.employee_id = ea.employee_id
+		   AND ei.employee_id = #{employeeId} 
+		   AND appraisal_start_date = #{appraisalStartDate}
+	</select>
+	
+	<!-- function : 修改 -->
+	<update id="updateEmployeeAppraisal" parameterType="EmployeeAppraisal">
+		UPDATE employee_appraisal SET appraisal_result = #{appraisalResult},appraisal_rate = #{appraisalRate} 
+		 WHERE employee_id = #{employeeId} AND appraisal_start_date = #{appraisalStartDate}
+	</update>
+	
+	<!-- fcuntion : 历史绩效结构分析 -->
+	<select id="searchHistoryAnalyse" parameterType="EmployeeInfo" resultMap="EmployeeAppraisalMap">
+		SELECT appraisal_start_date,SUM(appraisal_result) appraisal_result,SUM(appraisal_rate) appraisal_rate,ei.organization_name,ei.post_name FROM employee_appraisal ea,employee_info ei 
+		 WHERE ei.employee_id = ea.employee_id
+		 <if test="organizationId !='' and organizationId !=null">
+		   AND organization_id = #{organizationId}
+		</if>
+		 <if test="startTime !=null and startTime !='' and endTime !=null and endTime != ''">
+		   AND appraisal_start_date between #{startTime} and #{endTime}		 
+		 </if>
+		 <if test="postId !='' and postId !=null">
+		   AND AND ei.post_id = #{postId}
+		 </if>
+	  GROUP BY appraisal_start_date,organization_name,ei.post_name
+	     LIMIT ${Limit}
+	</select>
+	
+	<!-- function : 统计历史绩效结构分析记录 -->
+	<select id="countSearchHistoryAnalyse" parameterType="EmployeeInfo" resultType="int">
+		SELECT COUNT(*) 
+		  FROM employee_appraisal ea,employee_info ei 
+		 WHERE ei.employee_id = ea.employee_id
+		 <if test="organizationId !='' and organizationId !=null">
+		   AND organization_id = #{organizationId}
+		</if>
+		 <if test="startTime !=null and startTime !='' and endTime !=null and endTime != ''">
+		   AND appraisal_start_date between #{startTime} and #{endTime}		 
+		 </if>
+		 <if test="postId !='' and postId !=null">
+		   AND AND ei.post_id = #{postId}
+		 </if>
+	</select>
+	
+	<!-- function : 得到所有部门名称和organization_id -->
+	<select id="allOrganization" resultMap="EmployeeAppraisalMap">
+		SELECT organization_id,organization_name FROM cfg_organization
+	</select>
+	
+	<!-- SQL CODE BY Zhenglh start -->
+		<!-- 根据id查询所有绩效 多条件 分页-->
+		<select id="getUserAppraisalListById" parameterType="map" resultMap="EmployeeAppraisalMap">
+			SELECT ei.employee_id,ei.employee_num,ei.user_name,ei.organization_name,ei.post_name,appraisal_rate,appraisal_result,appraisal_start_date,appraisal_end_date 
+			  FROM employee_appraisal ea,employee_info ei 
+			 WHERE ei.employee_id = ea.employee_id
+			   AND ei.employee_id=#{empId}
+			 <if test="startTime !=null and startTime !='' and endTime !=null and endTime != ''">
+			   AND appraisal_start_date like '${startTime}%'
+			   AND appraisal_end_date like '${endTime}%'
+			 </if>
+			 LIMIT ${limit}
+		</select>
+		
+		<!-- 根据id查询所有绩效 总记录-->
+		<select id="getUserAppraisalListCountById" parameterType="map" resultType="int">
+			SELECT COUNT(*)
+			  FROM employee_appraisal ea,employee_info ei 
+			 WHERE ei.employee_id = ea.employee_id
+			   AND ei.employee_id=#{empId}
+			 <if test="startTime !=null and startTime !='' and endTime !=null and endTime != ''">
+			   AND appraisal_start_date like '${startTime}%'
+			   AND appraisal_end_date like '${endTime}%'
+			 </if>
+		</select>
+	<!-- SQL CODE BY Zhenglh end -->
+</mapper>

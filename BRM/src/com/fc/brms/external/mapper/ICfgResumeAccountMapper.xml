@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.brms.external.mapper.ICfgResumeAccountMapper">
+
+		<resultMap id="cfgResumeAccountMap" type="CfgResumeAccount">
+			<result property="accountId" column="account_id"/>
+			<result property="accountName" column="account_name"/>
+			<result property="memberName" column="member_name"/>
+			<result property="account" column="account"/>
+			<result property="accountPassword" column="account_password"/>
+			<result property="publishJobs" column="publish_jobs"/>
+			<result property="surplusJobs" column="surplus_jobs"/>
+			<result property="downResumes" column="down_resumes"/>
+			<result property="surplusResumes" column="surplus_resumes"/>
+			<result property="endDate" column="end_date"/>
+			<result property="accountStatus" column="account_status"/>
+			<result property="companyId" column="company_id"/>
+		</resultMap>
+
+
+		<!-- 查询简历账号 -->
+	<select id="cfgResumeAccountList" resultMap="cfgResumeAccountMap">
+   		SELECT
+			account_id,
+			account_name,
+			member_name,
+			account,
+			account_password,
+			publish_jobs,
+			surplus_jobs,
+			down_resumes,
+			surplus_resumes,
+			end_date,
+			account_status,
+			company_id
+		FROM
+			cfg_resume_account
+		WHERE 
+			company_id = ${companyId}
+		<if test="accountStatus!=3">
+			AND  account_status = ${accountStatus}
+		</if>
+   </select> 
+   
+   
+   <!-- 查询简历账号条数 -->
+	<select id="cfgResumeAccountCount" resultType="int">
+   		 SELECT COUNT(1) FROM cfg_resume_account 
+   		 WHERE 
+   		 	company_id = #{companyId}
+   </select> 
+   
+   
+   
+   <!-- 根据ID查询简历账号 -->
+	<select id="cfgResumeAccountById" resultMap="cfgResumeAccountMap">
+   		SELECT
+			account_id,
+			account_name,
+			member_name,
+			account,
+			account_password,
+			publish_jobs,
+			surplus_jobs,
+			down_resumes,
+			surplus_resumes,
+			end_date,
+			account_status,
+			company_id
+		FROM
+			cfg_resume_account
+		WHERE 
+			account_id = #{accountId}
+   </select> 
+   
+   
+   <!-- 新增简历账号 -->
+    <insert id="insertCfgResumeAccount" parameterType="CfgResumeAccount">
+   		INSERT INTO cfg_resume_account(
+			account_name,
+			member_name,
+			account,
+			account_password,
+			publish_jobs,
+			surplus_jobs,
+			down_resumes,
+			surplus_resumes,
+			end_date,
+			account_status,
+			company_id
+		)
+		VALUES(
+			#{accountName},
+			#{memberName},
+			#{account},
+			#{accountPassword},
+			#{publishJobs},
+			#{surplusJobs},
+			#{downResumes},
+			#{surplusResumes},
+			#{endDate},
+			#{accountStatus},
+			#{companyId}
+		)
+   
+   </insert>
+   
+   <!-- 修改简历账号 -->
+   <update id="updateCfgResumeAccount" parameterType="CfgResumeAccount">
+   		UPDATE
+			cfg_resume_account
+		SET
+			account_name = #{accountName},
+			member_name = #{memberName},
+			account = #{account},
+			account_password = #{accountPassword},
+			publish_jobs = #{publishJobs},
+			surplus_jobs = #{surplusJobs},
+			down_resumes = #{downResumes},
+			surplus_resumes = #{surplusResumes},
+			end_date = #{endDate},
+			account_status = #{accountStatus},
+			company_id = #{companyId}
+		WHERE 
+		   account_id = #{accountId}
+   	</update>
+   	
+   	 <!-- 是否关联 简历账号  -->
+   <update id="closeCfgResumeAccount" parameterType="map">
+   		UPDATE
+			cfg_resume_account
+		SET
+			account_status = #{accountStatus}
+		WHERE
+			account_id = #{accountId}
+   	</update>
+   
+   <!-- 删除简历账号关联配置 -->
+   <delete id="delCfgResumeAccount" parameterType="int">
+   		DELETE
+		  FROM cfg_resume_account
+		 WHERE 
+		 account_id = #{accountId}
+   	</delete>
+   	
+	
+	
+	
+</mapper>

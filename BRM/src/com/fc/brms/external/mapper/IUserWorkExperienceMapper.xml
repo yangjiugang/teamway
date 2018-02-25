@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.brms.external.mapper.IUserWorkExperienceMapper">
+	<resultMap id="UserWorkExperienceMap" type="UserWorkExperience">
+		<result property="experienceId" column="experience_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="startDate" column="start_date"/>
+		<result property="endDate" column="end_date"/>
+		<result property="businessId" column="business_id"/>
+		<result property="industryTypes" column="industry_types"/>
+		<result property="companyName" column="company_name"/>
+		<result property="companyDesc" column="company_desc"/>
+		<result property="companyPopulationScale" column="company_population_scale"/>
+		<result property="department" column="department"/>
+		<result property="workType" column="work_type"/>
+		<result property="highestPositions" column="highest_positions"/>
+		<result property="mainResponsibilities" column="main_responsibilities"/>
+		<result property="reportTo" column="report_to"/>
+		<result property="directSubordinates" column="direct_subordinates"/>
+		<result property="mainWork1" column="main_work1"/>
+		<result property="mainWork2" column="main_work2"/>
+		<result property="mainWork3" column="main_work3"/>
+		<result property="additionalRemarks" column="additional_remarks"/>
+		<result property="certifier" column="certifier"/>
+		<result property="certifierTelephone" column="certifier_telephone"/>
+		<result property="annualIncome" column="annual_income"/>
+		<result property="monthlyPay" column="monthly_pay"/>
+		<result property="reasonsForLeaving" column="reasons_for_leaving"/>
+	</resultMap>
+	
+	
+	<!-- SQL Code By Zhenglh Start -->
+	
+	<!-- 根据ID获得经纪人工作经历 列表 -->
+	<select id="getUserWorkByUserId" parameterType="map" resultMap="UserWorkExperienceMap">
+		SELECT experience_id,user_id,start_date,end_date,business_id,industry_types,company_name,
+			   company_desc,company_population_scale,department,work_type,highest_positions,main_responsibilities,
+			   report_to,direct_subordinates,main_work1,main_work2,main_work3,additional_remarks,certifier,certifier_telephone,
+			   annual_income,monthly_pay,reasons_for_leaving
+		  FROM user_work_experience
+		 WHERE user_id=#{userId}
+		 LIMIT ${limit}
+	</select>
+	
+	<!-- 根据ID获得经纪人工作经历 列表 总记录数 -->
+	<select id="getUserWorkCountByUserId" parameterType="int" resultType="int" >
+		SELECT COUNT(1) FROM user_work_experience WHERE user_id=#{userId}
+	</select>
+	<!-- SQL Code By Zhenglh Start -->
+</mapper>

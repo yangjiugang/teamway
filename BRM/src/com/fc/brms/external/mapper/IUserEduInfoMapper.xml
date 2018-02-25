@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.fc.brms.external.mapper.IUserEduInfoMapper">
+	<resultMap id="UserEduInfoMap" type="UserEduInfo">
+		<result property="eduId" column="edu_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="eduType" column="edu_type"/>
+		<result property="eduStartDate" column="edu_start_date"/>
+		<result property="eduEndDate" column="edu_end_date"/>
+		<result property="schoolName" column="school_name"/>
+		<result property="professionId" column="profession_id"/>
+		<result property="profession" column="profession"/>
+		<result property="education" column="education"/>
+		<result property="degree" column="degree"/>
+		<result property="otherProfession" column="other_profession"/>
+	</resultMap>
+	
+	<!-- SQL CODE BY ZHENGLH -->
+	<!-- 根据ID,type 查看教育/培训 数据 列表 -->
+	<select id="getUserEduByIdBeforeType" parameterType="map" resultMap="UserEduInfoMap">
+		SELECT edu_id,user_id,edu_type,edu_start_date,edu_end_date,school_name,profession_id,profession,
+			   education,degree,other_profession
+		   FROM user_edu_info
+		  WHERE user_id=#{userId}
+		    AND edu_type=#{type}
+		  LIMIT ${limit}
+	</select>
+	
+	<!-- 根据ID,type 查看教育/培训 数据 列表 总记录数 -->
+	<select id="getUserEduCountByIdBeforeType" parameterType="map" resultType="int">
+		SELECT COUNT(1)
+		   FROM user_edu_info
+		  WHERE user_id=#{userId}
+		    AND edu_type=#{type}
+	</select>
+	
+	<!-- SQL CODE BY ZHENGLH -->
+</mapper>

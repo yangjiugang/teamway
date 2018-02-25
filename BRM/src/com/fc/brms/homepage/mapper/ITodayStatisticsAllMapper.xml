@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.brms.homepage.mapper.ITodayStatisticsAllMapper">
+    <resultMap id="userResumeMap" type="UserResume">
+		<result property="userId" column="user_id"/>
+		<result property="resumeUserId" column="resume_user_id"/>
+		<result property="userNum" column="user_num"/>
+		<result property="userName" column="user_name"/>
+		<result property="userSex" column="user_sex"/>
+		<result property="userTelphone" column="user_telphone"/>
+		<result property="email" column="email"/>
+		<result property="userBirthday" column="user_birthday"/>
+		<result property="certificateType" column="certificate_type"/>
+		<result property="certificateNum" column="certificate_num"/>
+		<result property="userHeight" column="user_height"/>
+		<result property="photoPath" column="photo_path"/>
+		<result property="areaId" column="area_id"/>
+		<result property="hkPlace" column="hk_place"/>
+		<result property="birthPlace" column="birth_place"/>
+		<result property="userAddress" column="user_address"/>
+		<result property="highestEducationName" column="highest_education_name"/>
+		<result property="highestEducation" column="highest_education"/>
+		<result property="professionId" column="profession_id"/>
+		<result property="profession" column="profession"/>
+		<result property="degree" column="degree"/>
+		<result property="graduateSchool" column="graduate_school"/>
+		<result property="graduateDate" column="graduate_date"/>
+		<result property="workYears" column="work_years"/>
+		<result property="isMarry" column="is_marry"/>
+		<result property="politicalConnection" column="political_connection"/>
+		<result property="businessId" column="business_id"/>
+		<result property="presentBusiness" column="present_business"/>
+		<result property="postId" column="post_id"/>
+		<result property="presentPost" column="present_post"/>
+		<result property="presentSalaryMonth" column="present_salary_month"/>
+		<result property="presentSalaryYear" column="present_salary_year"/>
+		<result property="workStatus" column="work_status"/>
+		<result property="resumeFrom" column="resume_from"/>
+		<result property="createDate" column="create_date"/>
+		<result property="contactCnt" column="contact_cnt"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+		<result property="lastUpdateDate" column="last_update_date"/>
+		<association property="rip" column="process_id" javaType="RecruitInterviewProcess">
+		    <result property="processId" column="process_id"/>
+			<result property="companyId" column="company_id"/>
+			<result property="trackId" column="track_id"/>
+			<result property="interviewId" column="interview_id"/>
+			<result property="interviewTime" column="interview_time"/>
+			<result property="interviewType" column="interview_type"/>
+			<result property="interviewersId" column="interviewers_id"/>
+			<result property="interviewersName" column="interviewers_name"/>
+			<result property="interviewers" column="interviewers"/>
+			<result property="interviewAddress" column="interview_address"/>
+			<result property="interviewResult" column="interview_result"/>
+			<result property="notifyEmployeeId" column="notify_employee_id"/>
+			<result property="notifyEmployeeName" column="notify_employee_name"/>
+			<result property="notifyEmployeePhone" column="notify_employee_phone"/>
+			<result property="notifyTime" column="notify_time"/>
+		</association>
+		<association property="ri" column="interview_id" javaType="RecruitInterview">
+		    <result property="interviewId" column="interId"/>
+			<result property="companyId" column="company_id"/>
+			<result property="taskId" column="task_id"/>
+			<result property="userId" column="user_id"/>
+			<result property="interviewCnt" column="interview_cnt"/>
+			<result property="interviewResult" column="interview_result"/>
+			<result property="entryNotice" column="entry_notice"/>
+			<result property="entryDate" column="entry_date"/>
+			<result property="entryStatus" column="entry_status"/>
+		</association>
+		
+	</resultMap>
+	
+	<resultMap id="trainingTaskMap" type="TrainingTask">
+		<result property="taskId" column="task_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="taskNum" column="task_num"/>
+		<result property="taskName" column="task_name"/>
+		<result property="taskType" column="task_type"/>
+		<result property="taskPurpose" column="task_purpose"/>
+		<result property="taskPlace" column="task_place"/>
+		<result property="trainingContentTypeId" column="training_content_type_id"/>
+		<result property="testId" column="test_id"/>
+		<result property="trainingStartTime" column="training_start_time"/>
+		<result property="trainingEndTime" column="training_end_time"/>
+		<result property="trainingDesc" column="training_desc"/>
+		<result property="organizationId" column="organization_id"/>
+		<result property="organizationalUnit" column="organizational_unit"/>
+		<result property="sponsorId" column="sponsor_id"/>
+		<result property="sponsor" column="sponsor"/>
+		<result property="userId" column="user_id"/>
+		<result property="contactPersonName" column="contact_person_name"/>
+		<result property="contactPersonPhone" column="contact_person_phone"/>
+		<result property="taskStatus" column="task_status"/>
+		<result property="planEmployees" column="plan_employees"/>
+		<result property="actualEmployees" column="actual_employees"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="lastUpdateTime" column="last_update_time"/>
+		<result property="lastUpdateUser" column="last_update_user"/>
+		<association property="ts" column="schedule_id" javaType="TrainingSchedule">
+		    <result property="scheduleId" column="schedule_id"/>
+			<result property="companyId" column="company_id"/>
+			<result property="taskId" column="task_id"/>
+			<result property="courseName" column="course_name"/>
+			<result property="teacher" column="teacher"/>
+			<result property="teacherDesc" column="teacher_desc"/>
+			<result property="scheduleStartTime" column="schedule_start_time"/>
+			<result property="scheduleEndTime" column="schedule_end_time"/>
+		</association>
+		<association property="tct" column="type_id" javaType="TrainingContentType">
+		    <result property="typeId" column="type_id"/>
+			<result property="companyId" column="company_id"/>
+			<result property="typeName" column="type_name"/>
+			<result property="typeStatus" column="type_status"/>
+			<result property="createTime" column="create_time"/>
+			<result property="createUser" column="create_user"/>
+			<result property="lastUpdateTime" column="last_update_time"/>
+			<result property="lastUpdateUser" column="last_update_user"/>
+		</association>
+	</resultMap>   
+   
+    <resultMap id="questionTestMap" type="QuestionTest">
+		<result property="testId" column="test_id"/>
+		<result property="paperId" column="paper_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="testNum" column="test_num"/>
+		<result property="testName" column="test_name"/>
+		<result property="typeId" column="type_id"/>
+		<result property="testStartTime" column="test_start_time"/>
+		<result property="testEndTime" column="test_end_time"/>
+		<result property="testDuration" column="test_duration"/>
+		<result property="testMethod" column="test_method"/>
+		<result property="testDesc" column="test_desc"/>
+		<result property="testStatus" column="test_status"/>
+		<result property="testUserCnt" column="test_user_cnt"/>
+		<result property="testEnableCnt" column="test_enable_cnt"/>
+		<result property="testInitiateId" column="test_initiate_id"/>
+		<result property="testInitiator" column="test_initiator"/>
+		<result property="initiateDeptId" column="initiate_dept_id"/>
+		<result property="initiateDeptName" column="initiate_dept_name"/>
+		<result property="contactUserId" column="contact_user_id"/>
+		<result property="contactUserName" column="contact_user_name"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="publishTime" column="publish_time"/>
+		<result property="publishUser" column="publish_user"/>
+		<result property="enableRate" column="enable_rate"/>
+		<result property="testAnswer" column="test_answer"/>
+		<association property="questionTestType" column="type_id" javaType="QuestionTestType">
+		  <result property="typeName" column="type_name"/>
+		</association>
+		
+	</resultMap>
+	
+	<resultMap id="employeeTalkRecordMap" type="EmployeeTalkRecord">
+		<result property="talkId" column="talk_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="talkNum" column="talk_num"/>
+		<result property="surveyType" column="survey_type"/>
+		<result property="talkToOrganizationId" column="talk_to_organization_id"/>
+		<result property="talkToOrganizationName" column="talk_to_organization_name"/>
+		<result property="talkToPostId" column="talk_to_post_id"/>
+		<result property="talkToPostName" column="talk_to_post_name"/>
+		<result property="talkToEmployee" column="talk_to_employee"/>
+		<result property="talkToEmployeeNum" column="talk_to_employee_num"/>
+		<result property="talkToEmployeeName" column="talk_to_employee_name"/>
+		<result property="relationships" column="relationships"/>
+		<result property="surveyOrganizationId" column="survey_organization_id"/>
+		<result property="surveyOrganizationName" column="survey_organization_name"/>
+		<result property="surveyPostId" column="survey_post_id"/>
+		<result property="surveyPostName" column="survey_post_name"/>
+		<result property="surveyEmployee" column="survey_employee"/>
+		<result property="surveyEmployeeNum" column="survey_employee_num"/>
+		<result property="surveyEmployeeName" column="survey_employee_name"/>
+		<result property="mainTalkOrganizationId" column="main_talk_organization_id"/>
+		<result property="mainTalkOrganizationName" column="main_talk_organization_name"/>
+		<result property="mainTalkPostId" column="main_talk_post_id"/>
+		<result property="mainTalkPostName" column="main_talk_post_name"/>
+		<result property="mainTalkEmployee" column="main_talk_employee"/>
+		<result property="mainTalkEmployeeNum" column="main_talk_employee_num"/>
+		<result property="mainTalkEmployeeName" column="main_talk_employee_name"/>
+		<result property="planTalkTime" column="plan_talk_time"/>
+		<result property="startTime" column="start_time"/>
+		<result property="endTime" column="end_time"/>
+		<result property="talkType" column="talk_type"/>
+		<result property="talkPlace" column="talk_place"/>
+		<result property="talkEstimate" column="talk_estimate"/>
+		<result property="stableProcess" column="stable_process"/>
+		<result property="createTime" column="create_time"/>
+	</resultMap>
+	
+   <!-- 今日面试 -->  
+   <select id="findTodayInterview" resultMap="userResumeMap">
+       SELECT rt.task_id,ur.user_name,ur.resume_from,ur.user_sex,ur.user_birthday,ur.highest_education_name,ur.graduate_school,ur.work_years,ur.user_telphone,
+              rip.interview_time ,ri.user_id
+         FROM recruit_task rt,
+	          recruit_interview ri,
+	          recruit_interview_process rip,
+	          user_resume ur
+		WHERE rt.require_user_id=#{userId}
+		  AND ri.task_id=rt.task_id
+		  AND ur.user_id=ri.user_id
+		  AND rip.interview_id=ri.interview_id
+		  AND rip.interview_time BETWEEN #{smallTime} AND #{bigTime}
+		 <if test="keyword!=null and keyword!=''">
+	         AND (ur.user_name LIKE CONCAT('%',#{keyword},'%')
+	          OR ur.user_birthday LIKE CONCAT('%',#{keyword},'%')
+	          OR ur.user_birthday LIKE CONCAT('%',#{keyword},'%')
+	          OR ur.graduate_school LIKE CONCAT('%',#{keyword},'%')
+	          )	 
+	     </if> 
+	   LIMIT ${limit}
+   </select>  	
+   
+   <!-- 今日面试总条数 -->  
+   <select id="findTodayInterviewCount" resultType="int">
+       SELECT COUNT(*)
+		 FROM recruit_task rt,
+	          recruit_interview ri,
+	          recruit_interview_process rip,
+	          user_resume ur
+		WHERE rt.require_user_id=1
+		  AND ri.task_id=rt.task_id
+		  AND ur.user_id=ri.user_id
+		  AND rip.interview_id=ri.interview_id
+		  AND rip.interview_time BETWEEN #{smallTime} AND #{bigTime}
+		 <if test="keyword!=null and keyword!=''">
+	         AND (ur.user_name LIKE CONCAT('%',#{keyword},'%')
+	          OR ur.user_birthday LIKE CONCAT('%',#{keyword},'%')
+	          OR ur.user_birthday LIKE CONCAT('%',#{keyword},'%')
+	          OR ur.graduate_school LIKE CONCAT('%',#{keyword},'%')
+	          )	 
+	     </if> 
+   </select>
+
+  <!-- 今日入职 --> 
+  <select id="findTodayJob" resultMap="userResumeMap">
+    SELECT ur.user_name,ur.resume_from,ur.user_sex,ur.user_birthday,ur.highest_education_name,ur.graduate_school,ur.work_years,ur.user_telphone,
+ 	       ri.interview_cnt,ri.entry_notice,ri.entry_date,ri.entry_status,ri.interview_id AS interId
+ 	  FROM recruit_interview ri,
+ 	       recruit_offer ro,
+ 	       user_resume ur
+ 	 WHERE ri.entry_date BETWEEN #{smallTime} AND #{bigTime}
+ 	   AND ro.interview_id=ri.interview_id
+ 	   AND ur.user_id=ro.resume_id 
+     LIMIT ${limit}
+  </select>
+  <!-- 今日入职 总条数 --> 
+  <select id="findTodayJobCount" resultType="int">
+    SELECT COUNT(*)
+	  FROM recruit_interview ri
+	 WHERE ri.entry_date BETWEEN #{smallTime} AND #{bigTime}
+  </select>
+  
+  <!-- 今日培训  -->
+  <select id="findTodayTraining" resultMap="trainingTaskMap">
+    SELECT tt.task_id,tt.company_id,tt.task_num,tt.task_name,tt.task_type,tt.task_purpose,tt.task_place,tt.training_content_type_id,tt.test_id,
+           tt.training_start_time,tt.training_end_time,tt.training_desc,tt.organization_id,tt.organizational_unit,tt.sponsor_id,tt.sponsor,
+           tt.user_id,tt.contact_person_name,tt.contact_person_phone,tt.task_status,tt.plan_employees,tt.actual_employees,tt.create_time,
+           tt.create_user,tt.last_update_time,tt.last_update_user,tct.type_name,ts.teacher,ts.schedule_start_time
+	  FROM training_users tu,
+	       training_task tt,
+	       training_content_type tct,
+	       training_schedule ts
+	 WHERE tu.employee_id=1 
+	   AND tu.task_id=tt.task_id
+	   AND tt.task_type=tct.type_id    
+	   AND ts.task_id=tt.task_id
+	   AND tu.training_sign_in_time BETWEEN #{smallTime} AND #{bigTime}
+     LIMIT ${limit}
+  
+    <!--  SELECT tt.task_id,tt.company_id,tt.task_num,tt.task_name,tt.task_type,tt.task_purpose,tt.task_place,tt.training_content_type_id,tt.test_id,
+		    tt.training_start_time,tt.training_end_time,tt.training_desc,tt.organization_id,tt.organizational_unit,tt.sponsor_id,tt.sponsor,
+		    tt.user_id,tt.contact_person_name,tt.contact_person_phone,tt.task_status,tt.plan_employees,tt.actual_employees,tt.create_time,
+		    tt.create_user,tt.last_update_time,tt.last_update_user,tct.type_name,ts.teacher,ts.schedule_start_time
+	   FROM training_task tt,
+		    training_content_type tct,
+		    training_schedule ts
+	  WHERE tt.task_type=tct.type_id    
+		AND ts.task_id=tt.task_id
+		AND ts.schedule_start_time BETWEEN #{smallTime} AND #{bigTime}
+      LIMIT ${limit} -->
+  </select>
+  
+  <!-- 今日培训总条数  -->
+ <select id="findTodayTrainingCount" resultType="int">
+     SELECT COUNT(*)
+	   FROM training_users tu
+	  WHERE tu.employee_id=#{userId} 
+	    AND tu.training_sign_in_time BETWEEN #{smallTime} AND #{bigTime}
+ </select>
+ 
+ <!-- 今日调查  -->
+ <select id="findTodaySurvey" resultMap="questionTestMap">
+    SELECT qt.test_id,qt.paper_id,qt.company_id,qt.test_num,qt.test_name,qt.type_id,qt.test_start_time,qt.test_end_time,qt.test_duration,qt.test_method,qt.test_desc,qt.test_status,qt.test_user_cnt,
+           qt.test_enable_cnt,qt.test_initiate_id,qt.test_initiator,qt.initiate_dept_id,qt.initiate_dept_name,qt.contact_user_id,qt.contact_user_name,qt.create_time,qt.create_user,qt.publish_time,
+           qt.publish_user,qt.enable_rate,qt.test_answer,qtt.type_name
+      FROM question_test qt,
+           question_test_type qtt,
+           question_papers_employees qpe
+     WHERE qt.test_start_time BETWEEN #{smallTime} AND #{bigTime}
+       AND qpe.visitor_id=#{userId}
+       AND qpe.test_id=qt.test_id
+       AND qtt.type_id=qt.type_id
+     LIMIT ${limit}
+ 
+  <!--   SELECT qt.test_id,qt.paper_id,qt.company_id,qt.test_num,qt.test_name,qt.type_id,qt.test_start_time,qt.test_end_time,qt.test_duration,qt.test_method,qt.test_desc,qt.test_status,qt.test_user_cnt,
+           qt.test_enable_cnt,qt.test_initiate_id,qt.test_initiator,qt.initiate_dept_id,qt.initiate_dept_name,qt.contact_user_id,qt.contact_user_name,qt.create_time,qt.create_user,qt.publish_time,
+           qt.publish_user,qt.enable_rate,qt.test_answer,qtt.type_name
+      FROM question_test qt,
+           question_test_type qtt
+     WHERE qt.test_start_time BETWEEN #{smallTime} AND #{bigTime}
+       AND qtt.type_id=qt.type_id
+     LIMIT ${limit} -->
+    
+ </select>
+ 
+ <!-- 今日调查总条数 -->
+  <select id="findTodaySurveyCount" resultType="int">
+    SELECT COUNT(*)
+      FROM question_test qt,
+           question_papers_employees qpe
+     WHERE qt.test_start_time BETWEEN #{smallTime} AND #{bigTime}
+       AND qpe.visitor_id=#{userId}
+       AND qpe.test_id=qt.test_id
+ </select>
+ 
+ <!-- 今日约谈 -->
+ <select id="findTodayAppointments" resultMap="employeeTalkRecordMap">
+   SELECT talk_id,company_id,talk_num,survey_type,talk_to_organization_id,talk_to_organization_name,talk_to_post_id,talk_to_post_name,
+		  talk_to_employee,talk_to_employee_num,talk_to_employee_name,relationships,survey_organization_id,survey_organization_name,survey_post_id,
+		  survey_post_name,survey_employee,survey_employee_num,survey_employee_name,main_talk_organization_id,main_talk_organization_name,main_talk_post_id,
+		  main_talk_post_name,main_talk_employee,main_talk_employee_num,main_talk_employee_name,plan_talk_time,start_time,end_time,talk_type,
+		  talk_place,talk_estimate,stable_process,create_time
+     FROM employee_talk_record
+    WHERE plan_talk_time BETWEEN #{smallTime} AND #{bigTime}
+    LIMIT ${limit}
+ </select>
+ 
+ <!-- 今日约谈总条数 -->
+ <select id="findTodayAppointmentsCount" resultType="int">
+   SELECT COUNT(*)
+     FROM employee_talk_record
+    WHERE plan_talk_time BETWEEN #{smallTime} AND #{bigTime}
+ </select>
+ 
+ <!-- 今日受访 -->
+ <select id="findTodaySiuhong" resultMap="employeeTalkRecordMap">
+   SELECT talk_id,company_id,talk_num,survey_type,talk_to_organization_id,talk_to_organization_name,talk_to_post_id,talk_to_post_name,
+		  talk_to_employee,talk_to_employee_num,talk_to_employee_name,relationships,survey_organization_id,survey_organization_name,survey_post_id,
+		  survey_post_name,survey_employee,survey_employee_num,survey_employee_name,main_talk_organization_id,main_talk_organization_name,main_talk_post_id,
+		  main_talk_post_name,main_talk_employee,main_talk_employee_num,main_talk_employee_name,plan_talk_time,start_time,end_time,talk_type,
+		  talk_place,talk_estimate,stable_process,create_time
+     FROM employee_talk_record
+    WHERE plan_talk_time BETWEEN #{smallTime} AND #{bigTime}
+    LIMIT ${limit}
+ </select>
+ 
+ <!-- 今日受访总条数 -->
+ <select id="findTodaySiuhongCount" resultType="int">
+    SELECT COUNT(*)
+     FROM employee_talk_record
+    WHERE plan_talk_time BETWEEN #{smallTime} AND #{bigTime}
+ </select>
+ 
+</mapper>

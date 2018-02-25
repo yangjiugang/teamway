@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fc.brms.sys.mapper.ISystemRoleAndFuncMapper">
+	<resultMap id="fcSysFuncMap" type="FcSysFunc">
+		<result property="funcId" column="func_id"/>
+		<result property="funcCode" column="func_code"/>
+		<result property="funcName" column="func_name"/>
+		<result property="funcDsc" column="func_dsc"/>
+	</resultMap>
+	
+	<resultMap id="fcSysRoleMap" type="FcSysRole">
+		<id property="roleId" column="role_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="roleName" column="role_name"/>
+		<result property="roleDesc" column="role_desc"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="roleCode" column="role_code"/>
+		<association  property="employeeInfo" column="employee_id" javaType="EmployeeInfo" >
+		    <id property="employeeId" column="employee_id"/>
+			<result property="userName" column="user_name"/>
+		</association>
+		<collection property="fcSysFunces" ofType="FcSysFunc">
+			<id property="funcId" column="func_id"/>
+			<result property="funcCode" column="func_code"/>
+			<result property="funcName" column="func_name"/>
+		</collection>
+	</resultMap>
+	
+	<resultMap id="fcSysVisitorRoleMap" type="FcSysVisitorRole">
+		<id property="roleId" column="role_id"/>
+		<result property="visitorId" column="visitor_id"/>
+		<result property="companyId" column="company_id"/>
+		<result property="createTime" column="create_time"/>
+		<result property="createUser" column="create_user"/>
+	</resultMap>
+	
+	<resultMap id="fcSysRoleFuncMap" type="FcSysRoleFunc">
+		<result property="roleId" column="role_id"/>
+		<result property="funcId" column="func_id"/>
+		<result property="companyId" column="company_id"/>
+	</resultMap>
+	<!-- Code By Gaoqf Start-->
+	<!-- 查询所有角色功能 -->
+	<select id="selectFcSysFunc" resultMap="fcSysFuncMap">
+		SELECT func_id,func_code,func_name,func_dsc
+		  FROM fc_sys_func
+	</select> 
+	<!-- 查询公司所有角色信息 -->
+	<select id="selectFcSysRole" resultMap="fcSysRoleMap" >
+		SELECT fsr.role_id,fsr.role_name,fsr.role_desc,fsr.create_time,ei.user_name
+		  FROM fc_sys_role fsr,
+ 			   employee_info ei 
+		 WHERE fsr.company_id = #{companyId}
+	       AND ei.company_id =#{companyId}
+		   AND fsr.create_user = ei.user_id
+	 	<if test="null != keyWord and '' != keyWord">
+		   AND (fsr.role_name LIKE CONCAT('%',#{keyWord},'%') OR fsr.role_desc LIKE CONCAT('%',#{keyWord},'%'))
+		</if>
+		<if test="null != limit and '' != limit">
+		 LIMIT ${limit}
+		</if>
+	</select> 
+	
+	<!-- 查询公司所有角色信息数 -->
+	<select id="selectFcSysRoleCount" resultType="int" >
+		SELECT COUNT(role_id) 
+		  FROM fc_sys_role  
+		 WHERE company_id = #{companyId}
+		 <if test="null != keyWord and '' != keyWord">
+		   AND (role_name LIKE CONCAT('%',#{keyWord},'%') OR role_desc LIKE CONCAT('%',#{keyWord},'%'))
+		</if>
+	</select>
+	
+	<!-- 新增公司角色信息 -->
+	<insert id="insertNewRole" parameterType="FcSysRole" useGeneratedKeys="true" keyProperty="roleId">
+		INSERT INTO fc_sys_role (company_id,role_name,role_desc,create_time,create_user,role_code) 
+		     VALUES (#{companyId},#{roleName},#{roleDesc},#{createTime},#{createUser},#{roleCode})
+	</insert>
+	
+	<!-- 修改角色roleCode -->
+	<update id="updateCompanyRoleRoleCode" parameterType="FcSysRole">
+		UPDATE fc_sys_role 
+		   SET role_code = #{roleCode}
+		 WHERE role_id = #{roleId}
+	</update>
+	
+	<!-- 修改公司角色信息 -->
+	<update id="updateCompanyRole" parameterType="FcSysRole">
+		UPDATE fc_sys_role 
+		   SET role_name = #{roleName},
+  			   role_desc = #{roleDesc},
+  			   create_time = #{createTime},
+  			   create_user = #{createUser} 
+		 WHERE role_id = #{roleId}
+	</update>
+	
+	<!-- 删除公司角色信息 -->
+	<delete id="deleteFcSysRoles">
+		DELETE 
+		  FROM fc_sys_role
+		 WHERE role_id IN 
+		<foreach collection="roleIds" item="item" open="(" separator="," close=")">
+			   		#{item}
+		</foreach>
+	</delete>
+	
+	<!-- 查询公司角色信息及相应功能模块 -->
+	<select id="selectFcSysRoleWithFunc" resultMap="fcSysRoleMap">
+		SELECT a.role_id,fsf.func_id,a.role_name,fsf.func_code,fsf.func_name 
+		  FROM (
+		  		SELECT fsr.role_id,fsr.role_name,fsrf.func_id
+	  			  FROM fc_sys_role fsr 
+	         LEFT JOIN fc_sys_role_func fsrf 
+	                ON fsr.role_id = fsrf.role_id AND fsr.company_id=#{companyId}
+	  			 WHERE fsr.role_id = #{roleId}
+	     ) a
+	  LEFT JOIN fc_sys_func fsf 
+	   		 ON a.func_id = fsf.func_id 
+	</select>
+	
+	<!-- 查询公司角色信息 -->
+	<select id="selectFcSysRoleByRoleId" resultMap="fcSysRoleMap">
+		SELECT role_id,role_name
+	  	  FROM fc_sys_role  
+	 	 WHERE role_id IN 
+		<foreach collection="roleIds" item="item" open="(" separator="," close=")">
+			   #{item}
+		</foreach>
+	</select>
+	
+	<!-- 查询公司所有角色名 -->
+	<select id="selectFcSysRoleName" resultMap="fcSysRoleMap" parameterType="int">
+		SELECT role_id,role_name
+	  	  FROM fc_sys_role  
+	 	 WHERE company_id = #{companyId} 
+	</select>
+	
+	<!-- 查询公司员工所拥有角色 -->
+	<select id="selectFcSysVisitorRole" resultMap="fcSysVisitorRoleMap" >
+		SELECT role_id,visitor_id,company_id
+		  FROM fc_sys_visitor_role
+		 WHERE visitor_id = #{employeeId}
+		   AND company_id = #{companyId}
+
+	</select>
+	
+	<!-- 删除角色所有功能 -->
+	<delete id="deleteFcSysRoleFuncByRoleId">
+		DELETE 
+		  FROM fc_sys_role_func 
+		 WHERE role_id = #{roleId}
+ 		   AND company_id = #{companyId}
+	</delete>
+	
+	<!-- 添加角色所有功能 -->
+	<insert id="insertFcSysRoleFunc">
+		INSERT INTO fc_sys_role_func(role_id,func_id,company_id) 
+			 VALUES 
+		<foreach collection="fcSysRoleFunc" item="item" separator="," >
+			  (#{item.roleId},#{item.funcId},#{item.companyId})
+		</foreach>
+	</insert>
+	
+	<!-- 删除公司员工所拥有角色 -->
+	<delete id="deleteCompanyEmpRoleByEmpId">
+		DELETE 
+		  FROM fc_sys_visitor_role
+		 WHERE visitor_id IN
+		 <foreach collection="employeeIdes" item="item" open="(" separator="," close=")">
+			  #{item}
+		</foreach>
+		   AND company_id=#{companyId}
+	</delete>
+	
+	<!-- 删除公司员工部分角色 -->
+	<delete id="deleteCompanyEmpRoleByRoleId">
+		DELETE 
+		  FROM fc_sys_visitor_role
+		 WHERE role_id IN
+		 <foreach collection="roleIds" item="item" open="(" separator="," close=")">
+			  #{item}
+		</foreach>
+		   AND company_id=#{companyId}
+	</delete>
+	
+	
+	<!-- 给添加员工角色 -->
+	<insert id="insertFcSysVisitorRole">
+		INSERT INTO fc_sys_visitor_role(role_id,visitor_id,company_id,create_time,create_user) 
+			 VALUES 
+		<foreach collection="fcSysVisitorRoles" item="item" separator="," >
+			  (#{item.roleId},#{item.visitorId},#{item.companyId},#{item.createTime},#{item.createUser})
+		</foreach>
+	</insert>
+	<!-- Code By Gaoqf End-->
+</mapper>
