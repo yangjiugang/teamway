@@ -10,7 +10,7 @@
         <expression-handler ref="expressionHandler"/>
     </global-method-security>
 	  -->
-	  
+	  <!-- springsecurity 配置 -->
 	  
     <http auto-config="true">
         <intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
