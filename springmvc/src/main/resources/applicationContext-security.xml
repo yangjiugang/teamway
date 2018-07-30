@@ -27,7 +27,7 @@
     <authentication-manager>
         <authentication-provider>
            <password-encoder hash="bcrypt"/>
-           <jdbc-user-service data-source-ref="boneCPDataSource"
+           <jdbc-user-service data-source-ref="dataSource"
            	users-by-username-query="select visitor_name, visitor_password,user_status from fc_sys_visitor where visitor_name=?"
            	authorities-by-username-query="select visitor_name, fsr.role_code from fc_sys_visitor fsv, fc_sys_visitor_role fsvr, fc_sys_role fsr where fsv.visitor_id = fsvr.visitor_id and fsvr.role_id = fsr.role_id and fsv.visitor_name=?"/>		
         </authentication-provider>
